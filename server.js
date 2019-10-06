@@ -16,7 +16,7 @@ app.use(compression());
 app.use(express.json({ extended: false }));
 app.use(cors());
 
-app.use('/', (req, res) => res.send('Welcome to Careers Network!'));
+// app.use('/', (req, res) => res.send('Welcome to Careers Network!'));
 // Define Routers
 app.use('/api/users', require('./routes/user/sign'));
 

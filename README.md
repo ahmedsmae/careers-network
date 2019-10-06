@@ -18,6 +18,6 @@ Launches the server side only
 
 Launches both mobile and server sides at the same time
 
-#### `_templates_` directory
+#### `_templates` directory
 
 Directory contains all the templates and trial files
