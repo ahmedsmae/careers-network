@@ -1,4 +1,5 @@
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { Dimensions } from 'react-native';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
 
@@ -14,13 +15,12 @@ import SavedJobsScreen from '../screens/saved-jobs/saved-jobs.component';
 import ShowJobScreen from '../screens/show-job/show-job.component';
 import EmployerScreen from '../screens/employer/employer.component';
 import AddEditApplicationScreen from '../screens/add-edit-application/add-edit-application.component';
+import AboutScreen from '../screens/about/about.component';
+import ContactUsScreen from '../screens/contact-us/contact-us.component';
 
-const hideHeaderNavOptions = {
-  headerMode: 'none',
-  navigationOptions: {
-    headerVisible: false
-  }
-};
+import CustomDrawer from '../components/custom-drawer/custom-drawer.component';
+import Colors from '../constants/colors';
+import hideHeaderNavOptions from './hide-header-nav-options';
 
 const noAuthSearchNavigator = createStackNavigator(
   {
@@ -36,12 +36,14 @@ const noAuthNavigator = createStackNavigator(
   {
     NoAuthSearch: noAuthSearchNavigator,
     SignIn: SignInScreen,
-    SignUp: SignUpScreen
+    SignUp: SignUpScreen,
+    About: AboutScreen,
+    ContactUs: ContactUsScreen
   },
   hideHeaderNavOptions
 );
 
-const authSearchNavigator = createStackNavigator(
+const searchNavigator = createStackNavigator(
   {
     Search: SearchScreen,
     SearchResults: SearchResultsScreen,
@@ -52,14 +54,39 @@ const authSearchNavigator = createStackNavigator(
   hideHeaderNavOptions
 );
 
-const emploeeDrawerNavigator = createDrawerNavigator({
-  Search: authSearchNavigator,
-  UserProfile: UserProfileScreen,
-  Home: HomeScreen,
-  Following: FollowingScreen,
-  Applications: ApplicationsScreen,
-  SavedJobs: SavedJobsScreen
-});
+const emploeeDrawerNavigator = createDrawerNavigator(
+  {
+    UserProfile: {
+      screen: UserProfileScreen,
+      // this to hide the labe of this route
+      navigationOptions: { drawerLabel: () => null }
+    },
+    Search: searchNavigator,
+    Home: HomeScreen,
+    Following: FollowingScreen,
+    Applications: ApplicationsScreen,
+    SavedJobs: SavedJobsScreen,
+    About: {
+      screen: AboutScreen,
+      navigationOptions: { drawerLabel: () => null }
+    },
+    ContactUs: {
+      screen: ContactUsScreen,
+      navigationOptions: { drawerLabel: () => null }
+    }
+  },
+  {
+    contentComponent: CustomDrawer,
+    drawerWidth: Dimensions.get('window').width * 0.7,
+    drawerPosition: 'left',
+    contentOptions: {
+      activeTintColor: Colors.ACCENT,
+      labelStyle: {
+        fontFamily: 'open-sans-bold'
+      }
+    }
+  }
+);
 
 const switchNavigator = createSwitchNavigator({
   noAuth: noAuthNavigator,

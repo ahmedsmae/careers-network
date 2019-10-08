@@ -101,7 +101,15 @@ router.post(
 
       const token = await user.generateAuthToken();
 
-      res.json({ user, token });
+      const userKind = user.kind;
+      let employee, employer;
+      // if (userKind === process.env.KIND_EMPLOYEE) {
+      //   employee = Employee.findOne({ owner: user._id });
+      // } else if (userKind === process.env.KIND_EMPLOYER) {
+      //   employer = Employer.findOne({ owner: user._id });
+      // }
+
+      res.json({ user, token, employee, employer });
     } catch (err) {
       console.error(err.message);
       res.status(400).json({ errors: [{ msg: err.message }] });
@@ -127,13 +135,12 @@ router.get('/auth', auth, async (req, res) => {
     }
 
     const userKind = user.kind;
-
     let employee, employer;
-    if (userKind === process.env.KIND_EMPLOYEE) {
-      employee = Employee.findOne({ owner: req.user._id });
-    } else if (userKind === process.env.KIND_EMPLOYER) {
-      // employer = Employer.findOne({ owner: req.user._id });
-    }
+    // if (userKind === process.env.KIND_EMPLOYEE) {
+    //   employee = Employee.findOne({ owner: req.user._id });
+    // } else if (userKind === process.env.KIND_EMPLOYER) {
+    //   employer = Employer.findOne({ owner: req.user._id });
+    // }
 
     res.json({ user, employee, employer });
   } catch (err) {

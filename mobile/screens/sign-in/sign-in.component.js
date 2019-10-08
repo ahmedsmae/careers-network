@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectCurrentUser } from '../../redux/current-user/current-user.selectors';
 import { View } from 'react-native';
-import { Headline, TextInput, Button, Paragraph } from 'react-native-paper';
+import { Headline, Button, Paragraph } from 'react-native-paper';
+
+import { selectCurrentUser } from '../../redux/current-user/current-user.selectors';
+import { signInUserStart } from '../../redux/current-user/current-user.actions';
+
+import FormInput from '../../components/form-input/form-input.component';
 
 import styles from './sign-in.styles';
 
-const SignIn = ({ currentUser, navigation }) => {
+const SignIn = ({ currentUser, navigation, signInUserStart }) => {
   useEffect(() => {
     currentUser && navigation.navigate('Search');
   }, [currentUser]);
@@ -16,24 +20,36 @@ const SignIn = ({ currentUser, navigation }) => {
   const { email, password } = credentials;
 
   const handleSignIn = () => {
-    // run signin action
+    signInUserStart(email.trim(), password);
   };
 
   return (
     <View style={styles.screen}>
       <Headline style={styles.headline}>Sign In</Headline>
-      <TextInput
+      <FormInput
         style={styles.textInput}
         label='Email'
+        name='email'
         value={email}
-        onChangeText={text => setCredentials({ ...credentials, email: text })}
+        keyboardType='email-address'
+        onChange={({ name, value }) =>
+          setCredentials({
+            ...credentials,
+            [name]: value
+          })
+        }
       />
-      <TextInput
+      <FormInput
         style={styles.textInput}
         label='Password'
         value={password}
-        onChangeText={text =>
-          setCredentials({ ...credentials, password: text })
+        name='password'
+        secureTextEntry
+        onChange={({ name, value }) =>
+          setCredentials({
+            ...credentials,
+            [name]: value
+          })
         }
       />
 
@@ -55,7 +71,10 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  signInUserStart: (email, password) =>
+    dispatch(signInUserStart(email, password))
+});
 
 export default connect(
   mapStateToProps,
