@@ -1,26 +1,30 @@
+import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { Dimensions } from 'react-native';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createStackNavigator } from 'react-navigation-stack';
+import { Platform } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import SearchScreen from '../screens/search/search.component';
 import SignInScreen from '../screens/sign-in/sign-in.component';
 import SignUpScreen from '../screens/sign-up/sign-up.component';
 import SearchResultsScreen from '../screens/search-results/search-results.component';
-import UserProfileScreen from '../screens/user-profile/user-profile.component';
+import EmployeeProfileScreen from '../screens/employee-profile/employee-profile.component';
 import HomeScreen from '../screens/home/home.component';
 import FollowingScreen from '../screens/following/following.component';
 import ApplicationsScreen from '../screens/applications/applications.component';
-import SavedJobsScreen from '../screens/saved-jobs/saved-jobs.component';
+import BookmarkJobsScreen from '../screens/bookmark-jobs/bookmark-jobs.component';
 import ShowJobScreen from '../screens/show-job/show-job.component';
 import EmployerScreen from '../screens/employer/employer.component';
+import EmployerProfileScreen from '../screens/employer-profile/employer-profile.component';
 import AddEditApplicationScreen from '../screens/add-edit-application/add-edit-application.component';
 import AboutScreen from '../screens/about/about.component';
 import ContactUsScreen from '../screens/contact-us/contact-us.component';
+import MyJobsScreen from '../screens/my-jobs/my-jobs.component';
+import NavigationAnchor from '../components/navigation-anchor/navigation-anchor.component';
 
-import CustomDrawer from '../components/custom-drawer/custom-drawer.component';
-import Colors from '../constants/colors';
 import hideHeaderNavOptions from './hide-header-nav-options';
+import drawerNavOptions from './drawer-nav-options';
 
 const noAuthSearchNavigator = createStackNavigator(
   {
@@ -34,6 +38,10 @@ const noAuthSearchNavigator = createStackNavigator(
 
 const noAuthNavigator = createStackNavigator(
   {
+    NavigationAnchor: {
+      screen: NavigationAnchor,
+      navigationOptions: { drawerLabel: () => null }
+    },
     NoAuthSearch: noAuthSearchNavigator,
     SignIn: SignInScreen,
     SignUp: SignUpScreen,
@@ -54,18 +62,81 @@ const searchNavigator = createStackNavigator(
   hideHeaderNavOptions
 );
 
-const emploeeDrawerNavigator = createDrawerNavigator(
+const employeeDrawerNavigator = createDrawerNavigator(
   {
-    UserProfile: {
-      screen: UserProfileScreen,
-      // this to hide the labe of this route
+    NavigationAnchor: {
+      screen: NavigationAnchor,
       navigationOptions: { drawerLabel: () => null }
     },
-    Search: searchNavigator,
-    Home: HomeScreen,
-    Following: FollowingScreen,
-    Applications: ApplicationsScreen,
-    SavedJobs: SavedJobsScreen,
+    EmployeeProfile: {
+      screen: EmployeeProfileScreen,
+      navigationOptions: { drawerLabel: () => null }
+    },
+    Search: {
+      screen: searchNavigator,
+      navigationOptions: {
+        drawerLabel: 'Search Jobs',
+        drawerIcon: drawerConfig => (
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-search' : 'ios-search'}
+            size={23}
+            color={drawerConfig.tintColor}
+          />
+        )
+      }
+    },
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: {
+        drawerLabel: 'Home',
+        drawerIcon: drawerConfig => (
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
+            size={23}
+            color={drawerConfig.tintColor}
+          />
+        )
+      }
+    },
+    Following: {
+      screen: FollowingScreen,
+      navigationOptions: {
+        drawerLabel: 'Following Employers',
+        drawerIcon: drawerConfig => (
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-people' : 'ios-people'}
+            size={23}
+            color={drawerConfig.tintColor}
+          />
+        )
+      }
+    },
+    Applications: {
+      screen: ApplicationsScreen,
+      navigationOptions: {
+        drawerLabel: 'My Applications',
+        drawerIcon: drawerConfig => (
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
+            size={23}
+            color={drawerConfig.tintColor}
+          />
+        )
+      }
+    },
+    Bookmarks: {
+      screen: BookmarkJobsScreen,
+      navigationOptions: {
+        drawerLabel: 'My Bookmarks',
+        drawerIcon: drawerConfig => (
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
+            size={23}
+            color={drawerConfig.tintColor}
+          />
+        )
+      }
+    },
     About: {
       screen: AboutScreen,
       navigationOptions: { drawerLabel: () => null }
@@ -75,22 +146,36 @@ const emploeeDrawerNavigator = createDrawerNavigator(
       navigationOptions: { drawerLabel: () => null }
     }
   },
+  drawerNavOptions
+);
+
+const employerDrawerNavigator = createDrawerNavigator(
   {
-    contentComponent: CustomDrawer,
-    drawerWidth: Dimensions.get('window').width * 0.7,
-    drawerPosition: 'left',
-    contentOptions: {
-      activeTintColor: Colors.ACCENT,
-      labelStyle: {
-        fontFamily: 'open-sans-bold'
-      }
+    NavigationAnchor: {
+      screen: NavigationAnchor,
+      navigationOptions: { drawerLabel: () => null }
+    },
+    EmployerProfile: {
+      screen: EmployerProfileScreen,
+      navigationOptions: { drawerLabel: () => null }
+    },
+    MyJobs: MyJobsScreen,
+    About: {
+      screen: AboutScreen,
+      navigationOptions: { drawerLabel: () => null }
+    },
+    ContactUs: {
+      screen: ContactUsScreen,
+      navigationOptions: { drawerLabel: () => null }
     }
-  }
+  },
+  drawerNavOptions
 );
 
 const switchNavigator = createSwitchNavigator({
   noAuth: noAuthNavigator,
-  Auth: emploeeDrawerNavigator
+  Employee: employeeDrawerNavigator,
+  Employer: employerDrawerNavigator
 });
 
 export default createAppContainer(switchNavigator);

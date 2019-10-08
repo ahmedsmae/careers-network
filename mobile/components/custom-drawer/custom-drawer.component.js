@@ -1,67 +1,144 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { Ionicons } from '@expo/vector-icons';
 import {
   View,
   ScrollView,
   SafeAreaView,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
   Image,
-  TouchableWithoutFeedback
+  Platform
 } from 'react-native';
-import { Text, Button } from 'react-native-paper';
+import { Text, Button, Divider } from 'react-native-paper';
 import { DrawerNavigatorItems } from 'react-navigation-drawer';
 import Toast from 'react-native-root-toast';
 
-import { selectCurrentUser } from '../../redux/current-user/current-user.selectors';
+import {
+  selectCurrentUser,
+  selectCurrentEmployee,
+  selectCurrentEmployer,
+  selectLoading,
+  selectErrorMessage
+} from '../../redux/current-user/current-user.selectors';
 import { signoutUserStart } from '../../redux/current-user/current-user.actions';
 
-import DefaultUserImage from '../../assets/user.png';
+import UserImage from '../user-image/user-image.component';
 
 import styles from './custom-drawer.styles';
 
-const CustomDrawer = ({ currentUser, signoutUserStart, ...props }) => {
+const CustomDrawer = ({
+  currentUser,
+  currentEmployee,
+  currentEmployer,
+  signoutUserStart,
+  loading,
+  errorMessage,
+  ...props
+}) => {
   const { navigate, toggleDrawer } = props.navigation;
 
   return (
     <SafeAreaView style={styles.screen}>
-      <TouchableWithoutFeedback onPress={() => navigate('UserProfile')}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          if (!!currentEmployee) {
+            navigate('EmployeeProfile');
+          } else if (!!currentEmployer) {
+            navigate('EmployerProfile');
+          }
+        }}
+      >
         <View style={styles.header}>
-          <Image style={styles.image} source={DefaultUserImage} />
+          <UserImage medium style={styles.image} />
+
           <Text>{currentUser && currentUser.email}</Text>
         </View>
       </TouchableWithoutFeedback>
-      <ScrollView>
+
+      <Divider />
+
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'space-between'
+        }}
+      >
+        {/* <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}> */}
         <DrawerNavigatorItems {...props} />
+        {/* </SafeAreaView> */}
+
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              signoutUserStart();
+              if (!loading && !errorMessage.length) {
+                navigate('NavigationAnchor');
+                toggleDrawer();
+              }
+            }}
+          >
+            <View style={styles.item}>
+              <View style={styles.iconContainer}>
+                <Ionicons
+                  style={styles.icon}
+                  name={
+                    Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'
+                  }
+                  size={23}
+                  color='grey'
+                />
+              </View>
+              <Text style={styles.label}>Sign Out</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigate('ContactUs')}>
+            <View style={styles.item}>
+              <View style={styles.iconContainer}>
+                <Ionicons
+                  style={styles.icon}
+                  name={Platform.OS === 'android' ? 'md-send' : 'ios-send'}
+                  size={23}
+                  color='grey'
+                />
+              </View>
+              <Text style={styles.label}>Contact Us</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigate('About')}>
+            <View style={styles.item}>
+              <View style={styles.iconContainer}>
+                <Ionicons
+                  style={styles.icon}
+                  name={
+                    Platform.OS === 'android'
+                      ? 'md-information-circle-outline'
+                      : 'ios-information-circle-outline'
+                  }
+                  size={23}
+                  color='grey'
+                />
+              </View>
+              <Text style={styles.label}>About</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
+
+      <Divider />
+
       <View style={styles.footer}>
-        <Text
-          style={styles.signout}
-          onPress={() => {
-            signoutUserStart();
-            // search screen will discover absence of currentUser in state and will navigate to noAuthSearch (with no drawer)
-            // we can listen for successful signout before navigation
-            navigate('Search');
-            toggleDrawer();
-          }}
-        >
-          Sign out
-        </Text>
         <View style={styles.info}>
-          <Text style={styles.footerText}>Contacts App</Text>
-          <Text style={styles.footerText} onPress={() => navigate('About')}>
-            About
-          </Text>
-          <Text style={styles.footerText} onPress={() => navigate('ContactUs')}>
-            Contact US
-          </Text>
-          <Button
-            mode='outlined'
-            color='orange'
-            style={styles.footerButton}
+          <Text
+            style={styles.footerText}
             onPress={() => Toast.show('Welcome to Careers Network App')}
           >
-            US
-          </Button>
+            Careers Network
+          </Text>
         </View>
       </View>
     </SafeAreaView>
@@ -69,7 +146,11 @@ const CustomDrawer = ({ currentUser, signoutUserStart, ...props }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  currentEmployee: selectCurrentEmployee,
+  currentEmployer: selectCurrentEmployer,
+  loading: selectLoading,
+  errorMessage: selectErrorMessage
 });
 
 const mapDispatchToProps = dispatch => ({

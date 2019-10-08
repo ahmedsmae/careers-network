@@ -12,10 +12,7 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   image: {
-    height: 100,
-    width: 100,
-    borderRadius: 50,
-    borderColor: 'black',
+    borderColor: 'grey',
     borderWidth: 1
   },
   footer: {
@@ -29,5 +26,23 @@ export default StyleSheet.create({
   },
   footerButton: {
     marginVertical: 10
+  },
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  label: {
+    margin: 16,
+    fontWeight: 'bold',
+    color: 'rgba(0, 0, 0, .87)'
+  },
+  iconContainer: {
+    marginHorizontal: 16,
+    width: 24,
+    alignItems: 'center'
+  },
+  icon: {
+    width: 24,
+    height: 24
   }
 });

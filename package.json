@@ -6,7 +6,8 @@
   "scripts": {
     "server": "nodemon server",
     "mobile": "npm start --prefix mobile",
-    "dev": "concurrently \"npm run server\" \"npm run mobile\""
+    "dev": "concurrently \"npm run server\" \"npm run mobile\"",
+    "play": "nodemon _playground/play"
   },
   "keywords": [
     "employee",

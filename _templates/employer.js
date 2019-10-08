@@ -2,7 +2,7 @@ const employer = {
   _id: '',
   owner: '',
   name: '',
-  type: '',
+  kind: '',
   speciality: '',
   location_id: '', // or location > depends on the list of locations
   contact_numbers: [

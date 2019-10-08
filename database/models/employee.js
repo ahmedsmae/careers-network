@@ -75,17 +75,14 @@ const employeeSchema = new mongoose.Schema(
     },
     first_name: {
       type: String,
-      required: true,
       trim: true
     },
     middle_name: {
       type: String,
-      required: true,
       trim: true
     },
     last_name: {
       type: String,
-      required: true,
       trim: true
     },
     contact_number: {

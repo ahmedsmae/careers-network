@@ -5,6 +5,7 @@ const { check, validationResult } = require('express-validator');
 
 const User = require('../../database/models/user');
 const Employee = require('../../database/models/employee');
+const Employer = require('../../database/models/employer');
 
 /**
  * @method - POST
@@ -54,9 +55,19 @@ router.post(
       // hashing the password will be done automatically in the User model before save()
       await user.save();
 
+      const userKind = user.kind;
+      let employee, employer;
+      if (userKind === process.env.KIND_EMPLOYEE) {
+        employee = new Employee({ owner: user._id });
+        await employee.save();
+      } else if (userKind === process.env.KIND_EMPLOYER) {
+        employer = new Employer({ owner: user._id });
+        await employer.save();
+      }
+
       const token = await user.generateAuthToken();
 
-      res.json({ user, token });
+      res.json({ user, employee, employer, token });
     } catch (err) {
       console.error(err.message);
       res.status(400).json({ errors: [{ msg: err.message }] });
@@ -103,11 +114,11 @@ router.post(
 
       const userKind = user.kind;
       let employee, employer;
-      // if (userKind === process.env.KIND_EMPLOYEE) {
-      //   employee = Employee.findOne({ owner: user._id });
-      // } else if (userKind === process.env.KIND_EMPLOYER) {
-      //   employer = Employer.findOne({ owner: user._id });
-      // }
+      if (userKind === process.env.KIND_EMPLOYEE) {
+        employee = await Employee.findOne({ owner: user._id });
+      } else if (userKind === process.env.KIND_EMPLOYER) {
+        employer = await Employer.findOne({ owner: user._id });
+      }
 
       res.json({ user, token, employee, employer });
     } catch (err) {
@@ -136,11 +147,11 @@ router.get('/auth', auth, async (req, res) => {
 
     const userKind = user.kind;
     let employee, employer;
-    // if (userKind === process.env.KIND_EMPLOYEE) {
-    //   employee = Employee.findOne({ owner: req.user._id });
-    // } else if (userKind === process.env.KIND_EMPLOYER) {
-    //   employer = Employer.findOne({ owner: req.user._id });
-    // }
+    if (userKind === process.env.KIND_EMPLOYEE) {
+      employee = await Employee.findOne({ owner: req.user._id });
+    } else if (userKind === process.env.KIND_EMPLOYER) {
+      employer = await Employer.findOne({ owner: req.user._id });
+    }
 
     res.json({ user, employee, employer });
   } catch (err) {

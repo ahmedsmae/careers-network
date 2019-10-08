@@ -21,13 +21,6 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
       };
 
     case CurrentUserActionTypes.SIGN_UP_USER_SUCCESS:
-      return {
-        ...state,
-        currentUser: payload,
-        loading: false,
-        errorMessage: ''
-      };
-
     case CurrentUserActionTypes.SIGN_IN_USER_SUCCESS:
     case CurrentUserActionTypes.LOADING_USER_SUCCESS:
       return {

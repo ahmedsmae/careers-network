@@ -20,17 +20,9 @@ import FormInput from '../../components/form-input/form-input.component';
 import styles from './search.styles';
 
 const Search = ({ navigation, currentUser, citiesList }) => {
-  const { routeName } = navigation.state;
-  console.log(routeName);
-
-  useEffect(() => {
-    currentUser &&
-      routeName === 'NoAuthSearch' &&
-      navigation.navigate('Search');
-    !currentUser &&
-      routeName === 'Search' &&
-      navigation.navigate('NoAuthSearch');
-  }, [currentUser, routeName]);
+  // useEffect(() => {
+  //   currentUser && navigation.navigate('NavigationAnchor');
+  // }, [currentUser]);
 
   const [searchValues, setSearchValues] = useState({
     position: '',
@@ -40,13 +32,12 @@ const Search = ({ navigation, currentUser, citiesList }) => {
   });
   const { searching, position, location, locationId } = searchValues;
 
-  const handleLocationSelect = city => {
-    const { geonameid, name, country } = city;
+  const handleLocationSelect = ({ id, city, country }) => {
     setSearchValues({
       ...searchValues,
       searching: false,
-      location: `${name} - ${country}`,
-      locationId: geonameid
+      location: `${city} - ${country}`,
+      locationId: id
     });
   };
 
@@ -117,21 +108,19 @@ const Search = ({ navigation, currentUser, citiesList }) => {
             <View style={styles.locationsList}>
               {citiesList
                 .filter(
-                  city =>
+                  ({ city }) =>
                     location.trim().length > 0 &&
-                    city.name
-                      .toLowerCase()
-                      .includes(location.trim().toLowerCase())
+                    city.toLowerCase().includes(location.trim().toLowerCase())
                 )
                 .map((city, index) => {
                   if (index < 10) {
                     return (
-                      <View key={city.geonameid.toString()}>
+                      <View key={city.id}>
                         <Text
                           style={styles.locationListItem}
                           onPress={handleLocationSelect.bind(this, city)}
                         >
-                          {`${city.name} - ${city.country}`}
+                          {`${city.city} - ${city.country}`}
                         </Text>
                         <Divider />
                       </View>

@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const SavedJobs = () => {
+const MyJobs = () => {
   return (
     <View>
-      <Text>Saved Jobs</Text>
+      <Text>My Jobs</Text>
     </View>
   );
 };
 
-export default SavedJobs;
+export default MyJobs;
