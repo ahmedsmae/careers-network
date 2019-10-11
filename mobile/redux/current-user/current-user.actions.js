@@ -60,3 +60,67 @@ export const signoutUserFailure = errorMessage => ({
   type: CurrentUserActionTypes.SIGN_OUT_USER_FAILURE,
   payload: errorMessage
 });
+
+// EDIT EMPLOYEE INFO
+export const editEmployeeInfoStart = info => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_INFO_START,
+  payload: info
+});
+
+export const editEmployeeInfoSuccess = employee => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_INFO_SUCCESS,
+  payload: employee
+});
+
+export const editEmployeeInfoFailure = errorMessage => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_INFO_FAILURE,
+  payload: errorMessage
+});
+
+// EDIT EMPLOYEE AVATAR
+export const editEmployeeAvatarStart = avatar => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_START,
+  payload: avatar
+});
+
+export const editEmployeeAvatarSuccess = employee => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_SUCCESS,
+  payload: employee
+});
+
+export const editEmployeeAvatarFailure = errorMessage => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_FAILURE,
+  payload: errorMessage
+});
+
+// EDIT EMPLOYEE EDUCATION
+export const editEmployeeEducationStart = education => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_START,
+  payload: education
+});
+
+export const editEmployeeEducationSuccess = employee => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_SUCCESS,
+  payload: employee
+});
+
+export const editEmployeeEducationFailure = errorMessage => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_FAILURE,
+  payload: errorMessage
+});
+
+// DELETE EMPLOYEE EDUCATION
+export const deleteEmployeeEducationStart = educationId => ({
+  type: CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_START,
+  payload: educationId
+});
+
+export const deleteEmployeeEducationSuccess = employee => ({
+  type: CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_SUCCESS,
+  payload: employee
+});
+
+export const deleteEmployeeEducationFailure = errorMessage => ({
+  type: CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_FAILURE,
+  payload: errorMessage
+});

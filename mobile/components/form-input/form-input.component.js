@@ -8,8 +8,6 @@ import styles from './form-input.styles';
  * @param {name} - text > firstname
  * @param {value} - var > firstname
  * @param {onChange} - function({name, value}) >
- * @param {label} - text > 'Firstname'
- * @param {placeholder} - text > 'enter firstname'
  * @param {required} - text > 'you missed your firstname'
  * @param {style} - object > {margin:10}
  * @param {outlined} - boolean
@@ -18,14 +16,11 @@ import styles from './form-input.styles';
  * @param {capSentence} - boolean
  * @param {keyboardType} - text > 'numeric', 'decimal-pad', 'phone-pad', 'email-address'
  * @param {clear} - boolean
- * @param {secureTextEntry} - boolean
  */
 const FormInput = ({
   name,
   value,
   onChange,
-  label,
-  placeholder,
   required,
   style,
   outlined,
@@ -33,8 +28,8 @@ const FormInput = ({
   capWords,
   capSentence,
   keyboardType,
-  multiline,
-  clear
+  clear,
+  ...rest
 }) => {
   const [inputValue, setInputValue] = useState(value);
 
@@ -59,19 +54,16 @@ const FormInput = ({
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          label={label && label}
-          placeholder={placeholder && placeholder}
-          mode={outlined ? 'outlined' : 'flat'}
-          returnKeyType={done ? 'done' : 'next'}
+          mode={!!outlined ? 'outlined' : 'flat'}
+          returnKeyType={!!done ? 'done' : 'next'}
           autoCapitalize={
-            capWords ? 'words' : capSentence ? 'sentences' : 'none'
+            !!capWords ? 'words' : !!capSentence ? 'sentences' : 'none'
           }
-          keyboardType={keyboardType ? keyboardType : 'default'}
+          keyboardType={!!keyboardType ? keyboardType : 'default'}
           value={inputValue}
           onChangeText={handleChange}
           onBlur={handleBlur}
-          multiline={multiline ? true : false}
-          secureTextEntry
+          {...rest}
         />
         {!!clear && !!inputValue && !!inputValue.length && (
           <Text style={styles.clear} onPress={handleClear}>

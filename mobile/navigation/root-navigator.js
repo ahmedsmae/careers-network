@@ -22,6 +22,9 @@ import AboutScreen from '../screens/about/about.component';
 import ContactUsScreen from '../screens/contact-us/contact-us.component';
 import MyJobsScreen from '../screens/my-jobs/my-jobs.component';
 import NavigationAnchor from '../components/navigation-anchor/navigation-anchor.component';
+import EditEmployeeInfoScreen from '../screens/edit-employee-info/edit-employee-info.component';
+import EditEducationScreen from '../screens/edit-education/edit-education.component';
+import EditExperienceScreen from '../screens/edit-experience/edit-experience.component';
 
 import hideHeaderNavOptions from './hide-header-nav-options';
 import drawerNavOptions from './drawer-nav-options';
@@ -62,6 +65,16 @@ const searchNavigator = createStackNavigator(
   hideHeaderNavOptions
 );
 
+const employeeProfileNavigator = createStackNavigator(
+  {
+    EmployeeProfile: EmployeeProfileScreen,
+    EditInfo: EditEmployeeInfoScreen,
+    EditEducation: EditEducationScreen,
+    EditExperience: EditExperienceScreen
+  },
+  hideHeaderNavOptions
+);
+
 const employeeDrawerNavigator = createDrawerNavigator(
   {
     NavigationAnchor: {
@@ -69,7 +82,7 @@ const employeeDrawerNavigator = createDrawerNavigator(
       navigationOptions: { drawerLabel: () => null }
     },
     EmployeeProfile: {
-      screen: EmployeeProfileScreen,
+      screen: employeeProfileNavigator,
       navigationOptions: { drawerLabel: () => null }
     },
     Search: {

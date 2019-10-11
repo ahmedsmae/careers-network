@@ -19,6 +19,9 @@ app.use(cors());
 // app.use('/', (req, res) => res.send('Welcome to Careers Network!'));
 // Define Routers
 app.use('/api/users', require('./routes/user/sign'));
+app.use('/api/employees', require('./routes/employee/employee-info'));
+app.use('/api/employees', require('./routes/employee/education'));
+app.use('/api/employees', require('./routes/employee/serve-images'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

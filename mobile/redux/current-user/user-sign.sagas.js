@@ -113,7 +113,7 @@ function* signOutUserStart() {
   );
 }
 
-export default function* publicItemsSagas() {
+export default function* userSignSagas() {
   yield all([
     call(signUpUserStart),
     call(signInUserStart),

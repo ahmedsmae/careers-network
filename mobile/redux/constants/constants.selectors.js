@@ -10,5 +10,8 @@ export const selectCitiesList = createSelector(
 export const selectCityNameById = id =>
   createSelector(
     [selectCitiesList],
-    cities => cities.find(c => c.id === id)
+    cities => {
+      const city = cities.find(c => c.id === id);
+      return city ? `${city.city} - ${city.country}` : null;
+    }
   );

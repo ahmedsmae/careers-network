@@ -15,6 +15,7 @@ import { Text, Button, Divider } from 'react-native-paper';
 import { DrawerNavigatorItems } from 'react-navigation-drawer';
 import Toast from 'react-native-root-toast';
 
+import URLS from '../../redux/utils/urls';
 import {
   selectCurrentUser,
   selectCurrentEmployee,
@@ -51,7 +52,17 @@ const CustomDrawer = ({
         }}
       >
         <View style={styles.header}>
-          <UserImage medium style={styles.image} />
+          <UserImage
+            medium
+            style={styles.image}
+            source={
+              !!currentEmployee
+                ? `${URLS.SERVE_EMPLOYEE_AVATAR}/${currentEmployee._id}`
+                : !!currentEmployer
+                ? `${URLS.SERVE_EMPLOYEE_AVATAR}/${currentEmployer._id}` //! change to SERVE_EMPLOYER_AVATAR
+                : null
+            }
+          />
 
           <Text>{currentUser && currentUser.email}</Text>
         </View>

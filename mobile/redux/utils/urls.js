@@ -4,5 +4,12 @@ export default URLS = {
   SIGNUP: `${BASE_URL}/api/users/signup`,
   SIGNIN: `${BASE_URL}/api/users/signin`,
   AUTH: `${BASE_URL}/api/users/auth`,
-  SIGNOUT: `${BASE_URL}/api/users/signout`
+  SIGNOUT: `${BASE_URL}/api/users/signout`,
+  EDIT_EMPLOYEE_AVATAR: `${BASE_URL}/api/employees/avatars`,
+  EDIT_EMPLOYEE_INFO: `${BASE_URL}/api/employees/info`,
+  EDIT_EDUCATION_INFO: `${BASE_URL}/api/employees/educations`,
+  EDIT_EDUCATION_IMAGE: `${BASE_URL}/api/employees/eduactions/setimage`, // + /:educationid
+  SERVE_EMPLOYEE_AVATAR: `${BASE_URL}/api/employees/avatars`, // + /:employeeid
+  SERVE_EDUCATION_CERTIFICATE: `${BASE_URL}/api/employees/educations`, // + /:employeeid/:educationid
+  DELETE_EMPLOYEE_EDUCATION: `${BASE_URL}/api/employees/educations` // + /:educationid
 };

@@ -107,6 +107,28 @@ const employeeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+employeeSchema.methods.toJSON = function() {
+  const employee = this;
+  const employeeObject = employee.toObject();
+  delete employeeObject.avatar;
+
+  employeeObject.educations = employeeObject.educations.map(
+    ({ certificate_image, ...rest }) =>
+      certificate_image
+        ? { ...rest, hasCertificate: true }
+        : { ...rest, hasCertificate: false }
+  );
+
+  employeeObject.experiences = employeeObject.experiences.map(
+    ({ certificate_image, ...rest }) =>
+      certificate_image
+        ? { ...rest, hasCertificate: true }
+        : { ...rest, hasCertificate: false }
+  );
+
+  return employeeObject;
+};
+
 // remove employee applications deleting themselves
 employeeSchema.pre('remove', async function(next) {
   const employee = this;

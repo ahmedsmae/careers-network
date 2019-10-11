@@ -1,11 +1,13 @@
 import { all, call } from 'redux-saga/effects';
 
 // import all sagas
-import currentUserSagas from './current-user/current-user.sagas';
+import userSignSagas from './current-user/user-sign.sagas';
+import editEmployeeSagas from './current-user/edit-employee.sagas';
 
 export default function* rootSaga() {
   yield all([
     // add all sagas
-    call(currentUserSagas)
+    call(userSignSagas),
+    call(editEmployeeSagas)
   ]);
 }
