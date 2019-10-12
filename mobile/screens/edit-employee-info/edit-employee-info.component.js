@@ -166,6 +166,7 @@ class EditEmployeeEnfo extends React.Component {
               </View>
             </View>
           )}
+          <View style={{ marginBottom: 10 }} />
 
           <TextInput
             style={{ margin: 10 }}

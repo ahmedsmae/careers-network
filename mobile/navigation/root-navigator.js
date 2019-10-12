@@ -25,6 +25,8 @@ import NavigationAnchor from '../components/navigation-anchor/navigation-anchor.
 import EditEmployeeInfoScreen from '../screens/edit-employee-info/edit-employee-info.component';
 import EditEducationScreen from '../screens/edit-education/edit-education.component';
 import EditExperienceScreen from '../screens/edit-experience/edit-experience.component';
+import EditEmployerInfoScreen from '../screens/edit-employer-info/edit-employer-info.component';
+import EditJobScreen from '../screens/edit-job/edit-job.component';
 
 import hideHeaderNavOptions from './hide-header-nav-options';
 import drawerNavOptions from './drawer-nav-options';
@@ -162,6 +164,23 @@ const employeeDrawerNavigator = createDrawerNavigator(
   drawerNavOptions
 );
 
+const employerProfileNavigator = createStackNavigator(
+  {
+    EmployerProfile: EmployerProfileScreen,
+    EditInfo: EditEmployerInfoScreen
+  },
+  hideHeaderNavOptions
+);
+
+const employerJobsNavigator = createStackNavigator(
+  {
+    MyJobs: MyJobsScreen,
+    EditJob: EditJobScreen,
+    ShowJob: ShowJobScreen
+  },
+  hideHeaderNavOptions
+);
+
 const employerDrawerNavigator = createDrawerNavigator(
   {
     NavigationAnchor: {
@@ -169,10 +188,22 @@ const employerDrawerNavigator = createDrawerNavigator(
       navigationOptions: { drawerLabel: () => null }
     },
     EmployerProfile: {
-      screen: EmployerProfileScreen,
+      screen: employerProfileNavigator,
       navigationOptions: { drawerLabel: () => null }
     },
-    MyJobs: MyJobsScreen,
+    MyJobs: {
+      screen: employerJobsNavigator,
+      navigationOptions: {
+        drawerLabel: 'My Jobs',
+        drawerIcon: drawerConfig => (
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-briefcase' : 'ios-briefcase'}
+            size={23}
+            color={drawerConfig.tintColor}
+          />
+        )
+      }
+    },
     About: {
       screen: AboutScreen,
       navigationOptions: { drawerLabel: () => null }

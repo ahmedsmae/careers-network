@@ -12,7 +12,7 @@ const employer = {
       contact_number: ''
     }
   ],
-  website: '',
+  web_site: '',
   avatar: 'BINARY BUFFER',
   cover: 'BINARY BUFFER',
   bio: ''

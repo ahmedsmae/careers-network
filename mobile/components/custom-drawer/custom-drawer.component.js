@@ -59,7 +59,7 @@ const CustomDrawer = ({
               !!currentEmployee
                 ? `${URLS.SERVE_EMPLOYEE_AVATAR}/${currentEmployee._id}`
                 : !!currentEmployer
-                ? `${URLS.SERVE_EMPLOYEE_AVATAR}/${currentEmployer._id}` //! change to SERVE_EMPLOYER_AVATAR
+                ? `${URLS.SERVE_EMPLOYER_AVATAR}/${currentEmployer._id}`
                 : null
             }
           />

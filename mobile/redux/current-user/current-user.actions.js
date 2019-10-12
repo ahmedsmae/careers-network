@@ -124,3 +124,51 @@ export const deleteEmployeeEducationFailure = errorMessage => ({
   type: CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_FAILURE,
   payload: errorMessage
 });
+
+// EDIT EMPLOYER INFO
+export const editEmployerInfoStart = info => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYER_INFO_START,
+  payload: info
+});
+
+export const editEmployerInfoSuccess = employer => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYER_INFO_SUCCESS,
+  payload: employer
+});
+
+export const editEmployerInfoFailure = errorMessage => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYER_INFO_FAILURE,
+  payload: errorMessage
+});
+
+// EDIT EMPLOYER AVATAR
+export const editEmployerAvatarStart = avatar => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYER_AVATAR_START,
+  payload: avatar
+});
+
+export const editEmployerAvatarSuccess = employer => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYER_AVATAR_SUCCESS,
+  payload: employer
+});
+
+export const editEmployerAvatarFailure = errorMessage => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYER_AVATAR_FAILURE,
+  payload: errorMessage
+});
+
+// EDIT EMPLOYER COVER
+export const editEmployerCoverStart = cover => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYER_COVER_START,
+  payload: cover
+});
+
+export const editEmployerCoverSuccess = employer => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYER_COVER_SUCCESS,
+  payload: employer
+});
+
+export const editEmployerCoverFailure = errorMessage => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYER_COVER_FAILURE,
+  payload: errorMessage
+});

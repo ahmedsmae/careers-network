@@ -21,7 +21,7 @@ const ExperienceCard = ({
         {organization && organization.length && (
           <Caption>{organization}</Caption>
         )}
-        {location_id && <Caption>{getLocationName(location_id)}</Caption>}
+        {/* {location_id && <Caption>{getLocationName(location_id)}</Caption>} */}
         {description && description.length && (
           <Paragraph>{description}</Paragraph>
         )}

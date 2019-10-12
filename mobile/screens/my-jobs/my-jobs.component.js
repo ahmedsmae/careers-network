@@ -1,12 +1,37 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { connect } from 'react-redux';
+import { View, Text, ScrollView } from 'react-native';
+import { Appbar, FAB } from 'react-native-paper';
 
-const MyJobs = () => {
+import styles from './my-jobs.styles';
+
+const MyJobs = ({ navigation }) => {
   return (
-    <View>
-      <Text>My Jobs</Text>
-    </View>
+    <>
+      <Appbar.Header>
+        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title='My Jobs' />
+      </Appbar.Header>
+
+      <ScrollView>
+        <Text
+          onPress={() => navigation.navigate('ShowJob')}
+          style={{ padding: 10, backgroundColor: 'lightgrey' }}
+        >
+          Job Post
+        </Text>
+      </ScrollView>
+
+      <FAB
+        style={styles.fab}
+        icon='add'
+        color='white'
+        onPress={() => navigation.navigate('EditJob')}
+      />
+    </>
   );
 };
 
-export default MyJobs;
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps)(MyJobs);

@@ -27,7 +27,7 @@ import CameraOrMemory from '../../components/camera-or-memory/camera-or-memory.c
 import Colors from '../../constants/colors';
 import styles from './employee-profile.styles';
 
-const MyProfile = ({
+const EmployeeProfile = ({
   navigation,
   currentUser,
   currentEmployee,
@@ -36,18 +36,18 @@ const MyProfile = ({
   deleteEmployeeEducationStart,
   loading
 }) => {
-  const {
-    _id,
-    first_name,
-    middle_name,
-    last_name,
-    contact_number,
-    location_id,
-    web_site,
-    bio,
-    educations,
-    experiences
-  } = currentEmployee;
+  const _id = currentEmployee ? currentEmployee._id : null;
+  const first_name = currentEmployee ? currentEmployee.first_name : null;
+  const middle_name = currentEmployee ? currentEmployee.middle_name : null;
+  const last_name = currentEmployee ? currentEmployee.last_name : null;
+  const contact_number = currentEmployee
+    ? currentEmployee.contact_number
+    : null;
+  const location_id = currentEmployee ? currentEmployee.location_id : null;
+  const web_site = currentEmployee ? currentEmployee.web_site : null;
+  const bio = currentEmployee ? currentEmployee.bio : null;
+  const educations = currentEmployee ? currentEmployee.educations : null;
+  const experiences = currentEmployee ? currentEmployee.experiences : null;
 
   const [expandEducations, setExpandEducations] = useState(true);
   const [expandExperiences, setExpandExperiences] = useState(true);
@@ -55,7 +55,8 @@ const MyProfile = ({
   const [showCameraOrMemory, setShowCameraOrMemory] = useState(false);
 
   const concatFullName = () => {
-    let name = first_name || '';
+    let name = '';
+    !!first_name && (name += ' ' + first_name);
     !!middle_name && (name += ' ' + middle_name);
     !!last_name && (name += ' ' + last_name);
     return name;
@@ -91,7 +92,7 @@ const MyProfile = ({
           </CustomText>
           <Divider />
           <CustomText label='Email' placeholder='please fill your email'>
-            {currentUser.email}
+            {currentUser && currentUser.email}
           </CustomText>
           <Divider />
           <CustomText
@@ -225,4 +226,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MyProfile);
+)(EmployeeProfile);

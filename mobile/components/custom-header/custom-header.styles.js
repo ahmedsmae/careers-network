@@ -4,7 +4,6 @@ export default StyleSheet.create({
   container: {
     width: '100%',
     paddingVertical: 10,
-    marginTop: 10,
     backgroundColor: 'grey',
     textAlign: 'center'
   },

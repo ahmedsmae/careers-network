@@ -53,6 +53,15 @@ const employerSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+employerSchema.methods.toJSON = function() {
+  const employer = this;
+  const employerObject = employer.toObject();
+  delete employerObject.avatar;
+  delete employerObject.cover;
+
+  return employerObject;
+};
+
 // remove employee applications deleting themselves
 employerSchema.pre('remove', async function(next) {
   const employer = this;

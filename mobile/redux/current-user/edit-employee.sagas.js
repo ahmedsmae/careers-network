@@ -29,6 +29,10 @@ function* editEmployeeInfoAsync({ payload }) {
     });
 
     yield put(editEmployeeInfoSuccess(response.data.employee));
+    Toast.show('Your info updated successfully', {
+      backgroundColor: 'green',
+      duration: Toast.durations.SHORT
+    });
   } catch (err) {
     if (err.response && err.response.data && err.response.data.errors) {
       Toast.show(err.response.data.errors.map(err => err.msg).toString(), {
@@ -94,9 +98,11 @@ function* editEmployeeEducationAsync({ payload }) {
     }
 
     yield put(editEmployeeEducationSuccess(response.data.employee));
+    Toast.show('Educations updated successfully', {
+      backgroundColor: 'green',
+      duration: Toast.durations.SHORT
+    });
   } catch (err) {
-    console.log(err);
-
     Toast.show(err.message, {
       backgroundColor: 'red',
       duration: Toast.durations.LONG
@@ -115,6 +121,10 @@ function* deleteEmployeeEducationAsync({ payload }) {
     });
 
     yield put(deleteEmployeeEducationSuccess(response.data.employee));
+    Toast.show('Education deleted successfully', {
+      backgroundColor: 'green',
+      duration: Toast.durations.SHORT
+    });
   } catch (err) {
     Toast.show(err.message, {
       backgroundColor: 'red',
