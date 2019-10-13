@@ -35,5 +35,13 @@ const employee = {
       certificate_image: 'BINARY BUFFER'
     }
   ],
+  interesrs: ['String'],
+  skills: [
+    {
+      _id: '',
+      skill: '',
+      level: ''
+    }
+  ],
   timestamp: 'DATES'
 };

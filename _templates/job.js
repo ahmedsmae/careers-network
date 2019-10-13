@@ -1,25 +1,26 @@
 const job = {
   _id: '',
+  owner: '',
   position: '',
-  employer_id: '',
-  location_id: '', // or location > depends on the list of locations
-  referance: '',
+  location_id: '',
+  referance_number: '',
   status: 'AVAILABLE, TAKEN',
   applying_email: '',
   applying_link: '',
   responsibilities: '',
   requirements: '',
-  salary_range: '',
+  min_salary: '',
+  max_salary: '',
   currency: '',
   other_info: '',
   keywords: ['STRING'],
-  applying_expiry: 'DATE',
+  expiry: 'DATE',
   questions: [
     {
       _id: '',
       question_type: 'MULTIBLE CHOICE, CHEK MANY, GIVE SHORT ANSWER',
-      question: '',
-      answer_options: [{ _id: '', answer_option: '' }]
+      question_text: '',
+      answer_options: [{ _id: '', answer_text: '' }]
     }
   ],
   timestamps: 'DATES'

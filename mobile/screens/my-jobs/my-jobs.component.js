@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, ScrollView } from 'react-native';
+import { createStructuredSelector } from 'reselect';
+import { View, Text, ScrollView, FlatList } from 'react-native';
 import { Appbar, FAB } from 'react-native-paper';
+
+import { selectCurrentEmployer } from '../../redux/current-user/current-user.selectors';
+import { selectMyJobs } from '../../redux/jobs/jobs.selectors';
+import { getAllEmployerJobsStart } from '../../redux/jobs/jobs.actions';
+
+import JobCard from './job-card.component';
 
 import styles from './my-jobs.styles';
 
-const MyJobs = ({ navigation }) => {
+const MyJobs = ({
+  navigation,
+  currentEmployer,
+  getAllEmployerJobsStart,
+  myJobs
+}) => {
+  useEffect(() => {
+    currentEmployer && getAllEmployerJobsStart(currentEmployer._id);
+  }, [currentEmployer, getAllEmployerJobsStart]);
+
   return (
     <>
       <Appbar.Header>
@@ -13,14 +29,16 @@ const MyJobs = ({ navigation }) => {
         <Appbar.Content title='My Jobs' />
       </Appbar.Header>
 
-      <ScrollView>
-        <Text
-          onPress={() => navigation.navigate('ShowJob')}
-          style={{ padding: 10, backgroundColor: 'lightgrey' }}
-        >
-          Job Post
-        </Text>
-      </ScrollView>
+      <FlatList
+        keyExtractor={(item, index) => item._id}
+        data={myJobs}
+        renderItem={({ item }) => (
+          <JobCard
+            job={item}
+            onPress={() => navigation.navigate('EditJob', { job: item })}
+          />
+        )}
+      />
 
       <FAB
         style={styles.fab}
@@ -32,6 +50,17 @@ const MyJobs = ({ navigation }) => {
   );
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = createStructuredSelector({
+  currentEmployer: selectCurrentEmployer,
+  myJobs: selectMyJobs
+});
 
-export default connect(mapStateToProps)(MyJobs);
+const mapDispatchToProps = dispatch => ({
+  getAllEmployerJobsStart: employerId =>
+    dispatch(getAllEmployerJobsStart(employerId))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MyJobs);

@@ -5,7 +5,8 @@ const application = {
   answers: [
     {
       question_id: '',
-      answer_id: ''
+      answer_id: '',
+      answer_text: ''
     }
   ]
 };
