@@ -6,9 +6,8 @@ const answerSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  answer_id: {
-    type: String,
-    trim: true
+  answer_ids: {
+    type: [String]
   },
   answer_text: {
     type: String,

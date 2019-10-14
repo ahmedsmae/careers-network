@@ -1,11 +1,11 @@
 const application = {
   _id: '',
+  owner: '',
   job_id: '',
-  employee_id: '',
   answers: [
     {
       question_id: '',
-      answer_id: '',
+      answer_ids: [String],
       answer_text: ''
     }
   ]

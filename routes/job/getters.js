@@ -35,20 +35,24 @@ router.get('/employerjobs/:employerid', async (req, res) => {
 
 /**
  * @method - GET
- * @url - '/api/jobs/search'
+ * @url - '/api/jobs/search/:position/:locationid'
  * @data - { position, location_id }
- * ! MAKE SURE THAT GET REQUEST CAN GET THE BODY DATA
  * @action - search by position and locationId
  * @access - public
  */
-router.get('/api/jobs/search', async (req, res) => {
-  const { position, location_id } = req.body;
+router.get('/search/:position/:locationid', async (req, res) => {
+  const { position, locationid } = req.params;
+
   try {
-    const jobsResult = await Job.find({
-      location_id,
-      position
-      // ! BUILD LOGIC TO FIND MATCHING POSITION
-    });
+    let searchCriteria = {};
+    if (locationid && locationid.length > 0 && locationid !== 'null') {
+      searchCriteria.location_id = locationid;
+    }
+    if (position && position.length > 0) {
+      searchCriteria.position = { $regex: position.trim(), $options: 'i' };
+    }
+
+    const jobsResult = await Job.find(searchCriteria);
 
     res.json({ jobsResult });
   } catch (err) {
@@ -64,7 +68,7 @@ router.get('/api/jobs/search', async (req, res) => {
  * @action - get all the jobs of employers followed by this employee
  * @access - private
  */
-router.get('/api/jobs/following/:employeeid', auth, async (req, res) => {
+router.get('/following/:employeeid', auth, async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.employeeid);
 

@@ -128,16 +128,17 @@ function* getFollowingJobsAsync({ payload }) {
 }
 
 function* searchJobsAsync({ payload }) {
+  const { position, location_id } = payload;
+
   try {
     yield setAuthToken();
 
     const response = yield call(axios, {
       method: 'get',
-      url: URLS.SEARCH_JOBS,
-      data: payload
+      url: `${URLS.SEARCH_JOBS}/${position}/${location_id}`
     });
 
-    yield put(searchJobsSuccess(response.data.jobs));
+    yield put(searchJobsSuccess(response.data.jobsResult));
   } catch (err) {
     Toast.show(err.message, {
       backgroundColor: 'red',

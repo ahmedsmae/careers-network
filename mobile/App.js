@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as StoreProvider } from 'react-redux';
 import * as Font from 'expo-font';
@@ -9,20 +10,12 @@ import { useScreens } from 'react-native-screens';
 import store from './redux/store';
 import appTheme from './app.theme';
 
-import RootNavigation from './navigation/root-navigator';
+import { createRootNavigator } from './navigation/root-navigator';
+
+import { selectCurrentUser } from './redux/current-user/current-user.selectors';
 import { loadingUserStart } from './redux/current-user/current-user.actions';
-// import { init } from './helpers/db';
 
 useScreens();
-
-// init()
-//   .then(() => {
-//     console.log('Initialized database');
-//   })
-//   .catch(err => {
-//     console.log('Initializing db failed.');
-//     console.log(err);
-//   });
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -31,7 +24,7 @@ const fetchFonts = () => {
   });
 };
 
-const App = ({ loadingUserStart }) => {
+const App = ({ loadingUserStart, currentUser }) => {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
@@ -47,15 +40,20 @@ const App = ({ loadingUserStart }) => {
     );
   }
 
-  return <RootNavigation />;
+  const Layout = createRootNavigator(currentUser);
+  return <Layout />;
 };
+
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
+});
 
 const mapDispatchToProps = dispatch => ({
   loadingUserStart: () => dispatch(loadingUserStart())
 });
 
 const AppContainer = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(App);
 

@@ -1,29 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { View, TouchableOpacity } from 'react-native';
-import {
-  Appbar,
-  Headline,
-  TextInput,
-  Button,
-  Paragraph,
-  Text,
-  Divider
-} from 'react-native-paper';
-
-import { selectCurrentUser } from '../../redux/current-user/current-user.selectors';
-import { selectCitiesList } from '../../redux/constants/constants.selectors';
+import React, { useState } from 'react';
+import { View, Alert } from 'react-native';
+import { Headline, TextInput, Button, Text, Divider } from 'react-native-paper';
 
 import FormInput from '../../components/form-input/form-input.component';
 
 import styles from './search.styles';
 
-const Search = ({ navigation, currentUser, citiesList }) => {
-  // useEffect(() => {
-  //   currentUser && navigation.navigate('NavigationAnchor');
-  // }, [currentUser]);
-
+const Search = ({ citiesList, onSearch }) => {
   const [searchValues, setSearchValues] = useState({
     position: '',
     searching: false,
@@ -42,20 +25,17 @@ const Search = ({ navigation, currentUser, citiesList }) => {
   };
 
   const handleSearch = () => {
-    // Search for text in database
+    if (position.trim().length < 1) {
+      Alert.alert('Missing Info', 'You should type a position to search for', [
+        { text: 'OK' }
+      ]);
+      return;
+    }
+    onSearch({ position, location_id: locationId });
   };
 
   return (
     <>
-      {currentUser && (
-        <Appbar.Header>
-          <Appbar.Action
-            icon='menu'
-            onPress={() => navigation.toggleDrawer()}
-          />
-          <Appbar.Content title='Welcome' />
-        </Appbar.Header>
-      )}
       <View style={styles.screen}>
         <Headline style={styles.headline}>Careers Network</Headline>
         <FormInput
@@ -138,43 +118,9 @@ const Search = ({ navigation, currentUser, citiesList }) => {
         >
           Search
         </Button>
-        {!currentUser && (
-          <>
-            <Paragraph
-              style={styles.signIn}
-              onPress={() => navigation.navigate('SignIn')}
-            >
-              Sign in
-            </Paragraph>
-            <View style={styles.contacts}>
-              <Paragraph
-                style={styles.contact}
-                onPress={() => navigation.navigate('About')}
-              >
-                About
-              </Paragraph>
-              <Paragraph
-                style={styles.contact}
-                onPress={() => navigation.navigate('ContactUs')}
-              >
-                Contact Us
-              </Paragraph>
-            </View>
-          </>
-        )}
       </View>
     </>
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-  citiesList: selectCitiesList
-});
-
-const mapDispatchToProps = dispatch => ({});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Search);
+export default Search;

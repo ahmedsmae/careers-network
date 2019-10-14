@@ -23,6 +23,11 @@ export default URLS = {
   CREATE_NEW_JOB: `${BASE_URL}/api/jobs/`,
   UPDATE_EXISTING_JOB: `${BASE_URL}/api/jobs/`,
   GET_ALL_EMPLOYER_JOBS: `${BASE_URL}/api/jobs/employerjobs`, // + /:employerid
-  SEARCH_JOBS: `${BASE_URL}/api/jobs/search`,
-  GET_FOLLOWING_EMPLOYERS_JOBS: `${BASE_URL}/api/jobs/following` // + /:employeeid
+  SEARCH_JOBS: `${BASE_URL}/api/jobs/search`, // + /:position/:locationid
+  GET_FOLLOWING_EMPLOYERS_JOBS: `${BASE_URL}/api/jobs/following`, // + /:employeeid
+
+  CREATE_NEW_APPLICATION: `${BASE_URL}/api/applications/`,
+  UPDATE_EXISTING_APPLICATION: `${BASE_URL}/api/applications/`,
+  GET_ALL_EMPLOYEE_APPLICATIONS: `${BASE_URL}/api/applications`,
+  GET_ALL_JOB_APPLICATIONS: `${BASE_URL}/api/applications` // + /:jobid
 };

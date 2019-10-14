@@ -88,7 +88,7 @@ const EditEducation = ({
     const { location, filtering, from, to, ...rest } = education;
     const formatedFrom = from ? new Date(from).toString() : null;
     const formatedTo = to ? new Date(to).toString() : null;
-    editEmployeeEducationStart({ from: formatedFrom, to: formatedTo, ...rest });
+    editEmployeeEducationStart({ ...rest, from: formatedFrom, to: formatedTo });
     if (!loading && errorMessage.length === 0) {
       navigation.goBack();
     }

@@ -8,7 +8,7 @@ import { selectCurrentEmployer } from '../../redux/current-user/current-user.sel
 import { selectMyJobs } from '../../redux/jobs/jobs.selectors';
 import { getAllEmployerJobsStart } from '../../redux/jobs/jobs.actions';
 
-import JobCard from './job-card.component';
+import JobCard from '../../components/job-card/job-card.component';
 
 import styles from './my-jobs.styles';
 
@@ -35,7 +35,7 @@ const MyJobs = ({
         renderItem={({ item }) => (
           <JobCard
             job={item}
-            onPress={() => navigation.navigate('EditJob', { job: item })}
+            onPress={() => navigation.navigate('EmployerJob', { job: item })}
           />
         )}
       />

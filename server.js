@@ -26,6 +26,8 @@ app.use('/api/employers', require('./routes/employer/employer-info'));
 app.use('/api/employers', require('./routes/employer/serve-images'));
 app.use('/api/jobs', require('./routes/job/setters'));
 app.use('/api/jobs', require('./routes/job/getters'));
+app.use('/api/applications', require('./routes/application/setters'));
+app.use('/api/applications', require('./routes/application/getters'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

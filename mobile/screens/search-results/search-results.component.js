@@ -1,11 +1,20 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { FlatList } from 'react-native';
 
-const SearchResults = () => {
+import JobCard from '../../components/job-card/job-card.component';
+
+import styles from './search-results.styles';
+
+const SearchResults = ({ searchJobs, onJobSelect }) => {
   return (
-    <View>
-      <Text>Search Results</Text>
-    </View>
+    <FlatList
+      style={styles.screen}
+      keyExtractor={(item, index) => item._id}
+      data={searchJobs}
+      renderItem={({ item }) => (
+        <JobCard job={item} onPress={onJobSelect.bind(this, item)} />
+      )}
+    />
   );
 };
 

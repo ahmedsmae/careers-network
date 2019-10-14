@@ -183,7 +183,9 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
                       onPress={() => {
                         setNewQuestion(prev => ({
                           ...prev,
-                          answer_options: answer_options.concat(newAnswer)
+                          answer_options: answer_options.concat({
+                            answer_text: newAnswer
+                          })
                         }));
                         setNewAnswer('');
                       }}
@@ -210,7 +212,7 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
                       }}
                     >
                       <Text style={{ flex: 1, fontSize: 16, padding: 10 }}>
-                        {answer}
+                        {answer.answer_text}
                       </Text>
                       <IconButton
                         style={{ color: 'green', marginRight: 20 }}

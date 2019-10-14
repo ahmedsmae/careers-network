@@ -126,8 +126,11 @@ const EditJob = ({
       return;
     }
 
-    const { location, filtering, ...rest } = currentJob;
-    job ? updateExistingJobStart(currentJob) : createNewJobStart(rest);
+    const { location, filtering, expiry, ...rest } = currentJob;
+    const formatedExpiry = expiry ? new Date(expiry).toString() : null;
+    job
+      ? updateExistingJobStart({ ...currentJob, expiry: formatedExpiry })
+      : createNewJobStart({ ...rest, expiry: formatedExpiry });
     if (!loading && errorMessage.length === 0) {
       navigation.goBack();
     }
