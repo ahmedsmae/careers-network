@@ -25,5 +25,5 @@ export const selectErrorMessage = createSelector(
 export const selectApplicationByJobId = jobId =>
   createSelector(
     [selectMyApplications],
-    apps => apps.find(app => app.job_id === jobId)
+    apps => apps.find(app => app.job._id === jobId)
   );

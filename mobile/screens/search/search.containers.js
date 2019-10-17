@@ -11,6 +11,7 @@ import {
 } from '../../redux/jobs/jobs.selectors';
 import { searchJobsStart } from '../../redux/jobs/jobs.actions';
 import { getAllEmployeeApplicationsStart } from '../../redux/applications/applications.actions';
+import { getAllEmployeeSavedJobsStart } from '../../redux/saved/saved.actions';
 
 import Search from './search.component';
 
@@ -65,11 +66,13 @@ const AuthSearch = ({
   loading,
   errorMessage,
   getAllEmployeeApplicationsStart,
+  getAllEmployeeSavedJobsStart,
   ...props
 }) => {
   useEffect(() => {
     getAllEmployeeApplicationsStart();
-  }, [getAllEmployeeApplicationsStart]);
+    getAllEmployeeSavedJobsStart();
+  }, [getAllEmployeeApplicationsStart, getAllEmployeeSavedJobsStart]);
 
   return (
     <>
@@ -100,7 +103,8 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   searchJobsStart: searchData => dispatch(searchJobsStart(searchData)),
   getAllEmployeeApplicationsStart: () =>
-    dispatch(getAllEmployeeApplicationsStart())
+    dispatch(getAllEmployeeApplicationsStart()),
+  getAllEmployeeSavedJobsStart: () => dispatch(getAllEmployeeSavedJobsStart())
 });
 
 export const NoAuthSearchContainer = connect(

@@ -28,6 +28,9 @@ app.use('/api/jobs', require('./routes/job/setters'));
 app.use('/api/jobs', require('./routes/job/getters'));
 app.use('/api/applications', require('./routes/application/setters'));
 app.use('/api/applications', require('./routes/application/getters'));
+app.use('/api/savedjobs', require('./routes/saved/setters'));
+app.use('/api/savedjobs', require('./routes/saved/getters'));
+app.use('/api/savedjobs', require('./routes/saved/delete'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

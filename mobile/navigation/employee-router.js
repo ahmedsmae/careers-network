@@ -8,14 +8,14 @@ import { AuthSearchContainer } from '../screens/search/search.containers';
 import { AuthSearchResultsContainer } from '../screens/search-results/search-results.containers';
 import { EmployeeShowJobContainer } from '../screens/show-job/show-job.containers';
 import { EmployeeEmployerProfileContainer } from '../screens/employer-profile/employer-profile.containers';
+import { EmployeeEmployeeProfileContainer } from '../screens/employee-profile/employee-profile-containers';
 
-import EmployeeProfileScreen from '../screens/employee-profile/employee-profile.component';
-import ApplicationsScreen from '../screens/applications/applications.component';
+import MyApplications from '../screens/my-applications/my-applications.component';
 import EditApplicationScreen from '../screens/edit-application/edit-application.component';
 
 import HomeScreen from '../screens/home/home.component';
 import FollowingScreen from '../screens/following/following.component';
-import BookmarkJobsScreen from '../screens/bookmark-jobs/bookmark-jobs.component';
+import MySavedJobsScreen from '../screens/my-saved-jobs/my-saved-jobs.component';
 import EditEmployeeInfoScreen from '../screens/edit-employee-info/edit-employee-info.component';
 import EditEducationScreen from '../screens/edit-education/edit-education.component';
 import EditExperienceScreen from '../screens/edit-experience/edit-experience.component';
@@ -28,7 +28,7 @@ import drawerNavOptions from './drawer-nav-options';
 
 const employeeProfileNavigator = createStackNavigator(
   {
-    EmployeeProfile: EmployeeProfileScreen,
+    EmployeeProfile: EmployeeEmployeeProfileContainer,
     EditInfo: EditEmployeeInfoScreen,
     EditEducation: EditEducationScreen,
     EditExperience: EditExperienceScreen
@@ -92,26 +92,26 @@ const employeeDrawerNavigator = createDrawerNavigator(
         )
       }
     },
-    Applications: {
-      screen: ApplicationsScreen,
+    MyApplications: {
+      screen: MyApplications,
       navigationOptions: {
         drawerLabel: 'My Applications',
         drawerIcon: drawerConfig => (
           <Ionicons
-            name={Platform.OS === 'android' ? 'md-list' : 'ios-list'}
+            name={Platform.OS === 'android' ? 'md-copy' : 'ios-copy'}
             size={23}
             color={drawerConfig.tintColor}
           />
         )
       }
     },
-    Bookmarks: {
-      screen: BookmarkJobsScreen,
+    MySavedJobs: {
+      screen: MySavedJobsScreen,
       navigationOptions: {
-        drawerLabel: 'My Bookmarks',
+        drawerLabel: 'My Saved Jobs',
         drawerIcon: drawerConfig => (
           <Ionicons
-            name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
+            name={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
             size={23}
             color={drawerConfig.tintColor}
           />

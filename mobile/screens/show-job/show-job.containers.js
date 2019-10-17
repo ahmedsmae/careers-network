@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
-import { Appbar, FAB } from 'react-native-paper';
+import { Appbar, FAB, Provider, Portal } from 'react-native-paper';
 
 import { selectApplicationByJobId } from '../../redux/applications/applications.selectors';
-import { createNewApplicationStart } from '../../redux/applications/applications.actions';
+import {
+  selectIsJobSaved,
+  selectSavedIdByJobId
+} from '../../redux/saved/saved.selectors';
+import {
+  createNewApplicationStart,
+  getAllJobApplicationsStart
+} from '../../redux/applications/applications.actions';
+import { saveJobStart, unsaveJobStart } from '../../redux/saved/saved.actions';
 
 import ShowJob from './show-job.component';
+
+import Colors from '../../constants/colors';
 
 import styles from './show-job.styles';
 
 const EmployeeShowJob = ({
   navigation,
   getApplicationByJobId,
-  createNewApplicationStart
+  createNewApplicationStart,
+  isJobSaved,
+  getSavedIdByJobId,
+  saveJobStart,
+  unsaveJobStart
 }) => {
   const job = navigation.getParam('job');
   const application = getApplicationByJobId(job._id);
@@ -35,6 +49,17 @@ const EmployeeShowJob = ({
       <Appbar.Header>
         <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title='Show Job' />
+        {isJobSaved(job._id) ? (
+          <Appbar.Action
+            icon='star'
+            onPress={() => unsaveJobStart(getSavedIdByJobId(job._id))}
+          />
+        ) : (
+          <Appbar.Action
+            icon='star-border'
+            onPress={() => saveJobStart(job._id)}
+          />
+        )}
       </Appbar.Header>
 
       <ShowJob job={job} />
@@ -48,7 +73,7 @@ const EmployeeShowJob = ({
           if (job.questions.length > 0) {
             navigation.navigate('EditApplication', { job, application });
           } else {
-            createNewApplicationStart({ job_id: job._id });
+            createNewApplicationStart({ job: job._id });
           }
         }}
         disabled={generateLabel() === 'Already Applied'}
@@ -57,20 +82,51 @@ const EmployeeShowJob = ({
   );
 };
 
-const EmployerShowJob = ({ navigation }) => {
+const EmployerShowJob = ({ navigation, getAllJobApplicationsStart }) => {
   const job = navigation.getParam('job');
+
+  const [showOptions, setShowOptions] = useState(false);
+
   return (
     <>
       <Appbar.Header>
         <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title='Show Job' />
-        <Appbar.Action
-          icon='edit'
-          onPress={() => navigation.navigate('EditJob', { job })}
-        />
       </Appbar.Header>
 
-      <ShowJob job={job} />
+      <Provider>
+        <ShowJob job={job} />
+
+        <Portal>
+          <FAB.Group
+            open={showOptions}
+            icon='settings'
+            fabStyle={{ backgroundColor: Colors.ACCENT }}
+            color='white'
+            actions={[
+              {
+                icon: 'edit',
+                label: 'Edit Job',
+                onPress: () => navigation.navigate('EditJob', { job })
+              },
+              {
+                icon: 'list',
+                label: 'Show Applications',
+                onPress: () => {
+                  getAllJobApplicationsStart(job._id);
+                  navigation.navigate('JobApplications', { job });
+                }
+              }
+            ]}
+            onStateChange={({ open }) => setShowOptions(open)}
+            onPress={() => {
+              if (showOptions) {
+                // do something if the speed dial is open
+              }
+            }}
+          />
+        </Portal>
+      </Provider>
     </>
   );
 };
@@ -98,12 +154,18 @@ const NoAuthShowJob = ({ navigation }) => {
 };
 
 const mapStateToProps = state => ({
-  getApplicationByJobId: jobId => selectApplicationByJobId(jobId)(state)
+  getApplicationByJobId: jobId => selectApplicationByJobId(jobId)(state),
+  isJobSaved: jobId => selectIsJobSaved(jobId)(state),
+  getSavedIdByJobId: jobId => selectSavedIdByJobId(jobId)(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   createNewApplicationStart: appData =>
-    dispatch(createNewApplicationStart(appData))
+    dispatch(createNewApplicationStart(appData)),
+  getAllJobApplicationsStart: jobId =>
+    dispatch(getAllJobApplicationsStart(jobId)),
+  saveJobStart: jobId => dispatch(saveJobStart(jobId)),
+  unsaveJobStart: saveId => dispatch(unsaveJobStart(saveId))
 });
 
 export const EmployeeShowJobContainer = connect(

@@ -52,7 +52,9 @@ router.get('/search/:position/:locationid', async (req, res) => {
       searchCriteria.position = { $regex: position.trim(), $options: 'i' };
     }
 
-    const jobsResult = await Job.find(searchCriteria);
+    const jobsResult = await Job.find(searchCriteria).populate('owner', [
+      'name'
+    ]);
 
     res.json({ jobsResult });
   } catch (err) {

@@ -28,6 +28,10 @@ export default URLS = {
 
   CREATE_NEW_APPLICATION: `${BASE_URL}/api/applications/`,
   UPDATE_EXISTING_APPLICATION: `${BASE_URL}/api/applications/`,
-  GET_ALL_EMPLOYEE_APPLICATIONS: `${BASE_URL}/api/applications`,
-  GET_ALL_JOB_APPLICATIONS: `${BASE_URL}/api/applications` // + /:jobid
+  GET_ALL_EMPLOYEE_APPLICATIONS: `${BASE_URL}/api/applications/allemployee`,
+  GET_ALL_JOB_APPLICATIONS: `${BASE_URL}/api/applications`, // + /:jobid
+
+  SAVE_JOB: `${BASE_URL}/api/savedjobs/`, // + /:jobid
+  UNSAVE_JOB: `${BASE_URL}/api/savedjobs/`, // + /:savedid
+  GET_ALL_EMPLOYEE_SAVED_JOBS: `${BASE_URL}/api/savedjobs/`
 };

@@ -55,7 +55,7 @@ const EditApplication = ({
       updateExistingApplicationStart(newApplication);
     } else {
       // create new application
-      const newApplication = { job_id, answers };
+      const newApplication = { job: job_id, answers };
       createNewApplicationStart(newApplication);
     }
     if (!loading && errorMessage.length === 0) {

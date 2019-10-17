@@ -1,7 +1,7 @@
 const application = {
   _id: '',
   owner: '',
-  job_id: '',
+  job: '',
   answers: [
     {
       question_id: '',

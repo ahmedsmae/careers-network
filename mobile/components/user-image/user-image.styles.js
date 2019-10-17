@@ -7,13 +7,13 @@ export default StyleSheet.create({
     borderRadius: 25
   },
   medium: {
-    width: 100,
-    height: 100,
+    width: 70,
+    height: 70,
     borderRadius: 50
   },
   large: {
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
     borderRadius: 75
   }
 });

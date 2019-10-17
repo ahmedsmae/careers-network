@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 
-import JobCard from '../../components/job-card/job-card.component';
+import JobCard from './job-card.component';
 
 import styles from './search-results.styles';
 

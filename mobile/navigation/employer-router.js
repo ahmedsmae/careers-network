@@ -7,7 +7,9 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { EmployerShowJobContainer } from '../screens/show-job/show-job.containers';
 import { EmployerEmployerProfileContainer } from '../screens/employer-profile/employer-profile.containers';
+import { EmployerEmployeeProfileContainer } from '../screens/employee-profile/employee-profile-containers';
 
+import JobApplicationsScreen from '../screens/job-applications/job-applications.component';
 import AboutScreen from '../screens/about/about.component';
 import ContactUsScreen from '../screens/contact-us/contact-us.component';
 import MyJobsScreen from '../screens/my-jobs/my-jobs.component';
@@ -29,7 +31,9 @@ const employerJobsNavigator = createStackNavigator(
   {
     MyJobs: MyJobsScreen,
     EditJob: EditJobScreen,
-    EmployerJob: EmployerShowJobContainer
+    EmployerJob: EmployerShowJobContainer,
+    JobApplications: JobApplicationsScreen,
+    EmployeeProfile: EmployerEmployeeProfileContainer
   },
   hideHeaderNavOptions
 );

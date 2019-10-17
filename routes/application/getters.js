@@ -10,12 +10,12 @@ const Application = require('../../database/models/application');
 
 /**
  * @method - GET
- * @url - '/api/applications/'
+ * @url - '/api/applications/allemployee'
  * @data - auth token
  * @action - get all employee applications
  * @access - private
  */
-router.get('/', auth, async (req, res) => {
+router.get('/allemployee', auth, async (req, res) => {
   try {
     const employee = await Employee.findOne({ owner: req.user._id });
 
@@ -27,9 +27,20 @@ router.get('/', auth, async (req, res) => {
 
     const employeeApplications = await Application.find({
       owner: employee._id
-    });
+    }).populate('job');
 
-    res.json({ employeeApplications });
+    const appObjectsArray = employeeApplications.map(app => app.toObject());
+
+    const finalApps = [];
+    for (const app of appObjectsArray) {
+      const employer = await Employer.findById(app.job.owner);
+      finalApps.push({
+        ...app,
+        job: { ...app.job, employerName: employer.name }
+      });
+    }
+
+    res.json({ employeeApplications: finalApps });
   } catch (err) {
     console.error(err.message);
     res.status(400).json({ errors: [{ msg: err.message }] });
@@ -59,17 +70,19 @@ router.get('/:jobid', auth, async (req, res) => {
       return res.status(400).json({ errors: [{ msg: 'Job does not exists' }] });
     }
 
-    if (employer._id != job.owner) {
+    if (employer._id.toString() !== job.owner.toString()) {
       return res
         .status(400)
         .json({ errors: [{ msg: 'Employer does not own this job' }] });
     }
 
-    const jobApplications = await Application.find({ job_id: job._id });
+    const jobApplications = await Application.find({
+      job: job._id
+    }).populate('owner');
 
     res.json({ jobApplications });
   } catch (err) {
-    console.error(err.message);
+    console.error('server error', err.message);
     res.status(400).json({ errors: [{ msg: err.message }] });
   }
 });
