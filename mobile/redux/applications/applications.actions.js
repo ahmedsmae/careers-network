@@ -32,6 +32,22 @@ export const updateExistingApplicationFailure = errorMessage => ({
   payload: errorMessage
 });
 
+// DELETE APPLICATION
+export const deleteApplicationStart = appId => ({
+  type: ApplicationsActionTypes.DELETE_APPLICATION_START,
+  payload: appId
+});
+
+export const deleteApplicationSuccess = employeeApplications => ({
+  type: ApplicationsActionTypes.DELETE_APPLICATION_SUCCESS,
+  payload: employeeApplications
+});
+
+export const deleteApplicationFailure = errorMessage => ({
+  type: ApplicationsActionTypes.DELETE_APPLICATION_FAILURE,
+  payload: errorMessage
+});
+
 // GET ALL EMPLOYEE APPLICATIONS
 export const getAllEmployeeApplicationsStart = () => ({
   type: ApplicationsActionTypes.GET_ALL_EMPLOYEE_APPLICATIONS_START

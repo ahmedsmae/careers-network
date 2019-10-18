@@ -11,6 +11,8 @@ import {
   createNewJobFailure,
   updateExistingJobSuccess,
   updateExistingJobFailure,
+  deleteJobSuccess,
+  deleteJobFailure,
   getAllEmployerJobsSuccess,
   getAllEmployerJobsFailure,
   getHomeJobsSuccess,
@@ -68,6 +70,29 @@ function* updateExistingJobAsync({ payload }) {
       duration: Toast.durations.LONG
     });
     yield put(updateExistingJobFailure(err.message));
+  }
+}
+
+function* deleteJobAsync({ payload }) {
+  try {
+    yield setAuthToken();
+
+    const response = yield call(axios, {
+      method: 'delete',
+      url: `${URLS.DELETE_JOB}/${payload}`
+    });
+
+    yield put(deleteJobSuccess(response.data.employerJobs));
+    Toast.show('Job deleted successfully', {
+      backgroundColor: 'green',
+      duration: Toast.durations.SHORT
+    });
+  } catch (err) {
+    Toast.show(err.message, {
+      backgroundColor: 'red',
+      duration: Toast.durations.LONG
+    });
+    yield put(deleteJobFailure(err.message));
   }
 }
 
@@ -180,6 +205,10 @@ function* updateExistingJobStart() {
   );
 }
 
+function* deleteJobStart() {
+  yield takeLatest(JobsActionTypes.DELETE_JOB_START, deleteJobAsync);
+}
+
 function* getAllEmployerJobsStart() {
   yield takeLatest(
     JobsActionTypes.GET_ALL_EMPLOYER_JOBS_START,
@@ -213,6 +242,7 @@ export default function* jobsSagas() {
   yield all([
     call(createNewJobStart),
     call(updateExistingJobStart),
+    call(deleteJobStart),
     call(getAllEmployerJobsStart),
     call(getHomeJobsStart),
     call(getFollowingJobsStart),

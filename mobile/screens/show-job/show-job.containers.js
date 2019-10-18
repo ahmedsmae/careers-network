@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import {
   Appbar,
   FAB,
@@ -21,6 +21,11 @@ import {
   getAllJobApplicationsStart
 } from '../../redux/applications/applications.actions';
 import { saveJobStart, unsaveJobStart } from '../../redux/saved/saved.actions';
+import {
+  selectLoading,
+  selectErrorMessage
+} from '../../redux/jobs/jobs.selectors';
+import { deleteJobStart } from '../../redux/jobs/jobs.actions';
 
 import ShowJob from './show-job.component';
 import UserImage from '../../components/user-image/user-image.component';
@@ -117,7 +122,13 @@ const EmployeeShowJob = ({
   );
 };
 
-const EmployerShowJob = ({ navigation, getAllJobApplicationsStart }) => {
+const EmployerShowJob = ({
+  navigation,
+  getAllJobApplicationsStart,
+  deleteJobStart,
+  loading,
+  errorMessage
+}) => {
   const job = navigation.getParam('job');
 
   const [showOptions, setShowOptions] = useState(false);
@@ -127,6 +138,26 @@ const EmployerShowJob = ({ navigation, getAllJobApplicationsStart }) => {
       <Appbar.Header>
         <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title='Show Job' />
+        <Appbar.Action
+          icon='delete'
+          onPress={() => {
+            Alert.alert(
+              'Delete Job',
+              'Are you sure you want to delete this job ?',
+              [
+                {
+                  text: 'DELETE',
+                  onPress: () => deleteJobStart(job._id)
+                },
+                { text: 'CANCEL' }
+              ]
+            );
+
+            if (!loading && errorMessage.length === 0) {
+              navigation.goBack();
+            }
+          }}
+        />
       </Appbar.Header>
 
       <Provider>
@@ -216,7 +247,9 @@ const NoAuthShowJob = ({ navigation }) => {
 const mapStateToProps = state => ({
   getApplicationByJobId: jobId => selectApplicationByJobId(jobId)(state),
   isJobSaved: jobId => selectIsJobSaved(jobId)(state),
-  getSavedIdByJobId: jobId => selectSavedIdByJobId(jobId)(state)
+  getSavedIdByJobId: jobId => selectSavedIdByJobId(jobId)(state),
+  loading: selectLoading(state),
+  errorMessage: selectErrorMessage(state)
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -225,7 +258,8 @@ const mapDispatchToProps = dispatch => ({
   getAllJobApplicationsStart: jobId =>
     dispatch(getAllJobApplicationsStart(jobId)),
   saveJobStart: jobId => dispatch(saveJobStart(jobId)),
-  unsaveJobStart: saveId => dispatch(unsaveJobStart(saveId))
+  unsaveJobStart: saveId => dispatch(unsaveJobStart(saveId)),
+  deleteJobStart: jobId => dispatch(deleteJobStart(jobId))
 });
 
 export const EmployeeShowJobContainer = connect(

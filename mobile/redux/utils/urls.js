@@ -27,12 +27,14 @@ export default URLS = {
 
   CREATE_NEW_JOB: `${BASE_URL}/api/jobs/`,
   UPDATE_EXISTING_JOB: `${BASE_URL}/api/jobs/`,
+  DELETE_JOB: `${BASE_URL}/api/jobs/`, // + /:jobid
   GET_ALL_EMPLOYER_JOBS: `${BASE_URL}/api/jobs/employerjobs`, // + /:employerid
   SEARCH_JOBS: `${BASE_URL}/api/jobs/search`, // + /:position/:locationid
   PUBLIC_GET_ALL_EMPLOYER_JOBS: `${BASE_URL}/api/jobs`, // + /:employeeid
 
   CREATE_NEW_APPLICATION: `${BASE_URL}/api/applications/`,
   UPDATE_EXISTING_APPLICATION: `${BASE_URL}/api/applications/`,
+  DELETE_APPLICATION: `${BASE_URL}/api/applications/`, // + /:applicationid
   GET_ALL_EMPLOYEE_APPLICATIONS: `${BASE_URL}/api/applications/allemployee`,
   GET_ALL_JOB_APPLICATIONS: `${BASE_URL}/api/applications`, // + /:jobid
 

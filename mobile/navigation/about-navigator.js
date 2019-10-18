@@ -25,6 +25,7 @@ export default aboutNavigator = createMaterialTopTabNavigator(
       labelStyle: {
         paddingTop: 25,
         fontSize: 14,
+        fontWeight: 'bold',
         paddingBottom: 5
       },
       style: {

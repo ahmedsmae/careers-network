@@ -14,7 +14,7 @@ const Job = require('../../database/models/job');
  */
 router.delete('/:jobid', auth, async (req, res) => {
   try {
-    const employer = await Employer.find({ owner: req.user._id });
+    const employer = await Employer.findOne({ owner: req.user._id });
 
     if (!employer) {
       return res

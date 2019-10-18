@@ -14,6 +14,7 @@ const jobsReducer = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
     case JobsActionTypes.CREATE_NEW_JOB_START:
     case JobsActionTypes.UPDATE_EXISTING_JOB_START:
+    case JobsActionTypes.DELETE_JOB_START:
     case JobsActionTypes.GET_ALL_EMPLOYER_JOBS_START:
     case JobsActionTypes.GET_HOME_JOBS_START:
     case JobsActionTypes.GET_FOLLOWING_JOBS_START:
@@ -27,6 +28,7 @@ const jobsReducer = (state = INITIAL_STATE, { type, payload }) => {
 
     case JobsActionTypes.CREATE_NEW_JOB_SUCCESS:
     case JobsActionTypes.UPDATE_EXISTING_JOB_SUCCESS:
+    case JobsActionTypes.DELETE_JOB_SUCCESS:
     case JobsActionTypes.GET_ALL_EMPLOYER_JOBS_SUCCESS:
       return {
         ...state,
@@ -69,6 +71,7 @@ const jobsReducer = (state = INITIAL_STATE, { type, payload }) => {
 
     case JobsActionTypes.CREATE_NEW_JOB_FAILURE:
     case JobsActionTypes.UPDATE_EXISTING_JOB_FAILURE:
+    case JobsActionTypes.DELETE_JOB_FAILURE:
       return {
         ...state,
         loading: false,

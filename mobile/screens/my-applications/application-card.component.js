@@ -12,7 +12,7 @@ const ApplicationCard = ({ application, onPress }) => {
   return (
     <Card style={{ elevation: 5, margin: 10, padding: 5 }}>
       <List.Item
-        disabled={!questions || questions.length === 0 ? true : false}
+        // disabled={!questions || questions.length === 0 ? true : false}
         title={position}
         description={employerName}
         left={props => (

@@ -13,6 +13,7 @@ const applicationsReducer = (state = INITIAL_STATE, { type, payload }) => {
     case ApplicationsActionTypes.UPDATE_EXISTING_APPLICATION_START:
     case ApplicationsActionTypes.GET_ALL_EMPLOYEE_APPLICATIONS_START:
     case ApplicationsActionTypes.GET_ALL_JOB_APPLICATIONS_START:
+    case ApplicationsActionTypes.DELETE_APPLICATION_START:
       return {
         ...state,
         loading: true,
@@ -22,6 +23,7 @@ const applicationsReducer = (state = INITIAL_STATE, { type, payload }) => {
     case ApplicationsActionTypes.CREATE_NEW_APPLICATION_SUCCESS:
     case ApplicationsActionTypes.UPDATE_EXISTING_APPLICATION_SUCCESS:
     case ApplicationsActionTypes.GET_ALL_EMPLOYEE_APPLICATIONS_SUCCESS:
+    case ApplicationsActionTypes.DELETE_APPLICATION_SUCCESS:
       return {
         ...state,
         myApplications: payload,
@@ -39,6 +41,7 @@ const applicationsReducer = (state = INITIAL_STATE, { type, payload }) => {
 
     case ApplicationsActionTypes.CREATE_NEW_APPLICATION_FAILURE:
     case ApplicationsActionTypes.UPDATE_EXISTING_APPLICATION_FAILURE:
+    case ApplicationsActionTypes.DELETE_APPLICATION_FAILURE:
       return {
         ...state,
         loading: false,

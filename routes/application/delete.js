@@ -3,6 +3,7 @@ const router = express.Router();
 
 const auth = require('../utils/auth');
 const Employee = require('../../database/models/employee');
+const Employer = require('../../database/models/employer');
 const Application = require('../../database/models/application');
 
 /**
@@ -14,7 +15,7 @@ const Application = require('../../database/models/application');
  */
 router.delete('/:applicationid', auth, async (req, res) => {
   try {
-    const employee = await Employee.find({ owner: req.user._id });
+    const employee = await Employee.findOne({ owner: req.user._id });
 
     if (!employee) {
       return res

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { View, ScrollView } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import { View, ScrollView, Alert } from 'react-native';
+import { Appbar, Text } from 'react-native-paper';
 
 import { selectCurrentEmployee } from '../../redux/current-user/current-user.selectors';
 import {
@@ -11,7 +11,8 @@ import {
 } from '../../redux/applications/applications.selectors';
 import {
   createNewApplicationStart,
-  updateExistingApplicationStart
+  updateExistingApplicationStart,
+  deleteApplicationStart
 } from '../../redux/applications/applications.actions';
 
 import QuestionCard from './question-card.component';
@@ -22,6 +23,7 @@ const EditApplication = ({
   navigation,
   createNewApplicationStart,
   updateExistingApplicationStart,
+  deleteApplicationStart,
   loading,
   errorMessage
 }) => {
@@ -48,6 +50,24 @@ const EditApplication = ({
     application ? application.answers : getNewAnswersTemplate()
   );
 
+  const _handleDelete = () => {
+    Alert.alert(
+      'Delete Application',
+      'Are you sure you want to delete this application ?',
+      [
+        {
+          text: 'DELETE',
+          onPress: () => deleteApplicationStart(application._id)
+        },
+        { text: 'CANCEL' }
+      ]
+    );
+
+    if (!loading && errorMessage.length === 0) {
+      navigation.goBack();
+    }
+  };
+
   const _handleSave = () => {
     if (application) {
       // edit application
@@ -64,11 +84,28 @@ const EditApplication = ({
     }
   };
 
+  if (!questions || questions.length === 0) {
+    return (
+      <>
+        <Appbar.Header>
+          <Appbar.Action
+            icon='menu'
+            onPress={() => navigation.toggleDrawer()}
+          />
+          <Appbar.Content title='Edit Application' />
+          <Appbar.Action icon='delete' onPress={_handleDelete} />
+        </Appbar.Header>
+        <Text>There is no questions attached to this job</Text>
+      </>
+    );
+  }
+
   return (
     <>
       <Appbar.Header>
         <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title='Edit Application' />
+        <Appbar.Action icon='delete' onPress={_handleDelete} />
         <Appbar.Action icon='save' onPress={_handleSave} />
       </Appbar.Header>
 
@@ -101,7 +138,8 @@ const mapDispatchToProps = dispatch => ({
   createNewApplicationStart: appData =>
     dispatch(createNewApplicationStart(appData)),
   updateExistingApplicationStart: appData =>
-    dispatch(updateExistingApplicationStart(appData))
+    dispatch(updateExistingApplicationStart(appData)),
+  deleteApplicationStart: appId => dispatch(deleteApplicationStart(appId))
 });
 
 export default connect(

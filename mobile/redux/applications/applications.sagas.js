@@ -14,7 +14,9 @@ import {
   getAllEmployeeApplicationsSuccess,
   getAllEmployeeApplicationsFailure,
   getAllJobApplicationsSuccess,
-  getAllJobApplicationsFailure
+  getAllJobApplicationsFailure,
+  deleteApplicationSuccess,
+  deleteApplicationFailure
 } from './applications.actions';
 
 function* createNewApplicationAsync({ payload }) {
@@ -64,6 +66,29 @@ function* updateExistingApplicationAsync({ payload }) {
       duration: Toast.durations.LONG
     });
     yield put(updateExistingApplicationFailure(err.message));
+  }
+}
+
+function* deleteApplicationAsync({ payload }) {
+  try {
+    yield setAuthToken();
+
+    const response = yield call(axios, {
+      method: 'delete',
+      url: `${URLS.DELETE_APPLICATION}/${payload}`
+    });
+
+    yield put(deleteApplicationSuccess(response.data.employeeApplications));
+    Toast.show('Application deleted successfully', {
+      backgroundColor: 'green',
+      duration: Toast.durations.SHORT
+    });
+  } catch (err) {
+    Toast.show(err.message, {
+      backgroundColor: 'red',
+      duration: Toast.durations.LONG
+    });
+    yield put(deleteApplicationFailure(err.message));
   }
 }
 
@@ -121,6 +146,13 @@ function* updateExistingApplicationStart() {
   );
 }
 
+function* deleteApplicationStart() {
+  yield takeLatest(
+    ApplicationsActionTypes.DELETE_APPLICATION_START,
+    deleteApplicationAsync
+  );
+}
+
 function* getAllEmployeeApplicationsStart() {
   yield takeLatest(
     ApplicationsActionTypes.GET_ALL_EMPLOYEE_APPLICATIONS_START,
@@ -140,6 +172,7 @@ export default function* applicationsSagas() {
     call(createNewApplicationStart),
     call(updateExistingApplicationStart),
     call(getAllEmployeeApplicationsStart),
-    call(getAllJobApplicationsStart)
+    call(getAllJobApplicationsStart),
+    call(deleteApplicationStart)
   ]);
 }

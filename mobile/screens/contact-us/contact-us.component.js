@@ -18,11 +18,12 @@ const ContactUs = ({
   loading,
   errorMessage
 }) => {
-  const [contactData, setContactData] = useState({
+  const INITIAL_STATE = {
     email: currentUser ? currentUser.email : '',
     subject: '',
     message: ''
-  });
+  };
+  const [contactData, setContactData] = useState(INITIAL_STATE);
   const { email, subject, message } = contactData;
 
   const _handleChange = (name, value) => {
@@ -40,6 +41,7 @@ const ContactUs = ({
     }
     contactUsStart({ ...contactData, email: email.toLowerCase().trim() });
     if (!loading && errorMessage.length === 0) {
+      setContactData(INITIAL_STATE);
       navigation.goBack();
     }
   };

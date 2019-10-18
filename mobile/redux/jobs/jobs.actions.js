@@ -32,6 +32,22 @@ export const updateExistingJobFailure = errorMessage => ({
   payload: errorMessage
 });
 
+// DELETE JOB
+export const deleteJobStart = jobId => ({
+  type: JobsActionTypes.DELETE_JOB_START,
+  payload: jobId
+});
+
+export const deleteJobSuccess = employerJobs => ({
+  type: JobsActionTypes.DELETE_JOB_SUCCESS,
+  payload: employerJobs
+});
+
+export const deleteJobFailure = errorMessage => ({
+  type: JobsActionTypes.DELETE_JOB_FAILURE,
+  payload: errorMessage
+});
+
 // GET ALL EMPLOYER JOBS
 export const getAllEmployerJobsStart = employerId => ({
   type: JobsActionTypes.GET_ALL_EMPLOYER_JOBS_START,
