@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+const Application = require('./application');
+const Saved = require('./saved');
+
 const answerSchema = new mongoose.Schema({
   answer_text: {
     type: String,
@@ -100,8 +103,8 @@ const jobSchema = new mongoose.Schema(
 jobSchema.pre('remove', async function(next) {
   const job = this;
 
-  // remove applications
-  // await Book.deleteMany({ owner: employee._id });
+  await Application.deleteMany({ job: job._id });
+  await Saved.deleteMany({ job: job._id });
 
   next();
 });

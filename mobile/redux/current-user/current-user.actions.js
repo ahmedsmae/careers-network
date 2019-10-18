@@ -47,6 +47,37 @@ export const loadingUserFailure = errorMessage => ({
   payload: errorMessage
 });
 
+// CHANGE PASSWORD
+export const changePasswordStart = (oldPassword, newPassword) => ({
+  type: CurrentUserActionTypes.CHANGE_PASSWORD_START,
+  payload: { oldPassword, newPassword }
+});
+
+export const changePasswordSuccess = results => ({
+  type: CurrentUserActionTypes.CHANGE_PASSWORD_SUCCESS,
+  payload: results
+});
+
+export const changePasswordFailure = errorMessage => ({
+  type: CurrentUserActionTypes.CHANGE_PASSWORD_FAILURE,
+  payload: errorMessage
+});
+
+// FORGET PASSWORD
+export const forgetPasswordStart = email => ({
+  type: CurrentUserActionTypes.FORGET_PASSWORD_START,
+  payload: email
+});
+
+export const forgetPasswordSuccess = () => ({
+  type: CurrentUserActionTypes.FORGET_PASSWORD_SUCCESS
+});
+
+export const forgetPasswordFailure = errorMessage => ({
+  type: CurrentUserActionTypes.FORGET_PASSWORD_FAILURE,
+  payload: errorMessage
+});
+
 // SIGNOUT USER
 export const signoutUserStart = () => ({
   type: CurrentUserActionTypes.SIGN_OUT_USER_START
@@ -58,6 +89,21 @@ export const signoutUserSuccess = () => ({
 
 export const signoutUserFailure = errorMessage => ({
   type: CurrentUserActionTypes.SIGN_OUT_USER_FAILURE,
+  payload: errorMessage
+});
+
+// DELETE USER
+export const deleteUserStart = deleteData => ({
+  type: CurrentUserActionTypes.DELETE_USER_START,
+  payload: deleteData
+});
+
+export const deleteUserSuccess = () => ({
+  type: CurrentUserActionTypes.DELETE_USER_SUCCESS
+});
+
+export const deleteUserFailure = errorMessage => ({
+  type: CurrentUserActionTypes.DELETE_USER_FAILURE,
   payload: errorMessage
 });
 

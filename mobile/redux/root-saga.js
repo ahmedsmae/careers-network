@@ -7,6 +7,7 @@ import editEmployerSagas from './current-user/edit-employer.sagas';
 import jobsSagas from './jobs/jobs.sagas';
 import applicationsSagas from './applications/applications.sagas';
 import savedSagas from './saved/saved.sagas';
+import followsSagas from './follows/follows.sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -16,6 +17,7 @@ export default function* rootSaga() {
     call(editEmployerSagas),
     call(jobsSagas),
     call(applicationsSagas),
-    call(savedSagas)
+    call(savedSagas),
+    call(followsSagas)
   ]);
 }

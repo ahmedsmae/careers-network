@@ -10,14 +10,15 @@ import { EmployerEmployerProfileContainer } from '../screens/employer-profile/em
 import { EmployerEmployeeProfileContainer } from '../screens/employee-profile/employee-profile-containers';
 
 import JobApplicationsScreen from '../screens/job-applications/job-applications.component';
-import AboutScreen from '../screens/about/about.component';
 import ContactUsScreen from '../screens/contact-us/contact-us.component';
 import MyJobsScreen from '../screens/my-jobs/my-jobs.component';
 import EditEmployerInfoScreen from '../screens/edit-employer-info/edit-employer-info.component';
 import EditJobScreen from '../screens/edit-job/edit-job.component';
 
 import hideHeaderNavOptions from './hide-header-nav-options';
+import settingsNavigator from './settings-navigator';
 import drawerNavOptions from './drawer-nav-options';
+import aboutNavigator from './about-navigator';
 
 const employerProfileNavigator = createStackNavigator(
   {
@@ -57,8 +58,12 @@ const employerDrawerNavigator = createDrawerNavigator(
       screen: employerProfileNavigator,
       navigationOptions: { drawerLabel: () => null }
     },
+    Settings: {
+      screen: settingsNavigator,
+      navigationOptions: { drawerLabel: () => null }
+    },
     About: {
-      screen: AboutScreen,
+      screen: aboutNavigator,
       navigationOptions: { drawerLabel: () => null }
     },
     ContactUs: {

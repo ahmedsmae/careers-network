@@ -52,9 +52,7 @@ router.get('/search/:position/:locationid', async (req, res) => {
       searchCriteria.position = { $regex: position.trim(), $options: 'i' };
     }
 
-    const jobsResult = await Job.find(searchCriteria).populate('owner', [
-      'name'
-    ]);
+    const jobsResult = await Job.find(searchCriteria).populate('owner');
 
     res.json({ jobsResult });
   } catch (err) {
@@ -65,23 +63,24 @@ router.get('/search/:position/:locationid', async (req, res) => {
 
 /**
  * @method - GET
- * @url - '/api/jobs/following/:employeeid'
+ * @url - '/api/jobs/:employerid'
  * @data - Header token
- * @action - get all the jobs of employers followed by this employee
- * @access - private
+ * @action - get all the jobs of specific employer
+ * @access - public
  */
-router.get('/following/:employeeid', auth, async (req, res) => {
+router.get('/:employerid', async (req, res) => {
   try {
-    const employee = await Employee.findById(req.params.employeeid);
+    const employer = await Employer.findById(req.params.employerid);
 
-    if (!employee) {
+    if (!employer) {
       return res
         .status(400)
-        .json({ errors: [{ msg: 'Employee does not exists' }] });
+        .json({ errors: [{ msg: 'Employer does not exists' }] });
     }
 
-    //!  use employeeid > get list of following
-    //! use following > get list of jobs {owner===following.employer_id}
+    const employerJobs = await Job.find({ owner: employer._id });
+
+    res.json({ employerJobs });
   } catch (err) {
     console.error(err.message);
     res.status(400).json({ errors: [{ msg: err.message }] });

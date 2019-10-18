@@ -15,7 +15,13 @@ import {
   loadingUserSuccess,
   loadingUserFailure,
   signoutUserSuccess,
-  signoutUserFailure
+  signoutUserFailure,
+  deleteUserSuccess,
+  deleteUserFailure,
+  changePasswordSuccess,
+  changePasswordFailure,
+  forgetPasswordSuccess,
+  forgetPasswordFailure
 } from './current-user.actions';
 
 function* signUpUserAsync({ payload }) {
@@ -73,6 +79,44 @@ function* loadingUserAsync() {
   }
 }
 
+function* changePasswordAsync({ payload }) {
+  try {
+    yield setAuthToken();
+
+    const response = yield call(axios, {
+      method: 'post',
+      url: URLS.CHANGE_PASSWORD,
+      data: payload
+    });
+
+    yield put(changePasswordSuccess(response.data));
+    Toast.show('Password changed successfully', {
+      backgroundColor: 'green',
+      duration: Toast.durations.SHORT
+    });
+  } catch (err) {
+    yield put(changePasswordFailure(err.message));
+  }
+}
+
+function* forgetPasswordAsync({ payload }) {
+  try {
+    yield call(axios, {
+      method: 'post',
+      url: URLS.FORGET_PASSWORD,
+      data: { email: payload }
+    });
+
+    yield put(forgetPasswordSuccess());
+    Toast.show(`Password sent to ${payload} successfully`, {
+      backgroundColor: 'green',
+      duration: Toast.durations.SHORT
+    });
+  } catch (err) {
+    yield put(forgetPasswordFailure(err.message));
+  }
+}
+
 function* signOutUserAsync() {
   try {
     yield setAuthToken();
@@ -94,6 +138,28 @@ function* signOutUserAsync() {
   }
 }
 
+function* deleteUserAsync({ payload }) {
+  try {
+    yield setAuthToken();
+
+    yield call(axios, {
+      method: 'delete',
+      url: URLS.DELETE_USER,
+      data: payload
+    });
+
+    yield AsyncStorage.removeItem('token');
+
+    yield put(deleteUserSuccess());
+  } catch (err) {
+    Toast.show(err.message, {
+      backgroundColor: 'red',
+      duration: Toast.durations.LONG
+    });
+    yield put(deleteUserFailure(err.message));
+  }
+}
+
 function* signUpUserStart() {
   yield takeLatest(CurrentUserActionTypes.SIGN_UP_USER_START, signUpUserAsync);
 }
@@ -106,6 +172,20 @@ function* loadingUserStart() {
   yield takeLatest(CurrentUserActionTypes.LOADING_USER_START, loadingUserAsync);
 }
 
+function* changePasswordStart() {
+  yield takeLatest(
+    CurrentUserActionTypes.CHANGE_PASSWORD_START,
+    changePasswordAsync
+  );
+}
+
+function* forgetPasswordStart() {
+  yield takeLatest(
+    CurrentUserActionTypes.FORGET_PASSWORD_START,
+    forgetPasswordAsync
+  );
+}
+
 function* signOutUserStart() {
   yield takeLatest(
     CurrentUserActionTypes.SIGN_OUT_USER_START,
@@ -113,11 +193,18 @@ function* signOutUserStart() {
   );
 }
 
+function* deleteUserStart() {
+  yield takeLatest(CurrentUserActionTypes.DELETE_USER_START, deleteUserAsync);
+}
+
 export default function* userSignSagas() {
   yield all([
     call(signUpUserStart),
     call(signInUserStart),
     call(loadingUserStart),
-    call(signOutUserStart)
+    call(signOutUserStart),
+    call(deleteUserStart),
+    call(changePasswordStart),
+    call(forgetPasswordStart)
   ]);
 }

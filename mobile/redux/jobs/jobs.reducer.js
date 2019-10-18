@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   searchJobs: [],
   homeJobs: [],
   followingJobs: [],
+  selectedEmployerJobs: [],
   loading: false,
   errorMessage: ''
 };
@@ -17,6 +18,7 @@ const jobsReducer = (state = INITIAL_STATE, { type, payload }) => {
     case JobsActionTypes.GET_HOME_JOBS_START:
     case JobsActionTypes.GET_FOLLOWING_JOBS_START:
     case JobsActionTypes.SEARCH_JOBS_START:
+    case JobsActionTypes.PUBLIC_GET_EMPLOYER_JOBS_START:
       return {
         ...state,
         loading: true,
@@ -57,6 +59,14 @@ const jobsReducer = (state = INITIAL_STATE, { type, payload }) => {
         errorMessage: ''
       };
 
+    case JobsActionTypes.PUBLIC_GET_EMPLOYER_JOBS_SUCCESS:
+      return {
+        ...state,
+        selectedEmployerJobs: payload,
+        loading: false,
+        errorMessage: ''
+      };
+
     case JobsActionTypes.CREATE_NEW_JOB_FAILURE:
     case JobsActionTypes.UPDATE_EXISTING_JOB_FAILURE:
       return {
@@ -93,6 +103,14 @@ const jobsReducer = (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         searchJobs: [],
+        loading: false,
+        errorMessage: payload
+      };
+
+    case JobsActionTypes.PUBLIC_GET_EMPLOYER_JOBS_FAILURE:
+      return {
+        ...state,
+        selectedEmployerJobs: [],
         loading: false,
         errorMessage: payload
       };

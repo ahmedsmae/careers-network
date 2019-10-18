@@ -22,6 +22,11 @@ export const selectFollowingJobs = createSelector(
   jobs => jobs.followingJobs
 );
 
+export const selectSelectedEmployerJobs = createSelector(
+  [selectJobs],
+  jobs => jobs.selectedEmployerJobs
+);
+
 export const selectLoading = createSelector(
   [selectJobs],
   jobs => jobs.loading

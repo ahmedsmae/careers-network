@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+const Follow = require('./follow');
+const Saved = require('./saved');
+const Application = require('./application');
+
 const educationSchema = new mongoose.Schema({
   subject: {
     type: String,
@@ -133,14 +137,9 @@ employeeSchema.methods.toJSON = function() {
 employeeSchema.pre('remove', async function(next) {
   const employee = this;
 
-  // remove applications
-  // await Book.deleteMany({ owner: employee._id });
-
-  // remove follows
-
-  // remove bookmarks
-
-  // remove reviews
+  await Application.deleteMany({ owner: employee._id });
+  await Saved.deleteMany({ owner: employee._id });
+  await Follow.deleteMany({ owner: employee._id });
 
   next();
 });

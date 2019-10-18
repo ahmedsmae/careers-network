@@ -19,18 +19,30 @@ app.use(cors());
 // app.use('/', (req, res) => res.send('Welcome to Careers Network!'));
 // Define Routers
 app.use('/api/users', require('./routes/user/sign'));
+app.use('/api/users', require('./routes/user/passwords'));
+app.use('/api/users', require('./routes/user/delete'));
+
 app.use('/api/employees', require('./routes/employee/employee-info'));
 app.use('/api/employees', require('./routes/employee/education'));
 app.use('/api/employees', require('./routes/employee/serve-images'));
 app.use('/api/employers', require('./routes/employer/employer-info'));
 app.use('/api/employers', require('./routes/employer/serve-images'));
+
 app.use('/api/jobs', require('./routes/job/setters'));
 app.use('/api/jobs', require('./routes/job/getters'));
+app.use('/api/jobs', require('./routes/job/delete'));
+
 app.use('/api/applications', require('./routes/application/setters'));
 app.use('/api/applications', require('./routes/application/getters'));
+app.use('/api/applications', require('./routes/application/delete'));
+
 app.use('/api/savedjobs', require('./routes/saved/setters'));
 app.use('/api/savedjobs', require('./routes/saved/getters'));
 app.use('/api/savedjobs', require('./routes/saved/delete'));
+
+app.use('/api/follows', require('./routes/follow/setters'));
+app.use('/api/follows', require('./routes/follow/getters'));
+app.use('/api/follows', require('./routes/follow/delete'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

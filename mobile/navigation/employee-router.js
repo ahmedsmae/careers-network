@@ -9,22 +9,24 @@ import { AuthSearchResultsContainer } from '../screens/search-results/search-res
 import { EmployeeShowJobContainer } from '../screens/show-job/show-job.containers';
 import { EmployeeEmployerProfileContainer } from '../screens/employer-profile/employer-profile.containers';
 import { EmployeeEmployeeProfileContainer } from '../screens/employee-profile/employee-profile-containers';
+import SelectedEmployerJobsScreen from '../screens/selected-employer-jobs/selected-employer-jobs.component';
 
 import MyApplications from '../screens/my-applications/my-applications.component';
 import EditApplicationScreen from '../screens/edit-application/edit-application.component';
 
 import HomeScreen from '../screens/home/home.component';
-import FollowingScreen from '../screens/following/following.component';
+import FollowedEmployersScreen from '../screens/followed-employers/followed-employers.component';
 import MySavedJobsScreen from '../screens/my-saved-jobs/my-saved-jobs.component';
 import EditEmployeeInfoScreen from '../screens/edit-employee-info/edit-employee-info.component';
 import EditEducationScreen from '../screens/edit-education/edit-education.component';
 import EditExperienceScreen from '../screens/edit-experience/edit-experience.component';
 
-import AboutScreen from '../screens/about/about.component';
 import ContactUsScreen from '../screens/contact-us/contact-us.component';
 
 import hideHeaderNavOptions from './hide-header-nav-options';
+import settingsNavigator from './settings-navigator';
 import drawerNavOptions from './drawer-nav-options';
+import aboutNavigator from './about-navigator';
 
 const employeeProfileNavigator = createStackNavigator(
   {
@@ -36,13 +38,22 @@ const employeeProfileNavigator = createStackNavigator(
   hideHeaderNavOptions
 );
 
+const exploreEmployerNavigator = createStackNavigator(
+  {
+    EmployerProfile: EmployeeEmployerProfileContainer,
+    SelectedEmployerJobs: SelectedEmployerJobsScreen,
+    EmployeeShowJob: EmployeeShowJobContainer
+  },
+  hideHeaderNavOptions
+);
+
 const searchNavigator = createStackNavigator(
   {
     AuthSearch: AuthSearchContainer,
     AuthSearchResults: AuthSearchResultsContainer,
     EmployeeShowJob: EmployeeShowJobContainer,
-    EmployerProfile: EmployeeEmployerProfileContainer,
-    EditApplication: EditApplicationScreen
+    EditApplication: EditApplicationScreen,
+    EmployerProfile: exploreEmployerNavigator
   },
   hideHeaderNavOptions
 );
@@ -79,13 +90,13 @@ const employeeDrawerNavigator = createDrawerNavigator(
         )
       }
     },
-    Following: {
-      screen: FollowingScreen,
+    FOllowedEmployers: {
+      screen: FollowedEmployersScreen,
       navigationOptions: {
-        drawerLabel: 'Following Employers',
+        drawerLabel: 'Followed Employers',
         drawerIcon: drawerConfig => (
           <Ionicons
-            name={Platform.OS === 'android' ? 'md-people' : 'ios-people'}
+            name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
             size={23}
             color={drawerConfig.tintColor}
           />
@@ -118,8 +129,12 @@ const employeeDrawerNavigator = createDrawerNavigator(
         )
       }
     },
+    Settings: {
+      screen: settingsNavigator,
+      navigationOptions: { drawerLabel: () => null }
+    },
     About: {
-      screen: AboutScreen,
+      screen: aboutNavigator,
       navigationOptions: { drawerLabel: () => null }
     },
     ContactUs: {

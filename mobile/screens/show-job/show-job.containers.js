@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
-import { Appbar, FAB, Provider, Portal } from 'react-native-paper';
+import {
+  Appbar,
+  FAB,
+  Provider,
+  Portal,
+  Card,
+  Title,
+  Paragraph
+} from 'react-native-paper';
 
 import { selectApplicationByJobId } from '../../redux/applications/applications.selectors';
 import {
@@ -15,8 +23,10 @@ import {
 import { saveJobStart, unsaveJobStart } from '../../redux/saved/saved.actions';
 
 import ShowJob from './show-job.component';
+import UserImage from '../../components/user-image/user-image.component';
 
 import Colors from '../../constants/colors';
+import URLS from '../../redux/utils/urls';
 
 import styles from './show-job.styles';
 
@@ -52,6 +62,7 @@ const EmployeeShowJob = ({
         {isJobSaved(job._id) ? (
           <Appbar.Action
             icon='star'
+            color='yellow'
             onPress={() => unsaveJobStart(getSavedIdByJobId(job._id))}
           />
         ) : (
@@ -61,6 +72,30 @@ const EmployeeShowJob = ({
           />
         )}
       </Appbar.Header>
+
+      {job.owner._id && (
+        <Card
+          style={{ margin: 10 }}
+          onPress={() =>
+            navigation.navigate('EmployerProfile', { employer: job.owner })
+          }
+        >
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}
+          >
+            <UserImage
+              small
+              style={{ marginRight: 10 }}
+              source={`${URLS.SERVE_EMPLOYER_AVATAR}/${job.owner._id}`}
+            />
+
+            <View>
+              <Title>{job.owner.name}</Title>
+              <Paragraph>{job.owner.speciality}</Paragraph>
+            </View>
+          </View>
+        </Card>
+      )}
 
       <ShowJob job={job} />
 
@@ -133,11 +168,36 @@ const EmployerShowJob = ({ navigation, getAllJobApplicationsStart }) => {
 
 const NoAuthShowJob = ({ navigation }) => {
   const job = navigation.getParam('job');
+
   return (
     <>
       <Appbar.Header>
         <Appbar.Content title='Show Job' />
       </Appbar.Header>
+
+      {job.owner._id && (
+        <Card
+          style={{ margin: 10 }}
+          onPress={() =>
+            navigation.navigate('NoAuthEmployer', { employer: job.owner })
+          }
+        >
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}
+          >
+            <UserImage
+              small
+              style={{ marginRight: 10 }}
+              source={`${URLS.SERVE_EMPLOYER_AVATAR}/${job.owner._id}`}
+            />
+
+            <View>
+              <Title>{job.owner.name}</Title>
+              <Paragraph>{job.owner.speciality}</Paragraph>
+            </View>
+          </View>
+        </Card>
+      )}
 
       <ShowJob job={job} />
 

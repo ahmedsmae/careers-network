@@ -8,7 +8,6 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  Image,
   Platform
 } from 'react-native';
 import { Text, Button, Divider } from 'react-native-paper';
@@ -19,11 +18,8 @@ import URLS from '../../redux/utils/urls';
 import {
   selectCurrentUser,
   selectCurrentEmployee,
-  selectCurrentEmployer,
-  selectLoading,
-  selectErrorMessage
+  selectCurrentEmployer
 } from '../../redux/current-user/current-user.selectors';
-import { signoutUserStart } from '../../redux/current-user/current-user.actions';
 
 import UserImage from '../user-image/user-image.component';
 
@@ -33,9 +29,6 @@ const CustomDrawer = ({
   currentUser,
   currentEmployee,
   currentEmployer,
-  signoutUserStart,
-  loading,
-  errorMessage,
   ...props
 }) => {
   const { navigate, toggleDrawer } = props.navigation;
@@ -82,27 +75,19 @@ const CustomDrawer = ({
         {/* </SafeAreaView> */}
 
         <View>
-          <TouchableOpacity
-            onPress={() => {
-              signoutUserStart();
-              if (!loading && !errorMessage.length) {
-                navigate('NavigationAnchor');
-                toggleDrawer();
-              }
-            }}
-          >
+          <TouchableOpacity onPress={() => navigate('Settings')}>
             <View style={styles.item}>
               <View style={styles.iconContainer}>
                 <Ionicons
                   style={styles.icon}
                   name={
-                    Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'
+                    Platform.OS === 'android' ? 'md-settings' : 'ios-settings'
                   }
                   size={23}
                   color='grey'
                 />
               </View>
-              <Text style={styles.label}>Sign Out</Text>
+              <Text style={styles.label}>Settings</Text>
             </View>
           </TouchableOpacity>
 
@@ -159,16 +144,7 @@ const CustomDrawer = ({
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   currentEmployee: selectCurrentEmployee,
-  currentEmployer: selectCurrentEmployer,
-  loading: selectLoading,
-  errorMessage: selectErrorMessage
+  currentEmployer: selectCurrentEmployer
 });
 
-const mapDispatchToProps = dispatch => ({
-  signoutUserStart: () => dispatch(signoutUserStart())
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CustomDrawer);
+export default connect(mapStateToProps)(CustomDrawer);

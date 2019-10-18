@@ -94,3 +94,19 @@ export const searchJobsFailure = errorMessage => ({
   type: JobsActionTypes.SEARCH_JOBS_FAILURE,
   payload: errorMessage
 });
+
+// PUBLIC GET EMPLOYER JOBS
+export const publicGetEmployerJobsStart = employerId => ({
+  type: JobsActionTypes.PUBLIC_GET_EMPLOYER_JOBS_START,
+  payload: employerId
+});
+
+export const publicGetEmployerJobsSuccess = employerJobs => ({
+  type: JobsActionTypes.PUBLIC_GET_EMPLOYER_JOBS_SUCCESS,
+  payload: employerJobs
+});
+
+export const publicGetEmployerJobsFailure = errorMessage => ({
+  type: JobsActionTypes.PUBLIC_GET_EMPLOYER_JOBS_FAILURE,
+  payload: errorMessage
+});

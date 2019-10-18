@@ -8,17 +8,15 @@ import UserImage from '../../components/user-image/user-image.component';
 
 import styles from './employer-profile.styles';
 
-const EmployerProfile = ({ currentUser, currentEmployer, getCityNameById }) => {
-  const _id = currentEmployer ? currentEmployer._id : null;
-  const name = currentEmployer ? currentEmployer.name : null;
-  const kind = currentEmployer ? currentEmployer.kind : null;
-  const speciality = currentEmployer ? currentEmployer.speciality : null;
-  const location_id = currentEmployer ? currentEmployer.location_id : null;
-  const contact_numbers = currentEmployer
-    ? currentEmployer.contact_numbers
-    : null;
-  const web_site = currentEmployer ? currentEmployer.web_site : null;
-  const bio = currentEmployer ? currentEmployer.bio : null;
+const EmployerProfile = ({ currentUser, employer, getCityNameById }) => {
+  const _id = employer ? employer._id : null;
+  const name = employer ? employer.name : null;
+  const kind = employer ? employer.kind : null;
+  const speciality = employer ? employer.speciality : null;
+  const location_id = employer ? employer.location_id : null;
+  const contact_numbers = employer ? employer.contact_numbers : null;
+  const web_site = employer ? employer.web_site : null;
+  const bio = employer ? employer.bio : null;
 
   return (
     <ScrollView style={styles.screen}>

@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const Employee = require('./employee');
+const Employer = require('./employer');
+
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -96,10 +99,11 @@ userSchema.pre('remove', async function(next) {
   const user = this;
 
   const userKind = user.kind;
-
-  // delete it from his kind model
-
-  // await Book.deleteMany({ owner: user._id });
+  if (userKind === process.env.KIND_EMPLOYEE) {
+    await Employee.deleteOne({ owner: user._id });
+  } else if (userKind === process.env.KIND_EMPLOYER) {
+    await Employer.deleteOne({ owner: user._id });
+  }
 
   next();
 });

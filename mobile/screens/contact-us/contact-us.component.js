@@ -1,11 +1,17 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, ScrollView } from 'react-native';
+import { Appbar } from 'react-native-paper';
 
-const ContactUs = () => {
+const ContactUs = ({ navigation }) => {
   return (
-    <View>
-      <Text>Contact Us</Text>
-    </View>
+    <>
+      <Appbar.Header>
+        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title='Contact US' />
+      </Appbar.Header>
+
+      <ScrollView></ScrollView>
+    </>
   );
 };
 

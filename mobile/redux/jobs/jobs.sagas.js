@@ -18,7 +18,9 @@ import {
   getFollowingJobsSuccess,
   getFollowingJobsFailure,
   searchJobsSuccess,
-  searchJobsFailure
+  searchJobsFailure,
+  publicGetEmployerJobsSuccess,
+  publicGetEmployerJobsFailure
 } from './jobs.actions';
 
 function* createNewJobAsync({ payload }) {
@@ -148,6 +150,25 @@ function* searchJobsAsync({ payload }) {
   }
 }
 
+function* publicGetEmployerJobsAsync({ payload }) {
+  try {
+    yield setAuthToken();
+
+    const response = yield call(axios, {
+      method: 'get',
+      url: `${URLS.PUBLIC_GET_ALL_EMPLOYER_JOBS}/${payload}`
+    });
+
+    yield put(publicGetEmployerJobsSuccess(response.data.employerJobs));
+  } catch (err) {
+    Toast.show(err.message, {
+      backgroundColor: 'red',
+      duration: Toast.durations.LONG
+    });
+    yield put(publicGetEmployerJobsFailure(err.message));
+  }
+}
+
 function* createNewJobStart() {
   yield takeLatest(JobsActionTypes.CREATE_NEW_JOB_START, createNewJobAsync);
 }
@@ -181,6 +202,13 @@ function* searchJobsStart() {
   yield takeLatest(JobsActionTypes.SEARCH_JOBS_START, searchJobsAsync);
 }
 
+function* publicGetEmployerJobsStart() {
+  yield takeLatest(
+    JobsActionTypes.PUBLIC_GET_EMPLOYER_JOBS_START,
+    publicGetEmployerJobsAsync
+  );
+}
+
 export default function* jobsSagas() {
   yield all([
     call(createNewJobStart),
@@ -188,6 +216,7 @@ export default function* jobsSagas() {
     call(getAllEmployerJobsStart),
     call(getHomeJobsStart),
     call(getFollowingJobsStart),
-    call(searchJobsStart)
+    call(searchJobsStart),
+    call(publicGetEmployerJobsStart)
   ]);
 }

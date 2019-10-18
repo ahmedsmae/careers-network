@@ -5,6 +5,10 @@ export default URLS = {
   SIGNIN: `${BASE_URL}/api/users/signin`,
   AUTH: `${BASE_URL}/api/users/auth`,
   SIGNOUT: `${BASE_URL}/api/users/signout`,
+  DELETE_USER: `${BASE_URL}/api/users/deleteuser`,
+
+  CHANGE_PASSWORD: `${BASE_URL}/api/users/changepassword`,
+  FORGET_PASSWORD: `${BASE_URL}/api/users/forgetpassword`,
 
   EDIT_EMPLOYEE_AVATAR: `${BASE_URL}/api/employees/avatars`,
   EDIT_EMPLOYEE_INFO: `${BASE_URL}/api/employees/info`,
@@ -24,7 +28,7 @@ export default URLS = {
   UPDATE_EXISTING_JOB: `${BASE_URL}/api/jobs/`,
   GET_ALL_EMPLOYER_JOBS: `${BASE_URL}/api/jobs/employerjobs`, // + /:employerid
   SEARCH_JOBS: `${BASE_URL}/api/jobs/search`, // + /:position/:locationid
-  GET_FOLLOWING_EMPLOYERS_JOBS: `${BASE_URL}/api/jobs/following`, // + /:employeeid
+  PUBLIC_GET_ALL_EMPLOYER_JOBS: `${BASE_URL}/api/jobs`, // + /:employeeid
 
   CREATE_NEW_APPLICATION: `${BASE_URL}/api/applications/`,
   UPDATE_EXISTING_APPLICATION: `${BASE_URL}/api/applications/`,
@@ -33,5 +37,9 @@ export default URLS = {
 
   SAVE_JOB: `${BASE_URL}/api/savedjobs/`, // + /:jobid
   UNSAVE_JOB: `${BASE_URL}/api/savedjobs/`, // + /:savedid
-  GET_ALL_EMPLOYEE_SAVED_JOBS: `${BASE_URL}/api/savedjobs/`
+  GET_ALL_EMPLOYEE_SAVED_JOBS: `${BASE_URL}/api/savedjobs/`,
+
+  FOLLOW_EMPLOYER: `${BASE_URL}/api/follows/`, // + /:employerid
+  UNFOLLOW_EMPLOYER: `${BASE_URL}/api/follows/`, // + /:followid
+  GET_ALL_EMPLOYEE_FOLLOWS: `${BASE_URL}/api/follows/`
 };

@@ -13,7 +13,10 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.SIGN_UP_USER_START:
     case CurrentUserActionTypes.SIGN_IN_USER_START:
     case CurrentUserActionTypes.LOADING_USER_START:
+    case CurrentUserActionTypes.CHANGE_PASSWORD_START:
+    case CurrentUserActionTypes.FORGET_PASSWORD_START:
     case CurrentUserActionTypes.SIGN_OUT_USER_START:
+    case CurrentUserActionTypes.DELETE_USER_START:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_INFO_START:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_START:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_START:
@@ -30,6 +33,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.SIGN_UP_USER_SUCCESS:
     case CurrentUserActionTypes.SIGN_IN_USER_SUCCESS:
     case CurrentUserActionTypes.LOADING_USER_SUCCESS:
+    case CurrentUserActionTypes.CHANGE_PASSWORD_SUCCESS:
       return {
         ...state,
         currentUser: payload.user,
@@ -40,6 +44,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
       };
 
     case CurrentUserActionTypes.SIGN_OUT_USER_SUCCESS:
+    case CurrentUserActionTypes.DELETE_USER_SUCCESS:
       return INITIAL_STATE;
 
     case CurrentUserActionTypes.EDIT_EMPLOYEE_INFO_SUCCESS:
@@ -67,6 +72,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.SIGN_IN_USER_FAILURE:
     case CurrentUserActionTypes.LOADING_USER_FAILURE:
     case CurrentUserActionTypes.SIGN_OUT_USER_FAILURE:
+    case CurrentUserActionTypes.DELETE_USER_FAILURE:
       return {
         ...state,
         currentUser: null,
@@ -83,12 +89,15 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.EDIT_EMPLOYER_INFO_FAILURE:
     case CurrentUserActionTypes.EDIT_EMPLOYER_AVATAR_FAILURE:
     case CurrentUserActionTypes.EDIT_EMPLOYER_COVER_FAILURE:
+    case CurrentUserActionTypes.CHANGE_PASSWORD_FAILURE:
+    case CurrentUserActionTypes.FORGET_PASSWORD_FAILURE:
       return {
         ...state,
         loading: false,
         errorMessage: payload
       };
 
+    // case CurrentUserActionTypes.FORGET_PASSWORD_SUCCESS:
     default:
       return state;
   }

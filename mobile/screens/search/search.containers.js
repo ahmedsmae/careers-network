@@ -12,6 +12,7 @@ import {
 import { searchJobsStart } from '../../redux/jobs/jobs.actions';
 import { getAllEmployeeApplicationsStart } from '../../redux/applications/applications.actions';
 import { getAllEmployeeSavedJobsStart } from '../../redux/saved/saved.actions';
+import { getAllEmployeeFollowsStart } from '../../redux/follows/follows.actions';
 
 import Search from './search.component';
 
@@ -67,12 +68,18 @@ const AuthSearch = ({
   errorMessage,
   getAllEmployeeApplicationsStart,
   getAllEmployeeSavedJobsStart,
+  getAllEmployeeFollowsStart,
   ...props
 }) => {
   useEffect(() => {
     getAllEmployeeApplicationsStart();
     getAllEmployeeSavedJobsStart();
-  }, [getAllEmployeeApplicationsStart, getAllEmployeeSavedJobsStart]);
+    getAllEmployeeFollowsStart();
+  }, [
+    getAllEmployeeApplicationsStart,
+    getAllEmployeeSavedJobsStart,
+    getAllEmployeeFollowsStart
+  ]);
 
   return (
     <>
@@ -104,7 +111,8 @@ const mapDispatchToProps = dispatch => ({
   searchJobsStart: searchData => dispatch(searchJobsStart(searchData)),
   getAllEmployeeApplicationsStart: () =>
     dispatch(getAllEmployeeApplicationsStart()),
-  getAllEmployeeSavedJobsStart: () => dispatch(getAllEmployeeSavedJobsStart())
+  getAllEmployeeSavedJobsStart: () => dispatch(getAllEmployeeSavedJobsStart()),
+  getAllEmployeeFollowsStart: () => dispatch(getAllEmployeeFollowsStart())
 });
 
 export const NoAuthSearchContainer = connect(

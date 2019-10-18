@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+const Job = require('./job');
+const Follow = require('./follow');
+
 const contactNumberSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -66,14 +69,8 @@ employerSchema.methods.toJSON = function() {
 employerSchema.pre('remove', async function(next) {
   const employer = this;
 
-  // remove jobs
-  // await Book.deleteMany({ owner: employee._id });
-
-  // remove follows
-
-  // remove bookmarks
-
-  // remove reviews
+  await Job.deleteMany({ owner: employer._id });
+  await Follow.deleteMany({ employer: employer._id });
 
   next();
 });

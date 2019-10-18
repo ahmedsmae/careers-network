@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
-import { Appbar, Portal, Provider, FAB } from 'react-native-paper';
+import { Appbar, Portal, Provider, FAB, Text } from 'react-native-paper';
 
 import {
   selectCurrentUser,
@@ -13,6 +13,14 @@ import {
   editEmployerAvatarStart,
   editEmployerCoverStart
 } from '../../redux/current-user/current-user.actions';
+import {
+  selectIsEmployerFollowed,
+  selectFollowIdByEmployerId
+} from '../../redux/follows/follows.selectors';
+import {
+  followEmployerStart,
+  unfollowEmployerStart
+} from '../../redux/follows/follows.actions';
 
 import CameraOrMemory from '../../components/camera-or-memory/camera-or-memory.component';
 
@@ -21,15 +29,50 @@ import EmployerProfile from './employer-profile.component';
 import Colors from '../../constants/colors';
 import styles from './employer-profile.styles';
 
-const EmployeeEmployerProfile = ({ navigation, ...props }) => {
+const EmployeeEmployerProfile = ({
+  navigation,
+  followEmployerStart,
+  unfollowEmployerStart,
+  isEmployerFollowed,
+  getFollowIdByEmployerId,
+  ...props
+}) => {
+  const employer = navigation.getParam('employer');
+
   return (
     <>
       <Appbar.Header>
         <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title='Employer Profile' />
+
+        {isEmployerFollowed(employer._id) ? (
+          <Appbar.Action
+            color='yellow'
+            icon='bookmark'
+            onPress={() =>
+              unfollowEmployerStart(getFollowIdByEmployerId(employer._id))
+            }
+          />
+        ) : (
+          <Appbar.Action
+            icon='bookmark-border'
+            onPress={() => followEmployerStart(employer._id)}
+          />
+        )}
+
+        <Text
+          style={{ fontSize: 18, color: 'white', margin: 10 }}
+          onPress={() =>
+            navigation.navigate('SelectedEmployerJobs', {
+              employerId: employer._id
+            })
+          }
+        >
+          Jops
+        </Text>
       </Appbar.Header>
 
-      <EmployerProfile {...props} />
+      <EmployerProfile employer={employer} {...props} />
     </>
   );
 };
@@ -38,6 +81,7 @@ const EmployerEmployerProfile = ({
   navigation,
   editEmployerAvatarStart,
   editEmployerCoverStart,
+  currentEmployer,
   loading,
   ...props
 }) => {
@@ -73,7 +117,7 @@ const EmployerEmployerProfile = ({
           }}
         />
 
-        <EmployerProfile {...props} />
+        <EmployerProfile employer={currentEmployer} {...props} />
 
         <Portal>
           <FAB.Group
@@ -111,14 +155,26 @@ const EmployerEmployerProfile = ({
   );
 };
 
-const NoAuthEmployerProfile = props => {
+const NoAuthEmployerProfile = ({ navigation, ...props }) => {
+  const employer = navigation.getParam('employer');
+
   return (
     <>
       <Appbar.Header>
         <Appbar.Content title='Employer Profile' />
+        <Text
+          style={{ fontSize: 18, color: 'white', margin: 10 }}
+          onPress={() =>
+            navigation.navigate('SelectedEmployerJobs', {
+              employerId: employer._id
+            })
+          }
+        >
+          Jops
+        </Text>
       </Appbar.Header>
 
-      <EmployerProfile {...props} />
+      <EmployerProfile employer={employer} {...props} />
     </>
   );
 };
@@ -127,12 +183,17 @@ const mapStateToProps = state => ({
   currentUser: selectCurrentUser(state),
   currentEmployer: selectCurrentEmployer(state),
   getCityNameById: id => selectCityNameById(id)(state),
-  loading: selectLoading(state)
+  loading: selectLoading(state),
+  isEmployerFollowed: employerId => selectIsEmployerFollowed(employerId)(state),
+  getFollowIdByEmployerId: employerId =>
+    selectFollowIdByEmployerId(employerId)(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   editEmployerAvatarStart: avatar => dispatch(editEmployerAvatarStart(avatar)),
-  editEmployerCoverStart: cover => dispatch(editEmployerCoverStart(cover))
+  editEmployerCoverStart: cover => dispatch(editEmployerCoverStart(cover)),
+  followEmployerStart: employerId => dispatch(followEmployerStart(employerId)),
+  unfollowEmployerStart: followId => dispatch(unfollowEmployerStart(followId))
 });
 
 export const NoAuthEmployerProfileContainer = connect(

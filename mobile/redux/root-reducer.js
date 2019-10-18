@@ -6,6 +6,7 @@ import constantsReducer from './constants/constants.reducer';
 import jobsReducer from './jobs/jobs.reducer';
 import applicationsReducer from './applications/applications.reducer';
 import savedReducer from './saved/saved.reducer';
+import followsReducer from './follows/follows.reducer';
 
 const rootReducer = combineReducers({
   // add all reducers
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   constants: constantsReducer,
   jobs: jobsReducer,
   applications: applicationsReducer,
-  saved: savedReducer
+  saved: savedReducer,
+  follows: followsReducer
 });
 
 export default rootReducer;
