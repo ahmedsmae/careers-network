@@ -11,6 +11,7 @@ import SelectedEmployerJobsScreen from '../screens/selected-employer-jobs/select
 
 import SignInScreen from '../screens/sign-in/sign-in.component';
 import SignUpScreen from '../screens/sign-up/sign-up.component';
+import ForgetPasswordScreen from '../screens/forget-password/forget-password.component';
 
 import ContactUsScreen from '../screens/contact-us/contact-us.component';
 
@@ -42,6 +43,7 @@ const noAuthNavigator = createStackNavigator(
     NoAuthSearch: noAuthSearchNavigator,
     SignIn: SignInScreen,
     SignUp: SignUpScreen,
+    ForgetPassword: ForgetPasswordScreen,
     About: aboutNavigator,
     ContactUs: ContactUsScreen
   },

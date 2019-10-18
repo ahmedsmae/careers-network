@@ -21,7 +21,9 @@ import {
   changePasswordSuccess,
   changePasswordFailure,
   forgetPasswordSuccess,
-  forgetPasswordFailure
+  forgetPasswordFailure,
+  contactUsSuccess,
+  contactUsFailure
 } from './current-user.actions';
 
 function* signUpUserAsync({ payload }) {
@@ -117,6 +119,24 @@ function* forgetPasswordAsync({ payload }) {
   }
 }
 
+function* contactUsAsync({ payload }) {
+  try {
+    yield call(axios, {
+      method: 'post',
+      url: URLS.CONTACT_US,
+      data: payload
+    });
+
+    yield put(contactUsSuccess());
+    Toast.show('Email sent successfully\nThanks', {
+      backgroundColor: 'green',
+      duration: Toast.durations.SHORT
+    });
+  } catch (err) {
+    yield put(contactUsFailure(err.message));
+  }
+}
+
 function* signOutUserAsync() {
   try {
     yield setAuthToken();
@@ -151,6 +171,10 @@ function* deleteUserAsync({ payload }) {
     yield AsyncStorage.removeItem('token');
 
     yield put(deleteUserSuccess());
+    Toast.show('User deleted successfully', {
+      backgroundColor: 'red',
+      duration: Toast.durations.SHORT
+    });
   } catch (err) {
     Toast.show(err.message, {
       backgroundColor: 'red',
@@ -197,6 +221,10 @@ function* deleteUserStart() {
   yield takeLatest(CurrentUserActionTypes.DELETE_USER_START, deleteUserAsync);
 }
 
+function* contactUsStart() {
+  yield takeLatest(CurrentUserActionTypes.CONTACT_US_START, contactUsAsync);
+}
+
 export default function* userSignSagas() {
   yield all([
     call(signUpUserStart),
@@ -205,6 +233,7 @@ export default function* userSignSagas() {
     call(signOutUserStart),
     call(deleteUserStart),
     call(changePasswordStart),
-    call(forgetPasswordStart)
+    call(forgetPasswordStart),
+    call(contactUsStart)
   ]);
 }

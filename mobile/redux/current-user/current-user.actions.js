@@ -78,6 +78,21 @@ export const forgetPasswordFailure = errorMessage => ({
   payload: errorMessage
 });
 
+// CONTACT US
+export const contactUsStart = contactData => ({
+  type: CurrentUserActionTypes.CONTACT_US_START,
+  payload: contactData
+});
+
+export const contactUsSuccess = () => ({
+  type: CurrentUserActionTypes.CONTACT_US_SUCCESS
+});
+
+export const contactUsFailure = errorMessage => ({
+  type: CurrentUserActionTypes.CONTACT_US_FAILURE,
+  payload: errorMessage
+});
+
 // SIGNOUT USER
 export const signoutUserStart = () => ({
   type: CurrentUserActionTypes.SIGN_OUT_USER_START

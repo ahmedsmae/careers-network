@@ -9,6 +9,7 @@ export default URLS = {
 
   CHANGE_PASSWORD: `${BASE_URL}/api/users/changepassword`,
   FORGET_PASSWORD: `${BASE_URL}/api/users/forgetpassword`,
+  CONTACT_US: `${BASE_URL}/api/users/contactus`,
 
   EDIT_EMPLOYEE_AVATAR: `${BASE_URL}/api/employees/avatars`,
   EDIT_EMPLOYEE_INFO: `${BASE_URL}/api/employees/info`,

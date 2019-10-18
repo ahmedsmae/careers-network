@@ -6,6 +6,8 @@ const passwordGenerator = require('generate-password');
 
 const auth = require('../utils/auth');
 const User = require('../../database/models/user');
+const Employee = require('../../database/models/employee');
+const Employer = require('../../database/models/employer');
 
 /**
  * @method - POST
@@ -129,8 +131,6 @@ router.post(
       // set password to user
       user.password = newPassword;
 
-      // clear the user tokens
-      user.tokens = [];
       await user.save();
 
       const token = await user.generateAuthToken();

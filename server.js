@@ -21,6 +21,7 @@ app.use(cors());
 app.use('/api/users', require('./routes/user/sign'));
 app.use('/api/users', require('./routes/user/passwords'));
 app.use('/api/users', require('./routes/user/delete'));
+app.use('/api/users', require('./routes/user/contact-us'));
 
 app.use('/api/employees', require('./routes/employee/employee-info'));
 app.use('/api/employees', require('./routes/employee/education'));

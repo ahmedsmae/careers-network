@@ -7,6 +7,11 @@ export const selectCitiesList = createSelector(
   constants => constants.cities
 );
 
+export const selectDeleteUserReasons = createSelector(
+  [selectConstants],
+  constants => constants.deleteUserReasons
+);
+
 export const selectCityNameById = id =>
   createSelector(
     [selectCitiesList],

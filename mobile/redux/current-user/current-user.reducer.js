@@ -15,6 +15,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.LOADING_USER_START:
     case CurrentUserActionTypes.CHANGE_PASSWORD_START:
     case CurrentUserActionTypes.FORGET_PASSWORD_START:
+    case CurrentUserActionTypes.CONTACT_US_START:
     case CurrentUserActionTypes.SIGN_OUT_USER_START:
     case CurrentUserActionTypes.DELETE_USER_START:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_INFO_START:
@@ -91,6 +92,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.EDIT_EMPLOYER_COVER_FAILURE:
     case CurrentUserActionTypes.CHANGE_PASSWORD_FAILURE:
     case CurrentUserActionTypes.FORGET_PASSWORD_FAILURE:
+    case CurrentUserActionTypes.CONTACT_US_FAILURE:
       return {
         ...state,
         loading: false,
@@ -98,6 +100,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
       };
 
     // case CurrentUserActionTypes.FORGET_PASSWORD_SUCCESS:
+    // case CurrentUserActionTypes.CONTACT_US_SUCCESS:
     default:
       return state;
   }

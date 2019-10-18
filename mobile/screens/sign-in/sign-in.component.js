@@ -63,6 +63,13 @@ const SignIn = ({ currentUser, navigation, signInUserStart }) => {
       >
         Don't have an account!
       </Paragraph>
+
+      <Paragraph
+        style={styles.signUp}
+        onPress={() => navigation.navigate('ForgetPassword')}
+      >
+        Forget password ?
+      </Paragraph>
     </View>
   );
 };

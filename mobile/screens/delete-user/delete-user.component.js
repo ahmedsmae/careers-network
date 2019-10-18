@@ -1,8 +1,45 @@
-import React from 'react';
-import { View, ScrollView } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { View, ScrollView, Picker } from 'react-native';
+import {
+  Appbar,
+  Paragraph,
+  TextInput,
+  Button,
+  Divider
+} from 'react-native-paper';
 
-const DeleteUser = ({ navigation }) => {
+import {
+  selectLoading,
+  selectErrorMessage
+} from '../../redux/current-user/current-user.selectors';
+import { selectDeleteUserReasons } from '../../redux/constants/constants.selectors';
+import { deleteUserStart } from '../../redux/current-user/current-user.actions';
+
+const DeleteUser = ({
+  navigation,
+  loading,
+  errorMessage,
+  deleteUserReasons,
+  deleteUserStart
+}) => {
+  const [deleteData, setDeleteData] = useState({
+    reason: deleteUserReasons[0],
+    details: '',
+    email: '',
+    password: ''
+  });
+  const { reason, details, email, password } = deleteData;
+
+  const _handleChange = (name, value) => {
+    setDeleteData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const _handleSubmit = () => {
+    deleteUserStart({ ...deleteData, email: email.toLowerCase().trim() });
+  };
+
   return (
     <>
       <Appbar.Header>
@@ -10,9 +47,76 @@ const DeleteUser = ({ navigation }) => {
         <Appbar.Content title='Delete User' />
       </Appbar.Header>
 
-      <ScrollView></ScrollView>
+      <ScrollView>
+        <Paragraph>This is unfortunate</Paragraph>
+
+        <View
+          style={{
+            borderWidth: 1,
+            margin: 10,
+            padding: 5,
+            borderRadius: 5,
+            borderColor: 'grey'
+          }}
+        >
+          <Picker
+            selectedValue={reason}
+            onValueChange={_handleChange.bind(this, 'reason')}
+          >
+            {deleteUserReasons.map((reason, index) => (
+              <Picker.Item key={index} label={reason} value={reason} />
+            ))}
+          </Picker>
+        </View>
+
+        <TextInput
+          style={{ margin: 10 }}
+          mode='outlined'
+          multiline
+          numberOfLines={3}
+          label='Details'
+          value={details}
+          onChangeText={_handleChange.bind(this, 'details')}
+        />
+
+        <Divider />
+        <Paragraph>Sign In Required</Paragraph>
+
+        <TextInput
+          style={{ margin: 10 }}
+          mode='outlined'
+          label='Email'
+          value={email}
+          onChangeText={_handleChange.bind(this, 'email')}
+        />
+
+        <TextInput
+          style={{ margin: 10 }}
+          mode='outlined'
+          label='Password'
+          secureTextEntry
+          value={password}
+          sec
+          onChangeText={_handleChange.bind(this, 'password')}
+        />
+
+        <Button onPress={_handleSubmit}>DELETE USER</Button>
+      </ScrollView>
     </>
   );
 };
 
-export default DeleteUser;
+const mapStateToProps = createStructuredSelector({
+  loading: selectLoading,
+  errorMessage: selectErrorMessage,
+  deleteUserReasons: selectDeleteUserReasons
+});
+
+const mapDiapatchToProps = dispatch => ({
+  deleteUserStart: deleteData => dispatch(deleteUserStart(deleteData))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDiapatchToProps
+)(DeleteUser);
