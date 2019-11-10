@@ -1,7 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, Text, ScrollView } from 'react-native';
-import { Card, List, Avatar, Caption, Chip } from 'react-native-paper';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  Card,
+  List,
+  Avatar,
+  Caption,
+  Chip,
+  Title,
+  Paragraph
+} from 'react-native-paper';
 
 import { selectCityNameById } from '../../redux/constants/constants.selectors';
 
@@ -53,20 +61,23 @@ const ApplicationCard = ({
   );
 
   return (
-    <Card style={{ elevation: 5, margin: 10, padding: 5 }}>
-      <List.Item
-        title={`${first_name} ${middle_name} ${last_name}`}
-        description={getCityName(location_id)}
-        left={props => (
-          <Avatar.Image
-            {...props}
-            size={60}
-            style={{ marginRight: 10 }}
-            source={{ uri: `${URLS.SERVE_EMPLOYEE_AVATAR}/${_id}` }}
-          />
-        )}
+    <Card style={{ margin: 10 }}>
+      <TouchableOpacity
+        style={{ flexDirection: 'row', margin: 10 }}
         onPress={onPress}
-      />
+      >
+        <Avatar.Image
+          size={60}
+          style={{ marginRight: 10 }}
+          source={{ uri: `${URLS.SERVE_EMPLOYEE_AVATAR}/${_id}` }}
+        />
+
+        <View>
+          <Title>{`${first_name} ${middle_name} ${last_name}`}</Title>
+          <Paragraph>{getCityName(location_id)}</Paragraph>
+        </View>
+      </TouchableOpacity>
+
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}

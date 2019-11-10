@@ -15,18 +15,6 @@ export default StyleSheet.create({
     borderColor: 'grey',
     borderWidth: 1
   },
-  footer: {
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  info: {},
-  footerText: {
-    fontSize: 18,
-    marginVertical: 10
-  },
-  footerButton: {
-    marginVertical: 10
-  },
   item: {
     flexDirection: 'row',
     alignItems: 'center'

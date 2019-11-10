@@ -8,11 +8,11 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  Platform
+  Platform,
+  Image
 } from 'react-native';
-import { Text, Button, Divider } from 'react-native-paper';
+import { Text, Divider } from 'react-native-paper';
 import { DrawerNavigatorItems } from 'react-navigation-drawer';
-import Toast from 'react-native-root-toast';
 
 import URLS from '../../redux/utils/urls';
 import {
@@ -133,14 +133,14 @@ const CustomDrawer = ({
 
       <Divider />
 
-      <View style={styles.footer}>
-        <View style={styles.info}>
-          <Text
-            style={styles.footerText}
-            onPress={() => Toast.show('Welcome to Careers Network App')}
-          >
-            Careers Network
-          </Text>
+      <View style={{ flexDirection: 'row' }}>
+        <Image
+          source={require('../../assets/drawer-logo.jpg')}
+          style={{ width: 100, height: '100%' }}
+        />
+        <View style={{ marginVertical: 10, marginLeft: 20 }}>
+          <Text style={{ fontSize: 18 }}>Careers Network</Text>
+          <Text style={{ fontSize: 14, color: 'grey' }}>Version 1.0.0</Text>
         </View>
       </View>
     </SafeAreaView>

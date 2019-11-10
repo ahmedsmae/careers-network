@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { View, Alert } from 'react-native';
-import { TextInput, Text, Divider } from 'react-native-paper';
+import {
+  View,
+  Alert,
+  ScrollView,
+  Image,
+  KeyboardAvoidingView,
+  Platform
+} from 'react-native';
+import { Text, Divider } from 'react-native-paper';
 import { H1, ContainedButton, OutlinedInput } from '../../components';
-
-import FormInput from '../../components/form-input/form-input.component';
 
 import styles from './search.styles';
 
@@ -36,9 +41,27 @@ const Search = ({ citiesList, onSearch }) => {
   };
 
   return (
-    <>
-      <View style={styles.screen}>
-        <H1 style={{ marginTop: 100, marginBottom: 50 }}>Careers Network</H1>
+    <KeyboardAvoidingView
+      style={styles.screen}
+      behavior='padding'
+      keyboardVerticalOffset={5}
+    >
+      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+        <View
+          style={{
+            width: 300,
+            height: 300,
+            marginVertical: 10,
+            alignItems: 'center'
+          }}
+        >
+          <Image
+            source={require('../../assets/network.png')}
+            style={{ width: '100%', height: '100%', opacity: 0.5 }}
+          />
+
+          <H1 style={{ bottom: 25, position: 'absolute' }}>Careers Network</H1>
+        </View>
 
         <OutlinedInput
           style={{ marginHorizontal: 10, marginBottom: 10, width: '90%' }}
@@ -69,51 +92,6 @@ const Search = ({ citiesList, onSearch }) => {
           }
         />
 
-        {/* <FormInput
-          style={styles.positionSearchInput}
-          name='position'
-          value={position}
-          onChange={({ name, value }) =>
-            setSearchValues({
-              ...searchValues,
-              searching: true,
-              [name]: value
-            })
-          }
-          label='Position'
-          capWords
-          clear
-        /> */}
-
-        {/* <View style={styles.locationInputContainer}>
-          <TextInput
-            style={styles.locationSearchInput}
-            label='Location'
-            value={location}
-            onChangeText={text =>
-              setSearchValues({
-                ...searchValues,
-                searching: true,
-                location: text
-              })
-            }
-          />
-          {!!location && !!location.length && (
-            <Text
-              style={styles.clearButton}
-              onPress={() => {
-                setSearchValues({
-                  ...searchValues,
-                  location: '',
-                  locationId: null,
-                  searching: false
-                });
-              }}
-            >
-              &times;
-            </Text>
-          )}
-        </View> */}
         {searching && (
           <View style={styles.locationListContainer}>
             <View style={styles.locationsList}>
@@ -143,14 +121,14 @@ const Search = ({ citiesList, onSearch }) => {
         )}
 
         <ContainedButton
-          icon='md-search'
+          icon={Platform.OS === 'android' ? 'md-search' : 'ios-serach'}
           style={styles.searchButton}
           onPress={handleSearch}
         >
           Search
         </ContainedButton>
-      </View>
-    </>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

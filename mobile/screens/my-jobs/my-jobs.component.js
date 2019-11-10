@@ -16,7 +16,7 @@ import { selectCurrentEmployer } from '../../redux/current-user/current-user.sel
 import { selectMyJobs } from '../../redux/jobs/jobs.selectors';
 import { getAllEmployerJobsStart } from '../../redux/jobs/jobs.actions';
 
-import JobCard from '../../components/job-card/job-card.component';
+import JobCard from './job-card.component';
 
 import Colors from '../../constants/colors';
 import styles from './my-jobs.styles';

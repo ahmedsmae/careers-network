@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';
 import { Appbar, TextInput, Text, Divider } from 'react-native-paper';
+import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
 
 import {
   selectCurrentEmployer,
@@ -89,7 +90,16 @@ const EditEmployerInfo = ({
       </Appbar.Header>
 
       <ScrollView style={styles.screen}>
-        <TextInput
+        <OutlinedInput
+          style={{ margin: 10 }}
+          autoCapitalize='words'
+          label='Name'
+          value={name}
+          name='name'
+          onChange={_handleChange}
+        />
+
+        {/* <TextInput
           style={{ margin: 10 }}
           mode='outlined'
           autoCapitalize='words'
@@ -97,9 +107,18 @@ const EditEmployerInfo = ({
           value={name}
           name='name'
           onChangeText={_handleChange.bind(this, 'name')}
+        /> */}
+
+        <OutlinedInput
+          style={{ margin: 10 }}
+          autoCapitalize='words'
+          label='Kind'
+          value={kind}
+          name='kind'
+          onChange={_handleChange}
         />
 
-        <TextInput
+        {/* <TextInput
           style={{ margin: 10 }}
           mode='outlined'
           autoCapitalize='words'
@@ -107,9 +126,18 @@ const EditEmployerInfo = ({
           value={kind}
           name='kind'
           onChangeText={_handleChange.bind(this, 'kind')}
+        /> */}
+
+        <OutlinedInput
+          style={{ margin: 10 }}
+          autoCapitalize='words'
+          label='Speciality'
+          value={speciality}
+          name='speciality'
+          onChange={_handleChange}
         />
 
-        <TextInput
+        {/* <TextInput
           style={{ margin: 10 }}
           mode='outlined'
           autoCapitalize='words'
@@ -117,7 +145,7 @@ const EditEmployerInfo = ({
           value={speciality}
           name='speciality'
           onChangeText={_handleChange.bind(this, 'speciality')}
-        />
+        /> */}
 
         <ManageContacts
           contacts={contact_numbers}
@@ -135,7 +163,18 @@ const EditEmployerInfo = ({
           }
         />
 
-        <TextInput
+        <OutlinedInput
+          style={{ margin: 10 }}
+          autoCapitalize='none'
+          label='Location'
+          value={location}
+          name='location'
+          onChange={({ name, value }) =>
+            setEmployer(prev => ({ ...prev, [name]: value, filtering: true }))
+          }
+        />
+
+        {/* <TextInput
           style={{ marginHorizontal: 10, marginTop: 10 }}
           value={location}
           mode='outlined'
@@ -144,38 +183,46 @@ const EditEmployerInfo = ({
           onChangeText={text =>
             setEmployer(prev => ({ ...prev, location: text, filtering: true }))
           }
-        />
+        /> */}
 
         {filtering && (
-          <View style={styles.locationListContainer}>
-            <View style={styles.locationsList}>
-              {citiesList
-                .filter(
-                  ({ city }) =>
-                    location.trim().length > 0 &&
-                    city.toLowerCase().includes(location.trim().toLowerCase())
-                )
-                .map((city, index) => {
-                  if (index < 10) {
-                    return (
-                      <View key={city.id}>
-                        <Text
-                          style={styles.locationListItem}
-                          onPress={_handleLocationSelect.bind(this, city)}
-                        >
-                          {`${city.city} - ${city.country}`}
-                        </Text>
-                        <Divider />
-                      </View>
-                    );
-                  }
-                })}
-            </View>
+          <View style={styles.locationsList}>
+            {citiesList
+              .filter(
+                ({ city }) =>
+                  location.trim().length > 0 &&
+                  city.toLowerCase().includes(location.trim().toLowerCase())
+              )
+              .map((city, index) => {
+                if (index < 10) {
+                  return (
+                    <View key={city.id}>
+                      <Text
+                        style={styles.locationListItem}
+                        onPress={_handleLocationSelect.bind(this, city)}
+                      >
+                        {`${city.city} - ${city.country}`}
+                      </Text>
+                      <Divider />
+                    </View>
+                  );
+                }
+              })}
           </View>
         )}
         <View style={{ marginBottom: 10 }} />
 
-        <TextInput
+        <OutlinedInput
+          style={{ margin: 10 }}
+          keyboardType='url'
+          autoCapitalize='none'
+          label='Website'
+          value={web_site}
+          name='web_site'
+          onChange={_handleChange}
+        />
+
+        {/* <TextInput
           style={{ margin: 10 }}
           mode='outlined'
           keyboardType='url'
@@ -184,9 +231,20 @@ const EditEmployerInfo = ({
           value={web_site}
           name='web_site'
           onChangeText={_handleChange.bind(this, 'web_site')}
+        /> */}
+
+        <OutlinedInput
+          style={{ margin: 10 }}
+          multiline
+          numberOfLines={3}
+          autoCapitalize='sentences'
+          label='Bio'
+          value={bio}
+          name='bio'
+          onChange={this._handleChange}
         />
 
-        <TextInput
+        {/* <TextInput
           style={{ margin: 10 }}
           mode='outlined'
           multiline
@@ -195,7 +253,7 @@ const EditEmployerInfo = ({
           value={bio}
           name='bio'
           onChangeText={_handleChange.bind(this, 'bio')}
-        />
+        /> */}
       </ScrollView>
     </>
   );

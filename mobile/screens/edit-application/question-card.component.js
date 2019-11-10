@@ -24,7 +24,7 @@ const QuestionCard = ({ question, initAnswer, index, onAnswer }) => {
 
   if (question_type === QUESTION_TYPES.TYPE_MCQ) {
     return (
-      <Card key={index} style={{ elevation: 5, margin: 10, padding: 15 }}>
+      <Card key={index} style={{ margin: 10, padding: 15 }}>
         <Text style={{ fontSize: 18 }}>{question_text}</Text>
         <RadioButton.Group
           onValueChange={value => {
@@ -55,7 +55,7 @@ const QuestionCard = ({ question, initAnswer, index, onAnswer }) => {
 
   if (question_type === QUESTION_TYPES.TYPE_CHOOSE_MULTIPLE) {
     return (
-      <Card key={index} style={{ elevation: 5, margin: 10, padding: 15 }}>
+      <Card key={index} style={{ margin: 10, padding: 15 }}>
         <Text style={{ fontSize: 18 }}>{question_text}</Text>
         {answer_options.map((option, i) => (
           <View key={i} style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -90,7 +90,7 @@ const QuestionCard = ({ question, initAnswer, index, onAnswer }) => {
 
   if (question_type === QUESTION_TYPES.TYPE_GIVE_AN_ANSWER) {
     return (
-      <Card key={index} style={{ elevation: 5, margin: 10, padding: 15 }}>
+      <Card key={index} style={{ margin: 10, padding: 15 }}>
         <Text style={{ fontSize: 18 }}>{question_text}</Text>
         <OutlinedInput
           style={{ margin: 10 }}

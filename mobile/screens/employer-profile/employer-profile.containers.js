@@ -122,7 +122,7 @@ const EmployerEmployerProfile = ({
         <Portal>
           <FAB.Group
             open={showFabOptions}
-            icon={'edit'}
+            icon={'settings'}
             fabStyle={{ backgroundColor: Colors.ACCENT }}
             color='white'
             actions={[

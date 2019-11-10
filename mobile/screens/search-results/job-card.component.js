@@ -19,7 +19,7 @@ const JobCard = ({
   onPress
 }) => {
   return (
-    <Card style={{ margin: 10, elevation: 5 }} onPress={onPress}>
+    <Card style={{ margin: 10 }} onPress={onPress}>
       <View style={{ flexDirection: 'row', margin: 10, alignItems: 'center' }}>
         <UserImage
           medium

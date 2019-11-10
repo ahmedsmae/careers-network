@@ -4,22 +4,14 @@ export default StyleSheet.create({
   screen: {
     flex: 1
   },
-  input: {
-    margin: 10
-  },
-  locationListContainer: {
-    width: '80%',
-    elevation: 10
-  },
   locationsList: {
     backgroundColor: 'lightgrey',
-    width: '100%',
+    marginHorizontal: 10,
     maxHeight: 200,
     overflow: 'hidden'
   },
   locationListItem: {
-    padding: 5,
-    margin: 5,
-    elevation: 11
+    padding: 10,
+    margin: 5
   }
 });

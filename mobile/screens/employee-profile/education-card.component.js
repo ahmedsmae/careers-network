@@ -25,28 +25,26 @@ const EducationCard = ({
   onLongPress
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} onLongPress={onLongPress}>
-      <Card style={{ margin: 10 }}>
-        {hasCertificate && (
-          <Card.Cover
-            source={{
-              uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${_id}`
-            }}
-          />
-        )}
+    <Card style={{ margin: 5 }} onPress={onPress} onLongPress={onLongPress}>
+      {hasCertificate && (
+        <Card.Cover
+          source={{
+            uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${_id}`
+          }}
+        />
+      )}
 
-        <Card.Content>
-          {!!subject && !!subject.length && <Title>{subject}</Title>}
-          {!!institute && !!institute.length && (
-            <Paragraph>{institute}</Paragraph>
-          )}
-          {!!location_id && <Caption>{getCityNameById(location_id)}</Caption>}
-          {!!description && !!description.length && (
-            <Paragraph>{description}</Paragraph>
-          )}
-        </Card.Content>
-      </Card>
-    </TouchableOpacity>
+      <Card.Content>
+        {!!subject && !!subject.length && <Title>{subject}</Title>}
+        {!!institute && !!institute.length && (
+          <Paragraph>{institute}</Paragraph>
+        )}
+        {!!location_id && <Caption>{getCityNameById(location_id)}</Caption>}
+        {!!description && !!description.length && (
+          <Paragraph>{description}</Paragraph>
+        )}
+      </Card.Content>
+    </Card>
   );
 };
 

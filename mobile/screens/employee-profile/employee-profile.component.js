@@ -1,14 +1,11 @@
 import React from 'react';
-import { View, ScrollView, Alert } from 'react-native';
-import { Divider } from 'react-native-paper';
+import { View, ScrollView, Image } from 'react-native';
+import { Divider, Headline, Paragraph, Title } from 'react-native-paper';
 
 import URLS from '../../redux/utils/urls';
 
-import CustomText from '../../components/custom-text/custom-text.component';
-import CustomHeader from '../../components/custom-header/custom-header.component';
 import EducationCard from './education-card.component';
 import ExperienceCard from './experience-card.component';
-import UserImage from '../../components/user-image/user-image.component';
 
 import styles from './employee-profile.styles';
 
@@ -34,80 +31,120 @@ const EmployeeProfile = ({
 
   const concatFullName = () => {
     let name = '';
-    !!first_name && (name += ' ' + first_name);
+    !!first_name && (name += first_name);
     !!middle_name && (name += ' ' + middle_name);
     !!last_name && (name += ' ' + last_name);
     return name;
   };
 
   return (
-    <View style={styles.screen}>
-      <ScrollView style={styles.screen}>
-        <UserImage
-          source={`${URLS.SERVE_EMPLOYEE_AVATAR}/${_id}`}
-          large
-          style={styles.avatar}
+    <View style={{ flex: 1 }}>
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          zIndex: 10,
+          width: 100,
+          height: 100,
+          marginRight: 16,
+          marginTop: -40,
+          borderRadius: 5,
+          elevation: 5,
+          borderWidth: 1,
+          borderColor: 'white'
+        }}
+      >
+        <Image
+          style={{ height: '100%', borderRadius: 5, width: '100%' }}
+          source={{ uri: `${URLS.SERVE_EMPLOYEE_AVATAR}/${_id}` }}
         />
+      </View>
 
-        <CustomHeader>User Info</CustomHeader>
-        <CustomText label='Full Name' placeholder='please fill your name'>
-          {concatFullName()}
-        </CustomText>
-        <Divider />
-        {currentUser && (
-          <CustomText label='Email' placeholder='please fill your email'>
-            {currentUser.email}
-          </CustomText>
-        )}
-        <Divider />
-        <CustomText
-          label='Contact Number'
-          placeholder='please fill your contact number'
+      <ScrollView
+        style={{ marginHorizontal: 10, flex: 1 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View
+          style={{
+            display: first_name || middle_name || last_name ? 'flex' : 'none'
+          }}
         >
-          {contact_number}
-        </CustomText>
-        <Divider />
-        <CustomText label='Location' placeholder='please fill your location'>
-          {getCityNameById(location_id)}
-        </CustomText>
-        <Divider />
-        <CustomText label='Website' placeholder='please fill your web_site'>
-          {web_site}
-        </CustomText>
-        <Divider />
-        <CustomText label='Bio' placeholder='please fill your bio'>
-          {bio}
-        </CustomText>
+          <Paragraph>Full Name</Paragraph>
+          <Headline>{concatFullName()}</Headline>
+        </View>
 
-        <CustomHeader>Educations</CustomHeader>
-        {!!educations &&
-          !!educations.length &&
-          educations.map(edu => (
-            <EducationCard
-              key={edu._id}
-              education={edu}
-              employeeId={_id}
-              onPress={onEducationPress && onEducationPress.bind(this, edu)}
-              onLongPress={
-                onEducationLongPress && onEducationLongPress.bind(this, edu)
-              }
-            />
-          ))}
+        <View style={{ display: currentUser.email ? 'flex' : 'none' }}>
+          <Divider style={{ marginTop: 10 }} />
+          <Paragraph>Email</Paragraph>
+          <Title>{currentUser.email}</Title>
+        </View>
 
-        <CustomHeader>Experiences</CustomHeader>
-        {!!experiences &&
-          !!experiences.length &&
-          experiences.map(exp => (
-            <ExperienceCard
-              key={exp._id}
-              experience={exp}
-              employeeId={_id}
-              onPress={onExperiencePress && onExperiencePress.bind(this, exp)}
-              onLongPress={
-                onExperienceLongPress && onExperienceLongPress.bind(this.exp)
-              }
-            />
-          ))}
+        <View style={{ display: contact_number ? 'flex' : 'none' }}>
+          <Divider style={{ marginTop: 10 }} />
+          <Paragraph>Contact Number</Paragraph>
+          <Title>{contact_number}</Title>
+        </View>
+
+        <View style={{ display: location_id ? 'flex' : 'none' }}>
+          <Divider style={{ marginTop: 10 }} />
+          <Paragraph>Location</Paragraph>
+          <Title>{getCityNameById(location_id)}</Title>
+        </View>
+
+        <View style={{ display: web_site ? 'flex' : 'none' }}>
+          <Divider style={{ marginTop: 10 }} />
+          <Paragraph>Website</Paragraph>
+          <Title>{web_site}</Title>
+        </View>
+
+        <View style={{ display: bio ? 'flex' : 'none' }}>
+          <Divider style={{ marginTop: 10 }} />
+          <Paragraph>Bio</Paragraph>
+          <Title>{bio}</Title>
+        </View>
+
+        <View
+          style={{ display: educations && educations.length ? 'flex' : 'none' }}
+        >
+          <Divider style={{ marginTop: 10 }} />
+          <Paragraph>Educations</Paragraph>
+          {!!educations &&
+            !!educations.length &&
+            educations.map(edu => (
+              <EducationCard
+                key={edu._id}
+                education={edu}
+                employeeId={_id}
+                onPress={onEducationPress && onEducationPress.bind(this, edu)}
+                onLongPress={
+                  onEducationLongPress && onEducationLongPress.bind(this, edu)
+                }
+              />
+            ))}
+        </View>
+
+        <View
+          style={{
+            display: experiences && experiences.length ? 'flex' : 'none'
+          }}
+        >
+          <Divider style={{ marginTop: 10 }} />
+          <Paragraph>Experiences</Paragraph>
+          {!!experiences &&
+            !!experiences.length &&
+            experiences.map(exp => (
+              <ExperienceCard
+                key={exp._id}
+                experience={exp}
+                employeeId={_id}
+                onPress={onExperiencePress && onExperiencePress.bind(this, exp)}
+                onLongPress={
+                  onExperienceLongPress && onExperienceLongPress.bind(this.exp)
+                }
+              />
+            ))}
+        </View>
       </ScrollView>
     </View>
   );

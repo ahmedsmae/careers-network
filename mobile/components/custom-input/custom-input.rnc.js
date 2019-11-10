@@ -18,26 +18,31 @@ export const OutlinedInput = ({
       <View style={styles.container}>
         <TextInput
           mode='outlined'
-          style={{ width: '100%', backgroundColor: 'white' }}
+          style={{ width: '100%', backgroundColor: 'white', paddingRight: 20 }}
           {...props}
           value={value}
-          onChangeText={value => onChange({ name, value })}
+          onChangeText={value => {
+            value.toString().trim() !== '' && setError(false);
+            onChange({ name, value });
+          }}
           onBlur={() =>
             required && value.toString().trim() === ''
               ? setError(true)
               : setError(false)
           }
         />
-        <TouchableOpacity
-          onPress={() => onChange({ name, value: '' })}
-          style={{ position: 'absolute', right: 0, padding: 10, zIndex: 100 }}
-        >
-          <Ionicons
-            name={Platform.OS === 'android' ? 'md-close' : 'ios-close'}
-            color='lightgrey'
-            size={24}
-          />
-        </TouchableOpacity>
+        {!!value && !!value.length && (
+          <TouchableOpacity
+            onPress={() => onChange({ name, value: '' })}
+            style={{ position: 'absolute', right: 0, padding: 10, zIndex: 100 }}
+          >
+            <Ionicons
+              name={Platform.OS === 'android' ? 'md-close' : 'ios-close'}
+              color='lightgrey'
+              size={24}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       {error && (
         <Caption style={{ color: 'red', marginLeft: 5 }}>{required}</Caption>

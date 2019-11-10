@@ -10,22 +10,20 @@ const ApplicationCard = ({ application, onPress }) => {
   } = application;
 
   return (
-    <Card style={{ elevation: 5, margin: 10, padding: 5 }}>
-      <List.Item
-        // disabled={!questions || questions.length === 0 ? true : false}
-        title={position}
-        description={employerName}
-        left={props => (
-          <Avatar.Image
-            {...props}
-            size={60}
-            style={{ marginRight: 10 }}
-            source={{ uri: `${URLS.SERVE_EMPLOYER_AVATAR}/${owner}` }}
-          />
-        )}
-        onPress={onPress}
-      />
-    </Card>
+    <List.Item
+      // disabled={!questions || questions.length === 0 ? true : false}
+      title={position}
+      description={employerName}
+      left={props => (
+        <Avatar.Image
+          {...props}
+          size={60}
+          style={{ marginRight: 10 }}
+          source={{ uri: `${URLS.SERVE_EMPLOYER_AVATAR}/${owner}` }}
+        />
+      )}
+      onPress={onPress}
+    />
   );
 };
 
