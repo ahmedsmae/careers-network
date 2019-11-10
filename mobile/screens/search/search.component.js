@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
-import { Headline, TextInput, Button, Text, Divider } from 'react-native-paper';
+import { TextInput, Text, Divider } from 'react-native-paper';
+import { H1, ContainedButton, OutlinedInput } from '../../components';
 
 import FormInput from '../../components/form-input/form-input.component';
 
@@ -37,8 +38,38 @@ const Search = ({ citiesList, onSearch }) => {
   return (
     <>
       <View style={styles.screen}>
-        <Headline style={styles.headline}>Careers Network</Headline>
-        <FormInput
+        <H1 style={{ marginTop: 100, marginBottom: 50 }}>Careers Network</H1>
+
+        <OutlinedInput
+          style={{ marginHorizontal: 10, marginBottom: 10, width: '90%' }}
+          label='Position'
+          name='position'
+          value={position}
+          onChange={({ name, value }) =>
+            setSearchValues({
+              ...searchValues,
+              searching: true,
+              [name]: value
+            })
+          }
+          required='You have to add a position'
+        />
+
+        <OutlinedInput
+          style={{ marginHorizontal: 10, marginBottom: 5, width: '90%' }}
+          label='Location'
+          name='location'
+          value={location}
+          onChange={({ name, value }) =>
+            setSearchValues({
+              ...searchValues,
+              searching: true,
+              [name]: value
+            })
+          }
+        />
+
+        {/* <FormInput
           style={styles.positionSearchInput}
           name='position'
           value={position}
@@ -52,9 +83,9 @@ const Search = ({ citiesList, onSearch }) => {
           label='Position'
           capWords
           clear
-        />
+        /> */}
 
-        <View style={styles.locationInputContainer}>
+        {/* <View style={styles.locationInputContainer}>
           <TextInput
             style={styles.locationSearchInput}
             label='Location'
@@ -82,7 +113,7 @@ const Search = ({ citiesList, onSearch }) => {
               &times;
             </Text>
           )}
-        </View>
+        </View> */}
         {searching && (
           <View style={styles.locationListContainer}>
             <View style={styles.locationsList}>
@@ -110,14 +141,14 @@ const Search = ({ citiesList, onSearch }) => {
             </View>
           </View>
         )}
-        <Button
+
+        <ContainedButton
+          icon='md-search'
           style={styles.searchButton}
-          icon='search'
-          mode='contained'
           onPress={handleSearch}
         >
           Search
-        </Button>
+        </ContainedButton>
       </View>
     </>
   );

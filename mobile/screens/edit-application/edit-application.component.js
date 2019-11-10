@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, KeyboardAvoidingView } from 'react-native';
 import { Appbar, Text } from 'react-native-paper';
 
 import { selectCurrentEmployee } from '../../redux/current-user/current-user.selectors';
@@ -109,21 +109,27 @@ const EditApplication = ({
         <Appbar.Action icon='save' onPress={_handleSave} />
       </Appbar.Header>
 
-      <ScrollView style={{ flex: 1 }}>
-        {questions.map((q, i) => (
-          <QuestionCard
-            key={i}
-            index={i}
-            question={q}
-            initAnswer={answers[i]}
-            onAnswer={(answer, index) => {
-              const newAnswers = answers;
-              newAnswers[index] = answer;
-              setAnswers(newAnswers);
-            }}
-          />
-        ))}
-      </ScrollView>
+      <KeyboardAvoidingView
+        style={styles.screen}
+        behavior='padding'
+        keyboardVerticalOffset={5}
+      >
+        <ScrollView style={{ flex: 1 }}>
+          {questions.map((q, i) => (
+            <QuestionCard
+              key={i}
+              index={i}
+              question={q}
+              initAnswer={answers[i]}
+              onAnswer={(answer, index) => {
+                const newAnswers = answers;
+                newAnswers[index] = answer;
+                setAnswers(newAnswers);
+              }}
+            />
+          ))}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 };

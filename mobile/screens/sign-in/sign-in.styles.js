@@ -18,11 +18,6 @@ export default StyleSheet.create({
     fontSize: 22
   },
   button: {
-    marginTop: 20
-  },
-  signUp: {
-    marginTop: 70,
-    color: 'blue',
-    padding: 10
+    marginTop: 50
   }
 });

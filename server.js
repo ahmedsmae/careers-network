@@ -45,6 +45,11 @@ app.use('/api/follows', require('./routes/follow/setters'));
 app.use('/api/follows', require('./routes/follow/getters'));
 app.use('/api/follows', require('./routes/follow/delete'));
 
+app.use('/api/admin', require('./routes/admin/create'));
+app.use('/api/admin', require('./routes/admin/update'));
+app.use('/api/admin', require('./routes/admin/getters'));
+app.use('/api/admin', require('./routes/admin/delete'));
+
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
   app.use(enforce.HTTPS({ trustProtoHeader: true }));

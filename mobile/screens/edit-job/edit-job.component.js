@@ -10,6 +10,7 @@ import {
   Caption,
   IconButton
 } from 'react-native-paper';
+import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
 import DatePicker from 'react-native-datepicker';
 
 import { selectCurrentEmployer } from '../../redux/current-user/current-user.selectors';
@@ -86,7 +87,7 @@ const EditJob = ({
     filtering
   } = currentJob;
 
-  const _handleChange = (name, value) => {
+  const _handleChange = ({ name, value }) => {
     setCurrentJob(prev => ({ ...prev, [name]: value }));
   };
 
@@ -150,7 +151,16 @@ const EditJob = ({
         keyboardVerticalOffset={5}
       >
         <ScrollView>
-          <TextInput
+          <OutlinedInput
+            style={{ margin: 10 }}
+            autoCapitalize='words'
+            label='Position (Required)'
+            value={position}
+            name='position'
+            onChange={_handleChange}
+          />
+
+          {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             autoCapitalize='words'
@@ -158,16 +168,30 @@ const EditJob = ({
             value={position}
             name='position'
             onChangeText={_handleChange.bind(this, 'position')}
-          />
+          /> */}
 
           <Divider />
-
-          <TextInput
-            style={{ marginHorizontal: 10, marginTop: 10 }}
+          <OutlinedInput
+            style={{ margin: 10 }}
+            autoCapitalize='none'
+            label='Location'
             value={location}
+            name='location'
+            onChange={({ name, value }) =>
+              setCurrentJob(prev => ({
+                ...prev,
+                [name]: value,
+                filtering: true
+              }))
+            }
+          />
+
+          {/* <TextInput
+            style={{ marginHorizontal: 10, marginTop: 10 }}
             mode='outlined'
             autoCapitalize='none'
             label='Location'
+            value={location}
             onChangeText={text =>
               setCurrentJob(prev => ({
                 ...prev,
@@ -175,7 +199,7 @@ const EditJob = ({
                 filtering: true
               }))
             }
-          />
+          /> */}
 
           {filtering && (
             <View style={styles.locationListContainer}>
@@ -208,14 +232,22 @@ const EditJob = ({
 
           <Divider />
 
-          <TextInput
+          <OutlinedInput
+            style={{ margin: 10 }}
+            label='Reference Number'
+            value={referance_number}
+            name='referance_number'
+            onChange={_handleChange}
+          />
+
+          {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             label='Reference Number'
             value={referance_number}
             name='referance_number'
             onChangeText={_handleChange.bind(this, 'referance_number')}
-          />
+          /> */}
 
           <Divider />
 
@@ -243,19 +275,35 @@ const EditJob = ({
           </RadioButton.Group>
 
           <Divider />
+          <OutlinedInput
+            style={{ margin: 10 }}
+            label='Applying Email (Required)'
+            value={applying_email}
+            name='applying_email'
+            onChange={_handleChange}
+          />
 
-          <TextInput
+          {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             label='Applying Email (Required)'
             value={applying_email}
             name='applying_email'
             onChangeText={_handleChange.bind(this, 'applying_email')}
-          />
+          /> */}
 
           <Divider />
 
-          <TextInput
+          <OutlinedInput
+            style={{ margin: 10 }}
+            keyboardType='url'
+            label='Applying Link'
+            value={applying_link}
+            name='applying_link'
+            onChange={_handleChange}
+          />
+
+          {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             keyboardType='url'
@@ -263,11 +311,22 @@ const EditJob = ({
             value={applying_link}
             name='applying_link'
             onChangeText={_handleChange.bind(this, 'applying_link')}
-          />
+          /> */}
 
           <Divider />
 
-          <TextInput
+          <OutlinedInput
+            style={{ margin: 10 }}
+            multiline
+            numberOfLines={3}
+            autoCapitalize='sentences'
+            label='Position Responsibilities (Required)'
+            value={responsibilities}
+            name='responsibilities'
+            onChange={_handleChange}
+          />
+
+          {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             multiline
@@ -276,11 +335,22 @@ const EditJob = ({
             value={responsibilities}
             name='responsibilities'
             onChangeText={_handleChange.bind(this, 'responsibilities')}
-          />
+          /> */}
 
           <Divider />
 
-          <TextInput
+          <OutlinedInput
+            style={{ margin: 10 }}
+            multiline
+            numberOfLines={3}
+            autoCapitalize='sentences'
+            label='Requirements (Required)'
+            value={requirements}
+            name='requirements'
+            onChange={_handleChange}
+          />
+
+          {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             multiline
@@ -289,7 +359,7 @@ const EditJob = ({
             value={requirements}
             name='requirements'
             onChangeText={_handleChange.bind(this, 'requirements')}
-          />
+          /> */}
 
           <Divider />
 
@@ -297,7 +367,16 @@ const EditJob = ({
             Salary Range
           </Text>
           <View style={{ flexDirection: 'row' }}>
-            <TextInput
+            <OutlinedInput
+              style={{ margin: 10, marginTop: 0, flex: 1 }}
+              keyboardType='number-pad'
+              label='Minimum'
+              value={min_salary}
+              name='min_salary'
+              onChange={_handleChange}
+            />
+
+            {/* <TextInput
               style={{ margin: 10, marginTop: 0, flex: 1 }}
               mode='outlined'
               keyboardType='number-pad'
@@ -305,9 +384,18 @@ const EditJob = ({
               value={min_salary}
               name='min_salary'
               onChangeText={_handleChange.bind(this, 'min_salary')}
+            /> */}
+
+            <OutlinedInput
+              style={{ margin: 10, marginTop: 0, flex: 1 }}
+              keyboardType='number-pad'
+              label='Maximum'
+              value={max_salary}
+              name='max_salary'
+              onChange={_handleChange}
             />
 
-            <TextInput
+            {/* <TextInput
               style={{ margin: 10, marginTop: 0, flex: 1 }}
               mode='outlined'
               keyboardType='number-pad'
@@ -315,9 +403,18 @@ const EditJob = ({
               value={max_salary}
               name='max_salary'
               onChangeText={_handleChange.bind(this, 'max_salary')}
+            /> */}
+
+            <OutlinedInput
+              style={{ margin: 10, marginTop: 0, flex: 1 }}
+              keyboardType='default'
+              label='Currency'
+              value={currency}
+              name='currency'
+              onChange={_handleChange}
             />
 
-            <TextInput
+            {/* <TextInput
               style={{ margin: 10, marginTop: 0, flex: 1 }}
               mode='outlined'
               keyboardType='default'
@@ -325,12 +422,23 @@ const EditJob = ({
               value={currency}
               name='currency'
               onChangeText={_handleChange.bind(this, 'currency')}
-            />
+            /> */}
           </View>
 
           <Divider />
 
-          <TextInput
+          <OutlinedInput
+            style={{ margin: 10 }}
+            multiline
+            numberOfLines={3}
+            autoCapitalize='sentences'
+            label='Extra Info'
+            value={other_info}
+            name='other_info'
+            onChange={_handleChange}
+          />
+
+          {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             multiline
@@ -339,7 +447,7 @@ const EditJob = ({
             value={other_info}
             name='other_info'
             onChangeText={_handleChange.bind(this, 'other_info')}
-          />
+          /> */}
 
           <Divider />
 

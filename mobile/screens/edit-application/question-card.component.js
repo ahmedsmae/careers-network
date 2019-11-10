@@ -7,6 +7,7 @@ import {
   RadioButton,
   Checkbox
 } from 'react-native-paper';
+import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
 
 import { QUESTION_TYPES } from '../../utils/types';
 
@@ -91,7 +92,21 @@ const QuestionCard = ({ question, initAnswer, index, onAnswer }) => {
     return (
       <Card key={index} style={{ elevation: 5, margin: 10, padding: 15 }}>
         <Text style={{ fontSize: 18 }}>{question_text}</Text>
-        <TextInput
+        <OutlinedInput
+          style={{ margin: 10 }}
+          multiline
+          numberOfLines={3}
+          autoCapitalize='sentences'
+          label='Your Answer'
+          value={answer_text}
+          name='answer_text'
+          onChange={({ name, value }) => {
+            setCurrentAnswer(prev => ({ ...prev, [name]: value }));
+            onAnswer({ ...initAnswer, [name]: value, question_id: _id }, index);
+          }}
+        />
+
+        {/* <TextInput
           mode='outlined'
           label='Your Answer'
           multiline
@@ -104,7 +119,7 @@ const QuestionCard = ({ question, initAnswer, index, onAnswer }) => {
               index
             );
           }}
-        />
+        /> */}
       </Card>
     );
   }

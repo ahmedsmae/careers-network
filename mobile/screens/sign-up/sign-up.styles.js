@@ -21,8 +21,6 @@ export default StyleSheet.create({
     marginTop: 20
   },
   signIn: {
-    marginTop: 70,
-    color: 'blue',
-    padding: 10
+    marginTop: 70
   }
 });

@@ -18,7 +18,8 @@ import URLS from '../../redux/utils/urls';
 import {
   selectCurrentUser,
   selectCurrentEmployee,
-  selectCurrentEmployer
+  selectCurrentEmployer,
+  selectCurrentAdmin
 } from '../../redux/current-user/current-user.selectors';
 
 import UserImage from '../user-image/user-image.component';
@@ -29,6 +30,7 @@ const CustomDrawer = ({
   currentUser,
   currentEmployee,
   currentEmployer,
+  currentAdmin,
   ...props
 }) => {
   const { navigate, toggleDrawer } = props.navigation;
@@ -41,6 +43,8 @@ const CustomDrawer = ({
             navigate('EmployeeProfile');
           } else if (!!currentEmployer) {
             navigate('EmployerProfile');
+          } else if (!!currentAdmin) {
+            navigate('AdminProfile');
           }
         }}
       >
@@ -53,6 +57,8 @@ const CustomDrawer = ({
                 ? `${URLS.SERVE_EMPLOYEE_AVATAR}/${currentEmployee._id}`
                 : !!currentEmployer
                 ? `${URLS.SERVE_EMPLOYER_AVATAR}/${currentEmployer._id}`
+                : !!currentAdmin
+                ? `${URLS.SERVE_EMPLOYER_AVATAR}/${currentAdmin._id}` //! serve admin avatar
                 : null
             }
           />
@@ -144,7 +150,8 @@ const CustomDrawer = ({
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   currentEmployee: selectCurrentEmployee,
-  currentEmployer: selectCurrentEmployer
+  currentEmployer: selectCurrentEmployer,
+  currentAdmin: selectCurrentAdmin
 });
 
 export default connect(mapStateToProps)(CustomDrawer);

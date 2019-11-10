@@ -17,6 +17,11 @@ export const selectCurrentEmployer = createSelector(
   user => user.employer
 );
 
+export const selectCurrentAdmin = createSelector(
+  [selectUser],
+  user => user.admin
+);
+
 export const selectLoading = createSelector(
   [selectUser],
   user => user.loading

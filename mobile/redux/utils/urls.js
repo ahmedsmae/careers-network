@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.1.102:5000';
+const BASE_URL = 'http://192.168.1.100:5000';
 
 export default URLS = {
   SIGNUP: `${BASE_URL}/api/users/signup`,
@@ -44,5 +44,18 @@ export default URLS = {
 
   FOLLOW_EMPLOYER: `${BASE_URL}/api/follows/`, // + /:employerid
   UNFOLLOW_EMPLOYER: `${BASE_URL}/api/follows/`, // + /:followid
-  GET_ALL_EMPLOYEE_FOLLOWS: `${BASE_URL}/api/follows/`
+  GET_ALL_EMPLOYEE_FOLLOWS: `${BASE_URL}/api/follows/`,
+
+  ADMIN_CREATE_EMPLOYER: `${BASE_URL}/api/admin/createemployer`,
+  ADMIN_GET_ALL_EMPLOYERS: `${BASE_URL}/api/admin/allemployers`,
+  ADMIN_GET_ALL_EMPLOYEES: `${BASE_URL}/api/admin/allemployees`,
+  ADMIN_GET_ALL_ADMINS: `${BASE_URL}/api/admin/alladmins`,
+  ADMIN_GET_ALL_EMPLOYER_JOBS: `${BASE_URL}/api/admin/alljobs`, // + /:employerid
+  ADMIN_GET_ALL_EMPLOYEE_APPLICATIONS: `${BASE_URL}/api/admin/allapplications`, // + /:employeeid
+  ADMIN_CHANGE_EMPLOYER_EMAIL: `${BASE_URL}/api/admin/changeemployeremail`,
+  ADMIN_CHANGE_EMPLOYEE_EMAIL: `${BASE_URL}/api/admin/changeemployeeemail`,
+  ADMIN_DELETE_EMPLOYER: `${BASE_URL}/api/admin/deleteemployer`, // + /:userid
+  ADMIN_DELETE_EMPLOYEE: `${BASE_URL}/api/admin/deleteemployee`, // + /:userid
+  ADMIN_DELETE_JOB: `${BASE_URL}/api/admin/deletejob`, // + /:jobid
+  ADMIN_DELETE_APPLICATION: `${BASE_URL}/api/admin/deleteapplication` // + /:applicationid
 };

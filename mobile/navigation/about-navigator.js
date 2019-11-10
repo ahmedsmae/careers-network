@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
-import AboutAppScreen from '../screens/about-app/about-app.component';
-import AboutDevScreen from '../screens/about-dev/about-dev.component';
+import AboutAppScreen from '../screens/about/about-app.component';
+import AboutDevScreen from '../screens/about/about-dev.component';
 
 import Colors from '../constants/colors';
 

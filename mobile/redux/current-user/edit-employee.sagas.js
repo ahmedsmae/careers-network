@@ -75,8 +75,6 @@ function* editEmployeeAvatarAsync({ payload }) {
 
 function* editEmployeeEducationAsync({ payload }) {
   const { certificate_image, ...otherProps } = payload;
-  console.log(certificate_image);
-
   try {
     yield setAuthToken();
 

@@ -8,6 +8,10 @@ import jobsSagas from './jobs/jobs.sagas';
 import applicationsSagas from './applications/applications.sagas';
 import savedSagas from './saved/saved.sagas';
 import followsSagas from './follows/follows.sagas';
+import adminCreate from './admin/create.sagas';
+import adminGet from './admin/get.sagas';
+import adminUpdate from './admin/update.sagas';
+import adminDelete from './admin/delete.sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -18,6 +22,10 @@ export default function* rootSaga() {
     call(jobsSagas),
     call(applicationsSagas),
     call(savedSagas),
-    call(followsSagas)
+    call(followsSagas),
+    call(adminCreate),
+    call(adminGet),
+    call(adminUpdate),
+    call(adminDelete)
   ]);
 }

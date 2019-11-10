@@ -8,6 +8,7 @@ import {
   Chip,
   Colors
 } from 'react-native-paper';
+import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
 
 import AppColors from '../../constants/colors';
 
@@ -44,14 +45,21 @@ const ManageKeywords = ({ keywords, onAddKeyword, onRemoveKeyword }) => {
             marginHorizontal: 10
           }}
         >
-          <TextInput
+          <OutlinedInput
+            style={{ flex: 1, backgroundColor: 'transparent' }}
+            autoCapitalize='words'
+            label='New Keyword'
+            value={newKeyword}
+            onChange={({ value }) => setNewKeyword(value)}
+          />
+          {/* <TextInput
             mode='outlined'
             autoFocus
             placeholder='keyword'
             style={{ flex: 1, backgroundColor: 'transparent' }}
             value={newKeyword}
             onChangeText={setNewKeyword}
-          />
+          /> */}
           {newKeyword.trim().length > 0 && (
             <IconButton
               style={{ color: 'green', marginRight: 20 }}

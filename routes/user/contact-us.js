@@ -30,8 +30,6 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    console.log('from server');
-
     const { email, subject, message } = req.body;
 
     try {

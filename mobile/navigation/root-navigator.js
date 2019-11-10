@@ -3,6 +3,7 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import noAuthNavigator from './no-auth-router';
 import employeeDrawerNavigator from './employee-router';
 import employerDrawerNavigator from './employer-router';
+import adminDrawerNavigator from './admin-router';
 
 export const createRootNavigator = currentUser => {
   let initialRouteName;
@@ -10,6 +11,8 @@ export const createRootNavigator = currentUser => {
     initialRouteName = 'Employee';
   } else if (!!currentUser && currentUser.kind === 'KIND_EMPLOYER') {
     initialRouteName = 'Employer';
+  } else if (!!currentUser && currentUser.kind === 'KIND_ADMIN') {
+    initialRouteName = 'Admin';
   } else {
     initialRouteName = 'noAuth';
   }
@@ -18,7 +21,8 @@ export const createRootNavigator = currentUser => {
     {
       noAuth: noAuthNavigator,
       Employee: employeeDrawerNavigator,
-      Employer: employerDrawerNavigator
+      Employer: employerDrawerNavigator,
+      Admin: adminDrawerNavigator
     },
     {
       initialRouteName

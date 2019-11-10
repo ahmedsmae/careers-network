@@ -16,6 +16,8 @@ import { getAllEmployeeFollowsStart } from '../../redux/follows/follows.actions'
 
 import Search from './search.component';
 
+import { Link } from '../../components';
+
 import styles from './search.styles';
 
 const NoAuthSearch = ({
@@ -37,25 +39,26 @@ const NoAuthSearch = ({
         {...props}
       />
 
-      <Paragraph
-        style={styles.signIn}
+      <Link
+        style={[styles.signIn]}
         onPress={() => navigation.navigate('SignIn')}
       >
-        Sign in
-      </Paragraph>
+        Sign In
+      </Link>
+
       <View style={styles.contacts}>
-        <Paragraph
+        <Link
           style={styles.contact}
           onPress={() => navigation.navigate('About')}
         >
           About
-        </Paragraph>
-        <Paragraph
+        </Link>
+        <Link
           style={styles.contact}
           onPress={() => navigation.navigate('ContactUs')}
         >
           Contact Us
-        </Paragraph>
+        </Link>
       </View>
     </>
   );

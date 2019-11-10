@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { View } from 'react-native';
 import { Headline, Button, Paragraph } from 'react-native-paper';
+import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
 
 import { selectCurrentUser } from '../../redux/current-user/current-user.selectors';
 import { signInUserStart } from '../../redux/current-user/current-user.actions';
@@ -25,8 +26,51 @@ const SignIn = ({ currentUser, navigation, signInUserStart }) => {
 
   return (
     <View style={styles.screen}>
-      <Headline style={styles.headline}>Sign In</Headline>
-      <FormInput
+      <H2 style={{ marginBottom: 50 }}>Sign In</H2>
+      <OutlinedInput
+        style={{ marginHorizontal: 10, marginBottom: 10, width: '90%' }}
+        label='Email'
+        name='email'
+        value={email}
+        onChange={({ name, value }) =>
+          setCredentials({
+            ...credentials,
+            [name]: value
+          })
+        }
+        keyboardType='email-address'
+      />
+
+      <OutlinedInput
+        style={{ marginHorizontal: 10, marginBottom: 10, width: '90%' }}
+        label='Password'
+        name='password'
+        value={password}
+        onChange={({ name, value }) =>
+          setCredentials({
+            ...credentials,
+            [name]: value
+          })
+        }
+        secureTextEntry
+      />
+
+      <ContainedButton style={styles.button} onPress={handleSignIn}>
+        Sign In
+      </ContainedButton>
+
+      <Link
+        style={{ marginTop: 50 }}
+        onPress={() => navigation.navigate('SignUp')}
+      >
+        Don't have an account!
+      </Link>
+
+      <Link onPress={() => navigation.navigate('ForgetPassword')}>
+        Forget password ?
+      </Link>
+
+      {/* <FormInput
         style={styles.textInput}
         label='Email'
         name='email'
@@ -51,13 +95,13 @@ const SignIn = ({ currentUser, navigation, signInUserStart }) => {
             [name]: value
           })
         }
-      />
+      /> */}
 
-      <Button style={styles.button} mode='contained' onPress={handleSignIn}>
+      {/* <Button style={styles.button} mode='contained' onPress={handleSignIn}>
         Sign In
-      </Button>
+      </Button> */}
 
-      <Paragraph
+      {/* <Paragraph
         style={styles.signUp}
         onPress={() => navigation.navigate('SignUp')}
       >
@@ -69,7 +113,7 @@ const SignIn = ({ currentUser, navigation, signInUserStart }) => {
         onPress={() => navigation.navigate('ForgetPassword')}
       >
         Forget password ?
-      </Paragraph>
+      </Paragraph> */}
     </View>
   );
 };

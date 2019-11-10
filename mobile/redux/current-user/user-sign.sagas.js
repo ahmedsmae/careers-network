@@ -38,6 +38,7 @@ function* signUpUserAsync({ payload }) {
 
     yield put(signUpUserSuccess(response.data));
   } catch (err) {
+    console.log('signUpUserAsync', err.response);
     Toast.show(err.message, {
       backgroundColor: 'red',
       duration: Toast.durations.LONG
@@ -58,6 +59,7 @@ function* signInUserAsync({ payload }) {
 
     yield put(signInUserSuccess(response.data));
   } catch (err) {
+    console.log('signInUserAsync', err.response);
     Toast.show(err.message, {
       backgroundColor: 'red',
       duration: Toast.durations.LONG
@@ -77,6 +79,7 @@ function* loadingUserAsync() {
 
     yield put(loadingUserSuccess(response.data));
   } catch (err) {
+    console.log('loadingUserAsync', err.response);
     yield put(loadingUserFailure(err.message));
   }
 }
@@ -97,6 +100,7 @@ function* changePasswordAsync({ payload }) {
       duration: Toast.durations.SHORT
     });
   } catch (err) {
+    console.log('changePasswordAsync', err.response);
     yield put(changePasswordFailure(err.message));
   }
 }
@@ -115,6 +119,7 @@ function* forgetPasswordAsync({ payload }) {
       duration: Toast.durations.SHORT
     });
   } catch (err) {
+    console.log('forgetPasswordAsync', err.response);
     yield put(forgetPasswordFailure(err.message));
   }
 }
@@ -133,6 +138,7 @@ function* contactUsAsync({ payload }) {
       duration: Toast.durations.SHORT
     });
   } catch (err) {
+    console.log('contactUsAsync', err.response);
     yield put(contactUsFailure(err.message));
   }
 }
@@ -150,6 +156,7 @@ function* signOutUserAsync() {
 
     yield put(signoutUserSuccess());
   } catch (err) {
+    console.log('signOutUserAsync', err.response);
     Toast.show(err.message, {
       backgroundColor: 'red',
       duration: Toast.durations.LONG
@@ -176,6 +183,7 @@ function* deleteUserAsync({ payload }) {
       duration: Toast.durations.SHORT
     });
   } catch (err) {
+    console.log('deleteUserAsync', err.response);
     Toast.show(err.message, {
       backgroundColor: 'red',
       duration: Toast.durations.LONG

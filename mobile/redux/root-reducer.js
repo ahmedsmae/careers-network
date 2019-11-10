@@ -7,6 +7,7 @@ import jobsReducer from './jobs/jobs.reducer';
 import applicationsReducer from './applications/applications.reducer';
 import savedReducer from './saved/saved.reducer';
 import followsReducer from './follows/follows.reducer';
+import adminReducer from './admin/admin.reducer';
 
 const rootReducer = combineReducers({
   // add all reducers
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   jobs: jobsReducer,
   applications: applicationsReducer,
   saved: savedReducer,
-  follows: followsReducer
+  follows: followsReducer,
+  admin: adminReducer
 });
 
 export default rootReducer;

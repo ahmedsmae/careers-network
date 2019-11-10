@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  KeyboardAvoidingView
+} from 'react-native';
 import {
   Text,
   TextInput,
@@ -9,6 +15,7 @@ import {
   Checkbox,
   Paragraph
 } from 'react-native-paper';
+import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
 import DatePicker from 'react-native-datepicker';
 
 import URLS from '../../redux/utils/urls';
@@ -70,9 +77,8 @@ const EditEducation = ({
     to
   } = education;
 
-  const _handleChange = (name, value) => {
+  const _handleChange = ({ name, value }) => {
     setEducation(prevEdu => ({ ...prevEdu, [name]: value }));
-    console.log(name, value);
   };
 
   const _handleLocationSelect = ({ id, city, country }) => {
@@ -102,17 +108,39 @@ const EditEducation = ({
         <Appbar.Action icon='save' onPress={_handleSubmit} />
       </Appbar.Header>
 
-      <ScrollView style={styles.screen}>
-        <ImagePicker
-          defaultImage={
-            hasCertificate
-              ? `${URLS.SERVE_EDUCATION_CERTIFICATE}/${currentEmployee._id}/${_id}`
-              : null
-          }
-          onImageTaken={_handleChange.bind(this, 'certificate_image')}
-        />
+      <KeyboardAvoidingView
+        style={styles.screen}
+        behavior='padding'
+        keyboardVerticalOffset={5}
+      >
+        <ScrollView>
+          <ImagePicker
+            defaultImage={
+              hasCertificate
+                ? `${URLS.SERVE_EDUCATION_CERTIFICATE}/${currentEmployee._id}/${_id}`
+                : null
+            }
+            onImageTaken={_handleChange.bind(this, 'certificate_image')}
+          />
 
-        <TextInput
+          <OutlinedInput
+            style={{ margin: 10 }}
+            autoCapitalize='words'
+            label='Subject'
+            value={subject}
+            name='subject'
+            onChange={_handleChange}
+          />
+          <OutlinedInput
+            style={{ margin: 10 }}
+            autoCapitalize='words'
+            label='Institute'
+            value={institute}
+            name='institute'
+            onChange={_handleChange}
+          />
+
+          {/* <TextInput
           style={{ margin: 10 }}
           mode='outlined'
           autoCapitalize='words'
@@ -120,9 +148,9 @@ const EditEducation = ({
           value={subject}
           name='subject'
           onChangeText={_handleChange.bind(this, 'subject')}
-        />
+        /> */}
 
-        <TextInput
+          {/* <TextInput
           style={{ margin: 10 }}
           mode='outlined'
           autoCapitalize='words'
@@ -130,9 +158,24 @@ const EditEducation = ({
           value={institute}
           name='institute'
           onChangeText={_handleChange.bind(this, 'institute')}
-        />
+        /> */}
 
-        <TextInput
+          <OutlinedInput
+            style={{ margin: 10 }}
+            autoCapitalize='none'
+            label='Location'
+            name='location'
+            value={location}
+            onChange={({ name, value }) =>
+              setEducation(prev => ({
+                ...prev,
+                [name]: value,
+                filtering: true
+              }))
+            }
+          />
+
+          {/* <TextInput
           style={{ marginHorizontal: 10, marginTop: 10 }}
           value={location}
           mode='outlined'
@@ -141,82 +184,36 @@ const EditEducation = ({
           onChangeText={text =>
             setEducation(prev => ({ ...prev, location: text, filtering: true }))
           }
-        />
+        /> */}
 
-        {filtering && (
-          <View style={styles.locationListContainer}>
-            <View style={styles.locationsList}>
-              {citiesList
-                .filter(
-                  ({ city }) =>
-                    location.trim().length > 0 &&
-                    city.toLowerCase().includes(location.trim().toLowerCase())
-                )
-                .map((city, index) => {
-                  if (index < 10) {
-                    return (
-                      <View key={city.id}>
-                        <Text
-                          style={styles.locationListItem}
-                          onPress={_handleLocationSelect.bind(this, city)}
-                        >
-                          {`${city.city} - ${city.country}`}
-                        </Text>
-                        <Divider />
-                      </View>
-                    );
-                  }
-                })}
+          {filtering && (
+            <View style={styles.locationListContainer}>
+              <View style={styles.locationsList}>
+                {citiesList
+                  .filter(
+                    ({ city }) =>
+                      location.trim().length > 0 &&
+                      city.toLowerCase().includes(location.trim().toLowerCase())
+                  )
+                  .map((city, index) => {
+                    if (index < 10) {
+                      return (
+                        <View key={city.id}>
+                          <Text
+                            style={styles.locationListItem}
+                            onPress={_handleLocationSelect.bind(this, city)}
+                          >
+                            {`${city.city} - ${city.country}`}
+                          </Text>
+                          <Divider />
+                        </View>
+                      );
+                    }
+                  })}
+              </View>
             </View>
-          </View>
-        )}
+          )}
 
-        <DatePicker
-          style={{
-            width: '95%',
-            height: 60,
-            margin: 10,
-            marginTop: 20,
-            padding: 10,
-            borderWidth: 1,
-            borderColor: 'grey',
-            borderRadius: 5
-          }}
-          date={from}
-          mode='date'
-          showIcon={false}
-          placeholder='From Date'
-          format='YYYY-MM-DD'
-          customStyles={{
-            dateInput: {
-              borderWidth: 0
-            },
-            placeholderText: {
-              fontSize: 16,
-              color: 'grey',
-              alignSelf: 'flex-start'
-            },
-            dateText: {
-              fontSize: 16,
-              color: 'grey',
-              alignSelf: 'flex-start'
-            }
-          }}
-          onDateChange={_handleChange.bind(this, 'from')}
-          // onDateChange={date => console.log(new Date(date).toString())}
-        />
-
-        <TouchableOpacity
-          style={{ flexDirection: 'row', marginHorizontal: 10 }}
-          onPress={() => setEducation(prev => ({ ...prev, current: !current }))}
-        >
-          <Checkbox status={current ? 'checked' : 'unchecked'} />
-          <Paragraph style={{ color: 'grey', textAlignVertical: 'center' }}>
-            Current Job
-          </Paragraph>
-        </TouchableOpacity>
-
-        {!current && (
           <DatePicker
             style={{
               width: '95%',
@@ -228,11 +225,11 @@ const EditEducation = ({
               borderColor: 'grey',
               borderRadius: 5
             }}
-            date={to}
+            date={from}
             mode='date'
             showIcon={false}
-            placeholder='Until Date'
-            format='MM / YYYY'
+            placeholder='From Date'
+            format='YYYY-MM-DD'
             customStyles={{
               dateInput: {
                 borderWidth: 0
@@ -248,11 +245,69 @@ const EditEducation = ({
                 alignSelf: 'flex-start'
               }
             }}
-            onDateChange={_handleChange.bind(this, 'to')}
+            onDateChange={_handleChange.bind(this, 'from')}
           />
-        )}
 
-        <TextInput
+          <TouchableOpacity
+            style={{ flexDirection: 'row', marginHorizontal: 10 }}
+            onPress={() =>
+              setEducation(prev => ({ ...prev, current: !current }))
+            }
+          >
+            <Checkbox status={current ? 'checked' : 'unchecked'} />
+            <Paragraph style={{ color: 'grey', textAlignVertical: 'center' }}>
+              Current Job
+            </Paragraph>
+          </TouchableOpacity>
+
+          {!current && (
+            <DatePicker
+              style={{
+                width: '95%',
+                height: 60,
+                margin: 10,
+                marginTop: 20,
+                padding: 10,
+                borderWidth: 1,
+                borderColor: 'grey',
+                borderRadius: 5
+              }}
+              date={to}
+              mode='date'
+              showIcon={false}
+              placeholder='Until Date'
+              format='MM / YYYY'
+              customStyles={{
+                dateInput: {
+                  borderWidth: 0
+                },
+                placeholderText: {
+                  fontSize: 16,
+                  color: 'grey',
+                  alignSelf: 'flex-start'
+                },
+                dateText: {
+                  fontSize: 16,
+                  color: 'grey',
+                  alignSelf: 'flex-start'
+                }
+              }}
+              onDateChange={_handleChange.bind(this, 'to')}
+            />
+          )}
+
+          <OutlinedInput
+            style={{ margin: 10 }}
+            multiline
+            numberOfLines={3}
+            autoCapitalize='sentences'
+            label='Description'
+            value={description}
+            name='description'
+            onChange={_handleChange}
+          />
+
+          {/* <TextInput
           style={{ margin: 10 }}
           mode='outlined'
           autoCapitalize='words'
@@ -261,8 +316,9 @@ const EditEducation = ({
           name='description'
           onChangeText={_handleChange.bind(this, 'description')}
           multiline
-        />
-      </ScrollView>
+        /> */}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 };

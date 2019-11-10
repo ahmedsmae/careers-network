@@ -89,7 +89,7 @@ const ContactUs = ({
           onChangeText={_handleChange.bind(this, 'message')}
         />
 
-        <Button onPress={_handleSubmit}>Sent Email</Button>
+        <Button onPress={_handleSubmit}>Send Email</Button>
       </ScrollView>
     </>
   );

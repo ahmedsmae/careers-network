@@ -6,10 +6,12 @@ import {
   Caption,
   IconButton,
   Chip,
+  Divider,
   Colors,
   RadioButton,
   Button
 } from 'react-native-paper';
+import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
 
 import AppColors from '../../constants/colors';
 import { QUESTION_TYPES } from '../../utils/types';
@@ -145,8 +147,19 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
           </RadioButton.Group>
 
           {/* ADD QUESTION */}
-          <View style={{ marginHorizontal: 10, width: '100%' }}>
-            <TextInput
+          {/* <View style={{ marginHorizontal: 10 }}> */}
+          <OutlinedInput
+            style={{ margin: 10 }}
+            autoFocus
+            label='Question ?'
+            value={question_text}
+            name='question_text'
+            onChange={({ name, value }) =>
+              setNewQuestion(prev => ({ ...prev, [name]: value }))
+            }
+          />
+
+          {/* <TextInput
               style={{ width: '95%', marginHorizontal: 10, height: 60 }}
               mode='outlined'
               autoFocus
@@ -155,85 +168,93 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
               onChangeText={text =>
                 setNewQuestion(prev => ({ ...prev, question_text: text }))
               }
-            />
+            /> */}
 
-            {question_type !== QUESTION_TYPES.TYPE_GIVE_AN_ANSWER && (
-              <View style={{ width: '95%', marginHorizontal: 10 }}>
-                {/* ADD ANSWER */}
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: '100%',
-                    alignItems: 'center'
-                  }}
-                >
-                  <TextInput
+          {question_type !== QUESTION_TYPES.TYPE_GIVE_AN_ANSWER && (
+            <View style={{ marginHorizontal: 10 }}>
+              {/* ADD ANSWER */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                  alignItems: 'center'
+                }}
+              >
+                <OutlinedInput
+                  style={{ flex: 1 }}
+                  label={`Answer Option ${answer_options.length + 1}`}
+                  value={newAnswer}
+                  name='newAnswer'
+                  onChange={({ value }) => setNewAnswer(value)}
+                />
+
+                {/* <TextInput
                     style={{ flex: 1 }}
                     mode='outlined'
                     label={`Answer Option ${answer_options.length + 1}`}
                     value={newAnswer}
                     onChangeText={setNewAnswer}
+                  /> */}
+                {newAnswer.trim().length > 0 && (
+                  <IconButton
+                    style={{ color: 'green', marginRight: 20 }}
+                    icon='check'
+                    size={30}
+                    color={Colors.green500}
+                    onPress={() => {
+                      setNewQuestion(prev => ({
+                        ...prev,
+                        answer_options: answer_options.concat({
+                          answer_text: newAnswer
+                        })
+                      }));
+                      setNewAnswer('');
+                    }}
                   />
-                  {newAnswer.trim().length > 0 && (
+                )}
+              </View>
+
+              {/* DISPLAY ANSWERS */}
+              <View style={{ marginVertical: 5 }}>
+                {answer_options.length > 0 && (
+                  <Text style={{ margin: 10, marginBottom: 0, fontSize: 16 }}>
+                    Answers
+                  </Text>
+                )}
+                {answer_options.map((answer, index) => (
+                  <View
+                    key={index}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: 'lightgrey',
+                      borderRadius: 5,
+                      marginVertical: 5
+                    }}
+                  >
+                    <Text style={{ flex: 1, fontSize: 16, padding: 10 }}>
+                      {answer.answer_text}
+                    </Text>
                     <IconButton
                       style={{ color: 'green', marginRight: 20 }}
-                      icon='check'
+                      icon='close'
                       size={30}
-                      color={Colors.green500}
-                      onPress={() => {
+                      color={Colors.red500}
+                      onPress={() =>
                         setNewQuestion(prev => ({
                           ...prev,
-                          answer_options: answer_options.concat({
-                            answer_text: newAnswer
-                          })
-                        }));
-                        setNewAnswer('');
-                      }}
+                          answer_options: answer_options.filter(
+                            (_, i) => index !== i
+                          )
+                        }))
+                      }
                     />
-                  )}
-                </View>
-
-                {/* DISPLAY ANSWERS */}
-                <View style={{ marginVertical: 5 }}>
-                  {answer_options.length > 0 && (
-                    <Text style={{ margin: 10, marginBottom: 0, fontSize: 16 }}>
-                      Answers
-                    </Text>
-                  )}
-                  {answer_options.map((answer, index) => (
-                    <View
-                      key={index}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        backgroundColor: 'lightgrey',
-                        borderRadius: 5,
-                        marginVertical: 5
-                      }}
-                    >
-                      <Text style={{ flex: 1, fontSize: 16, padding: 10 }}>
-                        {answer.answer_text}
-                      </Text>
-                      <IconButton
-                        style={{ color: 'green', marginRight: 20 }}
-                        icon='close'
-                        size={30}
-                        color={Colors.red500}
-                        onPress={() =>
-                          setNewQuestion(prev => ({
-                            ...prev,
-                            answer_options: answer_options.filter(
-                              (_, i) => index !== i
-                            )
-                          }))
-                        }
-                      />
-                    </View>
-                  ))}
-                </View>
+                  </View>
+                ))}
               </View>
-            )}
-          </View>
+            </View>
+          )}
+          {/* </View> */}
 
           {/* SUBMIT QUESTION BUTTON */}
           {isQuestionReady() && (
@@ -249,6 +270,8 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
           )}
         </View>
       )}
+
+      <Divider />
 
       {/* DISPLAY QUESTIONS */}
 

@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   currentUser: null,
   employee: null,
   employer: null,
+  admin: null,
   loading: false,
   errorMessage: ''
 };
@@ -40,6 +41,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
         currentUser: payload.user,
         employee: payload.employee,
         employer: payload.employer,
+        admin: payload.admin,
         loading: false,
         errorMessage: ''
       };
@@ -79,6 +81,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
         currentUser: null,
         employee: null,
         employer: null,
+        admin: null,
         loading: false,
         errorMessage: payload
       };

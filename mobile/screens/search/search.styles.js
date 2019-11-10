@@ -6,11 +6,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  headline: {
-    fontSize: 30,
-    height: 100,
-    textAlignVertical: 'center'
-  },
   positionSearchInput: {
     margin: 10,
     backgroundColor: 'white',
@@ -34,39 +29,35 @@ export default StyleSheet.create({
     marginLeft: 10,
     color: 'lightgrey'
   },
-  searchButton: {
-    marginTop: 20
-  },
-  signIn: {
-    marginVertical: 70,
-    color: 'blue',
-    padding: 10
-  },
   locationListContainer: {
-    width: '80%',
+    width: '90%',
     elevation: 10
   },
   locationsList: {
     backgroundColor: 'lightgrey',
     width: '100%',
     maxHeight: 200,
-    overflow: 'hidden'
-    // position: 'absolute',
-    // top: 0,
-    // left: 0
+    overflow: 'hidden',
+    borderRadius: 5
   },
   locationListItem: {
     padding: 5,
     margin: 5,
     elevation: 11
   },
+  searchButton: {
+    marginTop: 30
+  },
+  signIn: {
+    marginVertical: 50,
+    textAlign: 'center'
+  },
   contacts: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '100%'
+    marginBottom: 20
   },
   contact: {
-    color: 'grey',
-    padding: 10
+    color: 'grey'
   }
 });

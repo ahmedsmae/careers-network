@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { Appbar, TextInput, Text, Divider } from 'react-native-paper';
+import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
 
 import {
   selectCurrentEmployee,
@@ -35,7 +36,7 @@ class EditEmployeeEnfo extends React.Component {
     };
   }
 
-  _handleChange = (name, value) => {
+  _handleChange = ({ name, value }) => {
     this.setState({ [name]: value });
   };
 
@@ -74,7 +75,7 @@ class EditEmployeeEnfo extends React.Component {
     } = this.state;
     const { navigation, citiesList } = this.props;
     return (
-      <View style={styles.screen}>
+      <>
         <Appbar.Header>
           <Appbar.Action
             icon='menu'
@@ -84,8 +85,49 @@ class EditEmployeeEnfo extends React.Component {
           <Appbar.Action icon='save' onPress={this._handleSubmit} />
         </Appbar.Header>
 
-        <ScrollView>
-          <TextInput
+        <KeyboardAvoidingView
+          style={styles.screen}
+          behavior='padding'
+          keyboardVerticalOffset={5}
+        >
+          <ScrollView>
+            <OutlinedInput
+              style={{ margin: 10 }}
+              autoCapitalize='words'
+              label='First Name'
+              value={first_name}
+              name='first_name'
+              onChange={this._handleChange}
+            />
+
+            <OutlinedInput
+              style={{ margin: 10 }}
+              autoCapitalize='words'
+              label='Middle Name'
+              value={middle_name}
+              name='middle_name'
+              onChange={this._handleChange}
+            />
+
+            <OutlinedInput
+              style={{ margin: 10 }}
+              autoCapitalize='words'
+              label='Last Name'
+              value={last_name}
+              name='last_name'
+              onChange={this._handleChange}
+            />
+
+            <OutlinedInput
+              style={{ margin: 10 }}
+              keyboardType='phone-pad'
+              label='Contact Number'
+              value={contact_number}
+              name='contact_number'
+              onChange={this._handleChange}
+            />
+
+            {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             autoCapitalize='words'
@@ -93,9 +135,9 @@ class EditEmployeeEnfo extends React.Component {
             value={first_name}
             name='first_name'
             onChangeText={this._handleChange.bind(this, 'first_name')}
-          />
+          /> */}
 
-          <TextInput
+            {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             autoCapitalize='words'
@@ -103,9 +145,9 @@ class EditEmployeeEnfo extends React.Component {
             value={middle_name}
             name='middle_name'
             onChangeText={this._handleChange.bind(this, 'middle_name')}
-          />
+          /> */}
 
-          <TextInput
+            {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             autoCapitalize='words'
@@ -113,9 +155,9 @@ class EditEmployeeEnfo extends React.Component {
             value={last_name}
             name='last_name'
             onChangeText={this._handleChange.bind(this, 'last_name')}
-          />
+          /> */}
 
-          <TextInput
+            {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             keyboardType='phone-pad'
@@ -123,52 +165,85 @@ class EditEmployeeEnfo extends React.Component {
             value={contact_number}
             name='contact_number'
             onChangeText={this._handleChange.bind(this, 'contact_number')}
-          />
+          /> */}
 
-          <TextInput
+            <OutlinedInput
+              style={{ margin: 10 }}
+              label='Location'
+              name='location'
+              value={location}
+              onChange={({ name, value }) =>
+                this.setState({ [name]: value, filtering: true })
+              }
+            />
+
+            {/* <TextInput
             style={{ marginHorizontal: 10, marginTop: 10 }}
-            value={location}
             mode='outlined'
+            value={location}
             autoCapitalize='none'
             label='Location'
             onChangeText={text =>
               this.setState({ location: text, filtering: true })
             }
-          />
+          /> */}
 
-          {filtering && (
-            <View style={styles.locationListContainer}>
-              <View style={styles.locationsList}>
-                {citiesList
-                  .filter(
-                    ({ city }) =>
-                      location.trim().length > 0 &&
-                      city.toLowerCase().includes(location.trim().toLowerCase())
-                  )
-                  .map((city, index) => {
-                    if (index < 10) {
-                      return (
-                        <View key={city.id}>
-                          <Text
-                            style={styles.locationListItem}
-                            onPress={this._handleLocationSelect.bind(
-                              this,
-                              city
-                            )}
-                          >
-                            {`${city.city} - ${city.country}`}
-                          </Text>
-                          <Divider />
-                        </View>
-                      );
-                    }
-                  })}
+            {filtering && (
+              <View style={styles.locationListContainer}>
+                <View style={styles.locationsList}>
+                  {citiesList
+                    .filter(
+                      ({ city }) =>
+                        location.trim().length > 0 &&
+                        city
+                          .toLowerCase()
+                          .includes(location.trim().toLowerCase())
+                    )
+                    .map((city, index) => {
+                      if (index < 10) {
+                        return (
+                          <View key={city.id}>
+                            <Text
+                              style={styles.locationListItem}
+                              onPress={this._handleLocationSelect.bind(
+                                this,
+                                city
+                              )}
+                            >
+                              {`${city.city} - ${city.country}`}
+                            </Text>
+                            <Divider />
+                          </View>
+                        );
+                      }
+                    })}
+                </View>
               </View>
-            </View>
-          )}
-          <View style={{ marginBottom: 10 }} />
+            )}
+            <View style={{ marginBottom: 10 }} />
 
-          <TextInput
+            <OutlinedInput
+              style={{ margin: 10 }}
+              keyboardType='url'
+              autoCapitalize='none'
+              label='Website'
+              value={web_site}
+              name='web_site'
+              onChange={this._handleChange}
+            />
+
+            <OutlinedInput
+              style={{ margin: 10 }}
+              multiline
+              numberOfLines={3}
+              autoCapitalize='sentences'
+              label='Bio'
+              value={bio}
+              name='bio'
+              onChange={this._handleChange}
+            />
+
+            {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             keyboardType='url'
@@ -177,9 +252,9 @@ class EditEmployeeEnfo extends React.Component {
             value={web_site}
             name='web_site'
             onChangeText={this._handleChange.bind(this, 'web_site')}
-          />
+          /> */}
 
-          <TextInput
+            {/* <TextInput
             style={{ margin: 10 }}
             mode='outlined'
             multiline
@@ -188,9 +263,10 @@ class EditEmployeeEnfo extends React.Component {
             value={bio}
             name='bio'
             onChangeText={this._handleChange.bind(this, 'bio')}
-          />
-        </ScrollView>
-      </View>
+          /> */}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </>
     );
   }
 }

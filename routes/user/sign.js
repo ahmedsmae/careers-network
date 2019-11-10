@@ -6,6 +6,7 @@ const { check, validationResult } = require('express-validator');
 const User = require('../../database/models/user');
 const Employee = require('../../database/models/employee');
 const Employer = require('../../database/models/employer');
+const Admin = require('../../database/models/admin');
 
 /**
  * @method - POST
@@ -56,18 +57,21 @@ router.post(
       await user.save();
 
       const userKind = user.kind;
-      let employee, employer;
+      let employee, employer, admin;
       if (userKind === process.env.KIND_EMPLOYEE) {
         employee = new Employee({ owner: user._id });
         await employee.save();
       } else if (userKind === process.env.KIND_EMPLOYER) {
         employer = new Employer({ owner: user._id });
         await employer.save();
+      } else if (userKind === process.env.KIND_ADMIN) {
+        admin = new Admin({ owner: user._id });
+        await admin.save();
       }
 
       const token = await user.generateAuthToken();
 
-      res.json({ user, employee, employer, token });
+      res.json({ user, employee, employer, admin, token });
     } catch (err) {
       console.error(err.message);
       res.status(400).json({ errors: [{ msg: err.message }] });
@@ -113,14 +117,22 @@ router.post(
       const token = await user.generateAuthToken();
 
       const userKind = user.kind;
-      let employee, employer;
+      let employee, employer, admin;
       if (userKind === process.env.KIND_EMPLOYEE) {
         employee = await Employee.findOne({ owner: user._id });
+        employer = null;
+        admin = null;
       } else if (userKind === process.env.KIND_EMPLOYER) {
         employer = await Employer.findOne({ owner: user._id });
+        employee = null;
+        admin = null;
+      } else if (userKind === process.env.KIND_ADMIN) {
+        admin = await Admin.findOne({ owner: user._id });
+        employee = null;
+        employer = null;
       }
 
-      res.json({ user, token, employee, employer });
+      res.json({ user, token, employee, employer, admin });
     } catch (err) {
       console.error(err.message);
       res.status(400).json({ errors: [{ msg: err.message }] });
@@ -146,14 +158,16 @@ router.get('/auth', auth, async (req, res) => {
     }
 
     const userKind = user.kind;
-    let employee, employer;
+    let employee, employer, admin;
     if (userKind === process.env.KIND_EMPLOYEE) {
       employee = await Employee.findOne({ owner: req.user._id });
     } else if (userKind === process.env.KIND_EMPLOYER) {
       employer = await Employer.findOne({ owner: req.user._id });
+    } else if (userKind === process.env.KIND_ADMIN) {
+      admin = await Admin.findOne({ owner: user._id });
     }
 
-    res.json({ user, employee, employer });
+    res.json({ user, employee, employer, admin });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errors: [{ msg: err.message }] });
