@@ -120,7 +120,12 @@ const EditEducation = ({
                 ? `${URLS.SERVE_EDUCATION_CERTIFICATE}/${currentEmployee._id}/${_id}`
                 : null
             }
-            onImageTaken={_handleChange.bind(this, 'certificate_image')}
+            onImageTaken={image =>
+              setEducation(prevEdu => ({
+                ...prevEdu,
+                certificate_image: image
+              }))
+            }
           />
 
           <OutlinedInput
@@ -140,26 +145,6 @@ const EditEducation = ({
             onChange={_handleChange}
           />
 
-          {/* <TextInput
-          style={{ margin: 10 }}
-          mode='outlined'
-          autoCapitalize='words'
-          label='Subject'
-          value={subject}
-          name='subject'
-          onChangeText={_handleChange.bind(this, 'subject')}
-        /> */}
-
-          {/* <TextInput
-          style={{ margin: 10 }}
-          mode='outlined'
-          autoCapitalize='words'
-          label='Institute'
-          value={institute}
-          name='institute'
-          onChangeText={_handleChange.bind(this, 'institute')}
-        /> */}
-
           <OutlinedInput
             style={{ margin: 10 }}
             autoCapitalize='none'
@@ -174,17 +159,6 @@ const EditEducation = ({
               }))
             }
           />
-
-          {/* <TextInput
-          style={{ marginHorizontal: 10, marginTop: 10 }}
-          value={location}
-          mode='outlined'
-          autoCapitalize='none'
-          label='Location'
-          onChangeText={text =>
-            setEducation(prev => ({ ...prev, location: text, filtering: true }))
-          }
-        /> */}
 
           {filtering && (
             <View style={styles.locationListContainer}>
@@ -245,7 +219,9 @@ const EditEducation = ({
                 alignSelf: 'flex-start'
               }
             }}
-            onDateChange={_handleChange.bind(this, 'from')}
+            onDateChange={value =>
+              setEducation(prevEdu => ({ ...prevEdu, from: value }))
+            }
           />
 
           <TouchableOpacity
@@ -292,7 +268,9 @@ const EditEducation = ({
                   alignSelf: 'flex-start'
                 }
               }}
-              onDateChange={_handleChange.bind(this, 'to')}
+              onDateChange={value =>
+                setEducation(prevEdu => ({ ...prevEdu, to: value }))
+              }
             />
           )}
 
@@ -306,17 +284,6 @@ const EditEducation = ({
             name='description'
             onChange={_handleChange}
           />
-
-          {/* <TextInput
-          style={{ margin: 10 }}
-          mode='outlined'
-          autoCapitalize='words'
-          label='Description'
-          value={description}
-          name='description'
-          onChangeText={_handleChange.bind(this, 'description')}
-          multiline
-        /> */}
         </ScrollView>
       </KeyboardAvoidingView>
     </>

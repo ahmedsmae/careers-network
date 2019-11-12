@@ -56,6 +56,14 @@ const experienceSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  salary: {
+    type: String,
+    trim: true
+  },
+  currency: {
+    type: String,
+    trim: true
+  },
   from: {
     type: Date
   },
@@ -67,6 +75,107 @@ const experienceSchema = new mongoose.Schema({
   },
   certificate_image: {
     type: Buffer
+  }
+});
+
+const trainingsCertificationsSchema = new mongoose.Schema({
+  kind: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  subject: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  institute: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  location_id: {
+    type: String,
+    trim: true
+  },
+  description: {
+    type: String,
+    trim: true
+  },
+  from: {
+    type: Date
+  },
+  current: {
+    type: Boolean
+  },
+  to: {
+    type: Date
+  },
+  certificate_image: {
+    type: Buffer
+  }
+});
+
+const languagesSchema = new mongoose.Schema({
+  language: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  level: {
+    type: String,
+    trim: true,
+    required: true
+  }
+});
+
+const skillsSchema = new mongoose.Schema({
+  skill: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  level: {
+    type: String,
+    trim: true,
+    required: true
+  }
+});
+
+const interestsSchema = new mongoose.Schema({
+  interest: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  award: {
+    type: String,
+    trim: true
+  }
+});
+
+const referencesSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  position: {
+    type: String,
+    trim: true
+  },
+  company: {
+    type: String,
+    trim: true
+  },
+  email: {
+    type: String,
+    lowercase: true,
+    trim: true
+  },
+  contact_number: {
+    type: String,
+    trim: true
   }
 });
 
@@ -89,14 +198,48 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    contact_number: {
+    gender: {
+      type: String,
+      trim: true
+    },
+    birth_date: {
+      type: Date
+    },
+    nationality: {
+      type: String,
+      trim: true
+    },
+    religion: {
+      type: String,
+      trim: true
+    },
+    marital_status: {
+      type: String,
+      trim: true
+    },
+    number_of_dependents: {
       type: String
+    },
+    residence_country: {
+      type: String,
+      trim: true
+    },
+    visa_type: {
+      type: String,
+      trim: true
     },
     location_id: {
       type: String
     },
-    web_site: {
+    contact_number: {
       type: String
+    },
+    driving_licences: {
+      type: String,
+      trim: true
+    },
+    has_a_car: {
+      type: Boolean
     },
     bio: {
       type: String,
@@ -106,7 +249,62 @@ const employeeSchema = new mongoose.Schema(
       type: Buffer
     },
     educations: [educationSchema],
-    experiences: [experienceSchema]
+    experiences: [experienceSchema],
+    trainings_certifications: [trainingsCertificationsSchema],
+    languages: [languagesSchema],
+    skills: [skillsSchema],
+    interests: [interestsSchema],
+    references: [referencesSchema],
+    social_profiles: {
+      website: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      linkedin: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      twitter: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      github: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      stackoverflow: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      facebook: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      instagram: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      youtube: {
+        type: String,
+        lowercase: true,
+        trim: true
+      }
+    },
+    prefered_jobs_settings: {
+      keywords: {
+        type: [String]
+      },
+      location_ids: {
+        type: [String]
+      }
+    }
   },
   { timestamps: true }
 );
@@ -124,6 +322,13 @@ employeeSchema.methods.toJSON = function() {
   );
 
   employeeObject.experiences = employeeObject.experiences.map(
+    ({ certificate_image, ...rest }) =>
+      certificate_image
+        ? { ...rest, hasCertificate: true }
+        : { ...rest, hasCertificate: false }
+  );
+
+  employeeObject.trainings_certifications = employeeObject.trainings_certifications.map(
     ({ certificate_image, ...rest }) =>
       certificate_image
         ? { ...rest, hasCertificate: true }

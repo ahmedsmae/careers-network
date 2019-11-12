@@ -77,7 +77,7 @@ const EmployerProfile = ({ currentUser, employer, getCityNameById }) => {
         >
           <Divider style={{ marginTop: 10 }} />
           <Paragraph>Email</Paragraph>
-          <Title>{currentUser.email}</Title>
+          <Title>{currentUser && currentUser.email}</Title>
         </View>
 
         <View

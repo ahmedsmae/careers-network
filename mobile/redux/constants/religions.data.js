@@ -1,0 +1,23 @@
+export default [
+  'Christianity',
+  'Islam',
+  'Nonreligious (Secular/Agnostic/Atheist)',
+  'Hinduism',
+  'Chinese traditional religion',
+  'Buddhism',
+  'Primal-indigenous',
+  'African traditional and Diasporic',
+  'Sikhism',
+  'Juche',
+  'Spiritism',
+  'Judaism',
+  'Bahai',
+  'Jainism',
+  'Shinto',
+  'Cao Dai',
+  'Zoroastrianism',
+  'Tenrikyo',
+  'Neo-Paganism',
+  'Unitarian-Universalism',
+  'Other'
+];

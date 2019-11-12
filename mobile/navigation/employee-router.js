@@ -8,7 +8,17 @@ import { AuthSearchContainer } from '../screens/search/search.containers';
 import { AuthSearchResultsContainer } from '../screens/search-results/search-results.containers';
 import { EmployeeShowJobContainer } from '../screens/show-job/show-job.containers';
 import { EmployeeEmployerProfileContainer } from '../screens/employer-profile/employer-profile.containers';
-import { EmployeeEmployeeProfileContainer } from '../screens/employee-profile/employee-profile-containers';
+
+import EmployeeProfileScreen from '../screens/employee-profile/employee-profile.component';
+import { EmployeeEmployeeGeneralInfoContainer } from '../screens/employee-profile/general-info/employee-general-info.containers';
+import { EmployeeEmployeeEducationsContainer } from '../screens/employee-profile/educations/educations.containers';
+import { EmployeeEmployeeExperiencesContainer } from '../screens/employee-profile/experiences/experiences.containers';
+import { EmployeeEmployeeTrainingsContainer } from '../screens/employee-profile/trainings/trainings.containers';
+import { EmployeeEmployeeLanguagesContainer } from '../screens/employee-profile/languages/languages.containers';
+import { EmployeeEmployeeSkillsContainer } from '../screens/employee-profile/skills/skills.containers';
+import { EmployeeEmployeeInterestsContainer } from '../screens/employee-profile/interests/interests.containers';
+import { EmployeeEmployeeReferencesContainer } from '../screens/employee-profile/references/references.containers';
+
 import SelectedEmployerJobsScreen from '../screens/selected-employer-jobs/selected-employer-jobs.component';
 
 import MyApplications from '../screens/my-applications/my-applications.component';
@@ -20,6 +30,8 @@ import MySavedJobsScreen from '../screens/my-saved-jobs/my-saved-jobs.component'
 import EditEmployeeInfoScreen from '../screens/edit-employee-info/edit-employee-info.component';
 import EditEducationScreen from '../screens/edit-education/edit-education.component';
 import EditExperienceScreen from '../screens/edit-experience/edit-experience.component';
+import EditTrainingScreen from '../screens/edit-training/edit-training.component';
+import EditReferenceScreen from '../screens/edit-reference/edit-reference.component';
 
 import ContactUsScreen from '../screens/contact-us/contact-us.component';
 
@@ -30,10 +42,26 @@ import aboutNavigator from './about-navigator';
 
 const employeeProfileNavigator = createStackNavigator(
   {
-    EmployeeProfile: EmployeeEmployeeProfileContainer,
+    EmployeeGeneralInfo: EmployeeEmployeeGeneralInfoContainer,
     EditInfo: EditEmployeeInfoScreen,
+
+    EmployeeProfile: EmployeeProfileScreen,
+
+    EmployeeEducations: EmployeeEmployeeEducationsContainer,
     EditEducation: EditEducationScreen,
-    EditExperience: EditExperienceScreen
+
+    EmployeeExperiences: EmployeeEmployeeExperiencesContainer,
+    EditExperience: EditExperienceScreen,
+
+    EmployeeTrainings: EmployeeEmployeeTrainingsContainer,
+    EditTraining: EditTrainingScreen,
+
+    EmployeeLanguages: EmployeeEmployeeLanguagesContainer,
+    EmployeeSkills: EmployeeEmployeeSkillsContainer,
+    EmployeeInterests: EmployeeEmployeeInterestsContainer,
+
+    EmployeeReferences: EmployeeEmployeeReferencesContainer,
+    EditReference: EditReferenceScreen
   },
   hideHeaderNavOptions
 );

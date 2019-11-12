@@ -138,7 +138,7 @@ const CustomDrawer = ({
           source={require('../../assets/drawer-logo.jpg')}
           style={{ width: 100, height: '100%' }}
         />
-        <View style={{ marginVertical: 10, marginLeft: 20 }}>
+        <View style={{ marginVertical: 10, marginLeft: 10 }}>
           <Text style={{ fontSize: 18 }}>Careers Network</Text>
           <Text style={{ fontSize: 14, color: 'grey' }}>Version 1.0.0</Text>
         </View>

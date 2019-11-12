@@ -6,7 +6,16 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { EmployerShowJobContainer } from '../screens/show-job/show-job.containers';
 import { EmployerEmployerProfileContainer } from '../screens/employer-profile/employer-profile.containers';
-import { EmployerEmployeeProfileContainer } from '../screens/employee-profile/employee-profile-containers';
+
+import EmployeeProfileScreen from '../screens/employee-profile/employee-profile.component';
+import { EmployerEmployeeGeneralInfoContainer } from '../screens/employee-profile/general-info/employee-general-info.containers';
+import { EmployerEmployeeEducationsContainer } from '../screens/employee-profile/educations/educations.containers';
+import { EmployerEmployeeExperiencesContainer } from '../screens/employee-profile/experiences/experiences.containers';
+import { EmployerEmployeeTrainingsContainer } from '../screens/employee-profile/trainings/trainings.containers';
+import { EmployerEmployeeLanguagesContainer } from '../screens/employee-profile/languages/languages.containers';
+import { EmployerEmployeeSkillsContainer } from '../screens/employee-profile/skills/skills.containers';
+import { EmployerEmployeeInterestsContainer } from '../screens/employee-profile/interests/interests.containers';
+import { EmployerEmployeeReferencesContainer } from '../screens/employee-profile/references/references.containers';
 
 import JobApplicationsScreen from '../screens/job-applications/job-applications.component';
 import ContactUsScreen from '../screens/contact-us/contact-us.component';
@@ -33,7 +42,20 @@ const employerJobsNavigator = createStackNavigator(
     EditJob: EditJobScreen,
     EmployerJob: EmployerShowJobContainer,
     JobApplications: JobApplicationsScreen,
-    EmployeeProfile: EmployerEmployeeProfileContainer
+    EmployerEmployeeProfile: createStackNavigator(
+      {
+        EmployerEmployeeGeneralInfo: EmployerEmployeeGeneralInfoContainer,
+        EmployeeProfile: EmployeeProfileScreen,
+        EmployeeEducations: EmployerEmployeeEducationsContainer,
+        EmployeeExperiences: EmployerEmployeeExperiencesContainer,
+        EmployeeTrainings: EmployerEmployeeTrainingsContainer,
+        EmployeeLanguages: EmployerEmployeeLanguagesContainer,
+        EmployeeSkills: EmployerEmployeeSkillsContainer,
+        EmployeeInterests: EmployerEmployeeInterestsContainer,
+        EmployeeReferences: EmployerEmployeeReferencesContainer
+      },
+      hideHeaderNavOptions
+    )
   },
   hideHeaderNavOptions
 );

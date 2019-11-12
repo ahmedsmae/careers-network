@@ -7,20 +7,20 @@ import {
   selectCurrentUser,
   selectCurrentEmployee,
   selectLoading
-} from '../../redux/current-user/current-user.selectors';
-import { selectCityNameById } from '../../redux/constants/constants.selectors';
+} from '../../../redux/current-user/current-user.selectors';
+import { selectCityNameById } from '../../../redux/constants/constants.selectors';
 
 import {
   editEmployeeAvatarStart,
   deleteEmployeeEducationStart
-} from '../../redux/current-user/current-user.actions';
+} from '../../../redux/current-user/current-user.actions';
 
-import CameraOrMemory from '../../components/camera-or-memory/camera-or-memory.component';
-import EmployeeProfile from './employee-profile.component';
+import CameraOrMemory from '../../../components/camera-or-memory/camera-or-memory.component';
+import EmployeeGeneralInfo from './employee-general-info.component';
 
-import Colors from '../../constants/colors';
+import Colors from '../../../constants/colors';
 
-const EmployeeEmployeeProfile = ({
+const EmployeeEmployeeGeneralInfo = ({
   currentEmployee,
   editEmployeeAvatarStart,
   navigation,
@@ -34,7 +34,7 @@ const EmployeeEmployeeProfile = ({
     <>
       <Appbar.Header>
         <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Your CV' />
+        <Appbar.Content title='Your General Info' />
       </Appbar.Header>
 
       <CameraOrMemory
@@ -47,42 +47,7 @@ const EmployeeEmployeeProfile = ({
       />
 
       <Provider>
-        <EmployeeProfile
-          employee={currentEmployee}
-          onEducationPress={edu =>
-            navigation.navigate('EditEducation', { education: edu })
-          }
-          onEducationLongPress={edu =>
-            Alert.alert(
-              'Delete Education',
-              'Are you sure you want to delete this education ?',
-              [
-                {
-                  text: 'Yes',
-                  onPress: () => deleteEmployeeEducationStart(edu._id)
-                },
-                { text: 'Cancel' }
-              ]
-            )
-          }
-          onExperiencePress={exp =>
-            navigation.navigate('EdirExperience', { experience: exp })
-          }
-          onExperienceLongPress={exp =>
-            Alert.alert(
-              'Delete Experience',
-              'Are you sure you want to delete this experience ?',
-              [
-                {
-                  text: 'Yes',
-                  onPress: () => {}
-                },
-                { text: 'Cancel' }
-              ]
-            )
-          }
-          {...props}
-        />
+        <EmployeeGeneralInfo employee={currentEmployee} {...props} />
 
         <Portal>
           <FAB.Group
@@ -102,14 +67,9 @@ const EmployeeEmployeeProfile = ({
                 onPress: () => navigation.navigate('EditInfo')
               },
               {
-                icon: 'add',
-                label: 'Education',
-                onPress: () => navigation.navigate('EditEducation')
-              },
-              {
-                icon: 'add',
-                label: 'Experience',
-                onPress: () => navigation.navigate('EditExperience')
+                icon: 'list',
+                label: 'Profile Sections',
+                onPress: () => navigation.navigate('EmployeeProfile')
               }
             ]}
             onStateChange={({ open }) => setShowFabOptions(open)}
@@ -125,18 +85,25 @@ const EmployeeEmployeeProfile = ({
   );
 };
 
-const EmployerEmployeeProfile = ({ navigation, ...props }) => {
+const EmployerEmployeeGeneralInfo = ({ navigation, ...props }) => {
   const employee = navigation.getParam('employee');
 
   return (
     <>
       <Appbar.Header>
         <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Employee CV' />
+        <Appbar.Content title='Employee General Info' />
       </Appbar.Header>
 
       {/* to prevent employer user email from display in the employee profile */}
       <EmployeeProfile employee={employee} {...props} currentUser={null} />
+
+      <FAB
+        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
+        small
+        icon='list'
+        onPress={() => navigation.navigate('EmployeeProfile')}
+      />
     </>
   );
 };
@@ -153,12 +120,12 @@ const mapDispatchToProps = dispatch => ({
   deleteEmployeeEducationStart: id => dispatch(deleteEmployeeEducationStart(id))
 });
 
-export const EmployeeEmployeeProfileContainer = connect(
+export const EmployeeEmployeeGeneralInfoContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(EmployeeEmployeeProfile);
+)(EmployeeEmployeeGeneralInfo);
 
-export const EmployerEmployeeProfileContainer = connect(
+export const EmployerEmployeeGeneralInfoContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(EmployerEmployeeProfile);
+)(EmployerEmployeeGeneralInfo);

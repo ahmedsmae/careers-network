@@ -120,16 +120,10 @@ router.post(
       let employee, employer, admin;
       if (userKind === process.env.KIND_EMPLOYEE) {
         employee = await Employee.findOne({ owner: user._id });
-        employer = null;
-        admin = null;
       } else if (userKind === process.env.KIND_EMPLOYER) {
         employer = await Employer.findOne({ owner: user._id });
-        employee = null;
-        admin = null;
       } else if (userKind === process.env.KIND_ADMIN) {
         admin = await Admin.findOne({ owner: user._id });
-        employee = null;
-        employer = null;
       }
 
       res.json({ user, token, employee, employer, admin });

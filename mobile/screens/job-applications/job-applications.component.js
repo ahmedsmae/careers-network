@@ -240,7 +240,9 @@ const JobApplications = ({ navigation, jobApplications }) => {
             application={item}
             job={job}
             onPress={() =>
-              navigation.navigate('EmployeeProfile', { employee: item.owner })
+              navigation.navigate('EmployerEmployeeProfile', {
+                employee: item.owner
+              })
             }
           />
         )}

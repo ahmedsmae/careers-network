@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     width: '100%',
-    height: 250
+    height: 400
   },
   imagePreview: {
     width: '100%',
-    height: 250
+    height: 400
   },
   image: {
     width: '100%',
