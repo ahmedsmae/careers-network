@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
-import { TextInput, Caption } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import { View, StyleSheet, TouchableOpacity, Platform } from "react-native";
+import { TextInput, Caption } from "react-native-paper";
+import { Ionicons } from "@expo/vector-icons";
 
 export const OutlinedInput = ({
   name,
@@ -17,35 +17,35 @@ export const OutlinedInput = ({
     <View style={style}>
       <View style={styles.container}>
         <TextInput
-          mode='outlined'
-          style={{ width: '100%', backgroundColor: 'white', paddingRight: 20 }}
+          mode="outlined"
+          style={{ width: "100%", backgroundColor: "white", paddingRight: 20 }}
           {...props}
           value={value}
           onChangeText={value => {
-            value.toString().trim() !== '' && setError(false);
+            value.toString().trim() !== "" && setError(false);
             onChange({ name, value });
           }}
           onBlur={() =>
-            required && value.toString().trim() === ''
+            required && value.toString().trim() === ""
               ? setError(true)
               : setError(false)
           }
         />
         {!!value && !!value.length && (
           <TouchableOpacity
-            onPress={() => onChange({ name, value: '' })}
-            style={{ position: 'absolute', right: 0, padding: 10, zIndex: 100 }}
+            onPress={() => onChange({ name, value: "" })}
+            style={{ position: "absolute", right: 0, padding: 10, zIndex: 100 }}
           >
             <Ionicons
-              name={Platform.OS === 'android' ? 'md-close' : 'ios-close'}
-              color='lightgrey'
+              name={Platform.OS === "android" ? "md-close" : "ios-close"}
+              color="lightgrey"
               size={24}
             />
           </TouchableOpacity>
         )}
       </View>
       {error && (
-        <Caption style={{ color: 'red', marginLeft: 5 }}>{required}</Caption>
+        <Caption style={{ color: "red", marginLeft: 5 }}>{required}</Caption>
       )}
     </View>
   );
@@ -53,7 +53,7 @@ export const OutlinedInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: "row",
+    alignItems: "center"
   }
 });

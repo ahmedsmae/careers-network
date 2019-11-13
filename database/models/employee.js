@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const Follow = require('./follow');
-const Saved = require('./saved');
-const Application = require('./application');
+const Follow = require("./follow");
+const Saved = require("./saved");
+const Application = require("./application");
 
 const educationSchema = new mongoose.Schema({
   subject: {
@@ -184,7 +184,7 @@ const employeeSchema = new mongoose.Schema(
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User'
+      ref: "User"
     },
     first_name: {
       type: String,
@@ -234,9 +234,8 @@ const employeeSchema = new mongoose.Schema(
     contact_number: {
       type: String
     },
-    driving_licences: {
-      type: String,
-      trim: true
+    driving_licenses: {
+      type: [String]
     },
     has_a_car: {
       type: Boolean
@@ -339,7 +338,7 @@ employeeSchema.methods.toJSON = function() {
 };
 
 // remove employee applications deleting themselves
-employeeSchema.pre('remove', async function(next) {
+employeeSchema.pre("remove", async function(next) {
   const employee = this;
 
   await Application.deleteMany({ owner: employee._id });
@@ -349,6 +348,6 @@ employeeSchema.pre('remove', async function(next) {
   next();
 });
 
-const Employee = mongoose.model('Employee', employeeSchema);
+const Employee = mongoose.model("Employee", employeeSchema);
 
 module.exports = Employee;

@@ -59,3 +59,14 @@ export default URLS = {
   ADMIN_DELETE_JOB: `${BASE_URL}/api/admin/deletejob`, // + /:jobid
   ADMIN_DELETE_APPLICATION: `${BASE_URL}/api/admin/deleteapplication` // + /:applicationid
 };
+
+export const SOCIAL_MEDIA_BASE_URLS = {
+  linkedin: 'https://www.linkedin.com/in/',
+  twitter: 'https://twitter.com/',
+  github: 'https://github.com/',
+  stackoverflow: 'https://stackoverflow.com/users/',
+  facebook: 'https://www.facebook.com/',
+  instagram: 'https://www.instagram.com/',
+  youtube: 'https://www.youtube.com/user/',
+  youtubeChannel: 'https://www.youtube.com/channel/'
+};

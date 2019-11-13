@@ -1,44 +1,46 @@
-import React from 'react';
-import { createDrawerNavigator } from 'react-navigation-drawer';
-import { createStackNavigator } from 'react-navigation-stack';
-import { Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React from "react";
+import { createDrawerNavigator } from "react-navigation-drawer";
+import { createStackNavigator } from "react-navigation-stack";
+import { Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import { AuthSearchContainer } from '../screens/search/search.containers';
-import { AuthSearchResultsContainer } from '../screens/search-results/search-results.containers';
-import { EmployeeShowJobContainer } from '../screens/show-job/show-job.containers';
-import { EmployeeEmployerProfileContainer } from '../screens/employer-profile/employer-profile.containers';
+import { AuthSearchContainer } from "../screens/search/search.containers";
+import { AuthSearchResultsContainer } from "../screens/search-results/search-results.containers";
+import { EmployeeShowJobContainer } from "../screens/show-job/show-job.containers";
+import { EmployeeEmployerProfileContainer } from "../screens/employer-profile/employer-profile.containers";
 
-import EmployeeProfileScreen from '../screens/employee-profile/employee-profile.component';
-import { EmployeeEmployeeGeneralInfoContainer } from '../screens/employee-profile/general-info/employee-general-info.containers';
-import { EmployeeEmployeeEducationsContainer } from '../screens/employee-profile/educations/educations.containers';
-import { EmployeeEmployeeExperiencesContainer } from '../screens/employee-profile/experiences/experiences.containers';
-import { EmployeeEmployeeTrainingsContainer } from '../screens/employee-profile/trainings/trainings.containers';
-import { EmployeeEmployeeLanguagesContainer } from '../screens/employee-profile/languages/languages.containers';
-import { EmployeeEmployeeSkillsContainer } from '../screens/employee-profile/skills/skills.containers';
-import { EmployeeEmployeeInterestsContainer } from '../screens/employee-profile/interests/interests.containers';
-import { EmployeeEmployeeReferencesContainer } from '../screens/employee-profile/references/references.containers';
+import EmployeeProfileScreen from "../screens/employee-profile/employee-profile.component";
+import { EmployeeEmployeeGeneralInfoContainer } from "../screens/employee-profile/general-info/employee-general-info.containers";
+import { EmployeeEmployeeEducationsContainer } from "../screens/employee-profile/educations/educations.containers";
+import { EmployeeEmployeeExperiencesContainer } from "../screens/employee-profile/experiences/experiences.containers";
+import { EmployeeEmployeeTrainingsContainer } from "../screens/employee-profile/trainings/trainings.containers";
+import { EmployeeEmployeeLanguagesContainer } from "../screens/employee-profile/languages/languages.containers";
+import { EmployeeEmployeeSkillsContainer } from "../screens/employee-profile/skills/skills.containers";
+import { EmployeeEmployeeInterestsContainer } from "../screens/employee-profile/interests/interests.containers";
+import { EmployeeEmployeeReferencesContainer } from "../screens/employee-profile/references/references.containers";
+import { EmployeeEmployeeSocialProfilesContainer } from "../screens/employee-profile/social-profiles/social-profiles.containers";
 
-import SelectedEmployerJobsScreen from '../screens/selected-employer-jobs/selected-employer-jobs.component';
+import SelectedEmployerJobsScreen from "../screens/selected-employer-jobs/selected-employer-jobs.component";
 
-import MyApplications from '../screens/my-applications/my-applications.component';
-import EditApplicationScreen from '../screens/edit-application/edit-application.component';
+import MyApplications from "../screens/my-applications/my-applications.component";
+import EditApplicationScreen from "../screens/edit-application/edit-application.component";
 
-import HomeScreen from '../screens/home/home.component';
-import FollowedEmployersScreen from '../screens/followed-employers/followed-employers.component';
-import MySavedJobsScreen from '../screens/my-saved-jobs/my-saved-jobs.component';
-import EditEmployeeInfoScreen from '../screens/edit-employee-info/edit-employee-info.component';
-import EditEducationScreen from '../screens/edit-education/edit-education.component';
-import EditExperienceScreen from '../screens/edit-experience/edit-experience.component';
-import EditTrainingScreen from '../screens/edit-training/edit-training.component';
-import EditReferenceScreen from '../screens/edit-reference/edit-reference.component';
+import HomeScreen from "../screens/home/home.component";
+import FollowedEmployersScreen from "../screens/followed-employers/followed-employers.component";
+import MySavedJobsScreen from "../screens/my-saved-jobs/my-saved-jobs.component";
+import EditEmployeeInfoScreen from "../screens/edit-employee-info/edit-employee-info.component";
+import EditEducationScreen from "../screens/edit-education/edit-education.component";
+import EditExperienceScreen from "../screens/edit-experience/edit-experience.component";
+import EditTrainingScreen from "../screens/edit-training/edit-training.component";
+import EditReferenceScreen from "../screens/edit-reference/edit-reference.component";
+import EditSocialProfilesScreen from "../screens/edit-social-profiles/edit-social-profiles.component";
 
-import ContactUsScreen from '../screens/contact-us/contact-us.component';
+import ContactUsScreen from "../screens/contact-us/contact-us.component";
 
-import hideHeaderNavOptions from './hide-header-nav-options';
-import settingsNavigator from './settings-navigator';
-import drawerNavOptions from './drawer-nav-options';
-import aboutNavigator from './about-navigator';
+import hideHeaderNavOptions from "./hide-header-nav-options";
+import settingsNavigator from "./settings-navigator";
+import drawerNavOptions from "./drawer-nav-options";
+import aboutNavigator from "./about-navigator";
 
 const employeeProfileNavigator = createStackNavigator(
   {
@@ -61,7 +63,10 @@ const employeeProfileNavigator = createStackNavigator(
     EmployeeInterests: EmployeeEmployeeInterestsContainer,
 
     EmployeeReferences: EmployeeEmployeeReferencesContainer,
-    EditReference: EditReferenceScreen
+    EditReference: EditReferenceScreen,
+
+    EmployeeSocialProfiles: EmployeeEmployeeSocialProfilesContainer,
+    EditSocialProfiles: EditSocialProfilesScreen
   },
   hideHeaderNavOptions
 );
@@ -91,10 +96,10 @@ const employeeDrawerNavigator = createDrawerNavigator(
     Search: {
       screen: searchNavigator,
       navigationOptions: {
-        drawerLabel: 'Search Jobs',
+        drawerLabel: "Search Jobs",
         drawerIcon: drawerConfig => (
           <Ionicons
-            name={Platform.OS === 'android' ? 'md-search' : 'ios-search'}
+            name={Platform.OS === "android" ? "md-search" : "ios-search"}
             size={23}
             color={drawerConfig.tintColor}
           />
@@ -108,10 +113,10 @@ const employeeDrawerNavigator = createDrawerNavigator(
     Home: {
       screen: HomeScreen,
       navigationOptions: {
-        drawerLabel: 'Home',
+        drawerLabel: "Home",
         drawerIcon: drawerConfig => (
           <Ionicons
-            name={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
+            name={Platform.OS === "android" ? "md-home" : "ios-home"}
             size={23}
             color={drawerConfig.tintColor}
           />
@@ -121,10 +126,10 @@ const employeeDrawerNavigator = createDrawerNavigator(
     FOllowedEmployers: {
       screen: FollowedEmployersScreen,
       navigationOptions: {
-        drawerLabel: 'Followed Employers',
+        drawerLabel: "Followed Employers",
         drawerIcon: drawerConfig => (
           <Ionicons
-            name={Platform.OS === 'android' ? 'md-bookmark' : 'ios-bookmark'}
+            name={Platform.OS === "android" ? "md-bookmark" : "ios-bookmark"}
             size={23}
             color={drawerConfig.tintColor}
           />
@@ -134,10 +139,10 @@ const employeeDrawerNavigator = createDrawerNavigator(
     MyApplications: {
       screen: MyApplications,
       navigationOptions: {
-        drawerLabel: 'My Applications',
+        drawerLabel: "My Applications",
         drawerIcon: drawerConfig => (
           <Ionicons
-            name={Platform.OS === 'android' ? 'md-copy' : 'ios-copy'}
+            name={Platform.OS === "android" ? "md-copy" : "ios-copy"}
             size={23}
             color={drawerConfig.tintColor}
           />
@@ -147,10 +152,10 @@ const employeeDrawerNavigator = createDrawerNavigator(
     MySavedJobs: {
       screen: MySavedJobsScreen,
       navigationOptions: {
-        drawerLabel: 'My Saved Jobs',
+        drawerLabel: "My Saved Jobs",
         drawerIcon: drawerConfig => (
           <Ionicons
-            name={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
+            name={Platform.OS === "android" ? "md-star" : "ios-star"}
             size={23}
             color={drawerConfig.tintColor}
           />

@@ -1,39 +1,32 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import {
-  View,
   ScrollView,
-  Image,
   TouchableOpacity,
   KeyboardAvoidingView
-} from 'react-native';
+} from "react-native";
+import { Appbar, Checkbox, Paragraph } from "react-native-paper";
 import {
-  Text,
-  TextInput,
-  Appbar,
-  Divider,
-  Checkbox,
-  Paragraph
-} from 'react-native-paper';
-import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
-import DatePicker from 'react-native-datepicker';
+  OutlinedInput,
+  ImagePicker,
+  Filter,
+  CustomDatePicker
+} from "../../components";
 
-import URLS from '../../redux/utils/urls';
+import URLS from "../../redux/utils/urls";
 
 import {
   selectCurrentEmployee,
   selectLoading,
   selectErrorMessage
-} from '../../redux/current-user/current-user.selectors';
+} from "../../redux/current-user/current-user.selectors";
 import {
   selectCityNameById,
   selectCitiesList
-} from '../../redux/constants/constants.selectors';
-import { editEmployeeEducationStart } from '../../redux/current-user/current-user.actions';
+} from "../../redux/constants/constants.selectors";
+import { editEmployeeEducationStart } from "../../redux/current-user/current-user.actions";
 
-import ImagePicker from '../../components/image-picker/image-picker.component';
-
-import styles from './edit-education.styles';
+import styles from "./edit-education.styles";
 
 const EditEducation = ({
   navigation,
@@ -44,21 +37,21 @@ const EditEducation = ({
   loading,
   errorMessage
 }) => {
-  const edu = navigation.getParam('education');
+  const edu = navigation.getParam("education");
 
   const [education, setEducation] = useState(
     !!edu
       ? { ...edu, location: getCityNameById(edu.location_id), filtering: false }
       : {
-          subject: '',
-          institute: '',
-          location_id: '',
-          description: '',
+          subject: "",
+          institute: "",
+          location_id: "",
+          description: "",
           from: null,
           current: false,
           to: null,
           certificate_image: null,
-          location: '',
+          location: "",
           hasCertificate: false,
           filtering: false
         }
@@ -69,8 +62,8 @@ const EditEducation = ({
     subject,
     institute,
     description,
-    location,
-    filtering,
+    // location,
+    // filtering,
     hasCertificate,
     from,
     current,
@@ -84,8 +77,8 @@ const EditEducation = ({
   const _handleLocationSelect = ({ id, city, country }) => {
     setEducation(prev => ({
       ...prev,
-      filtering: false,
-      location: `${city} - ${country}`,
+      // filtering: false,
+      // location: `${city} - ${country}`,
       location_id: id
     }));
   };
@@ -103,14 +96,14 @@ const EditEducation = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title={!!edu ? 'Edit Education' : 'Add Education'} />
-        <Appbar.Action icon='save' onPress={_handleSubmit} />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title={!!edu ? "Edit Education" : "Add Education"} />
+        <Appbar.Action icon="save" onPress={_handleSubmit} />
       </Appbar.Header>
 
       <KeyboardAvoidingView
         style={styles.screen}
-        behavior='padding'
+        behavior="padding"
         keyboardVerticalOffset={5}
       >
         <ScrollView>
@@ -130,22 +123,31 @@ const EditEducation = ({
 
           <OutlinedInput
             style={{ margin: 10 }}
-            autoCapitalize='words'
-            label='Subject'
+            autoCapitalize="words"
+            label="Subject"
             value={subject}
-            name='subject'
+            name="subject"
             onChange={_handleChange}
           />
           <OutlinedInput
             style={{ margin: 10 }}
-            autoCapitalize='words'
-            label='Institute'
+            autoCapitalize="words"
+            label="Institute"
             value={institute}
-            name='institute'
+            name="institute"
             onChange={_handleChange}
           />
 
-          <OutlinedInput
+          <Filter
+            style={{ width: "95%", marginHorizontal: 10 }}
+            list={citiesList}
+            label="Location"
+            onSelect={_handleLocationSelect}
+            filterItem="city"
+            listItem={city => `${city.city} - ${city.country}`}
+          />
+
+          {/* <OutlinedInput
             style={{ margin: 10 }}
             autoCapitalize='none'
             label='Location'
@@ -186,90 +188,34 @@ const EditEducation = ({
                   })}
               </View>
             </View>
-          )}
+          )} */}
 
-          <DatePicker
-            style={{
-              width: '95%',
-              height: 60,
-              margin: 10,
-              marginTop: 20,
-              padding: 10,
-              borderWidth: 1,
-              borderColor: 'grey',
-              borderRadius: 5
-            }}
+          <CustomDatePicker
+            placeholder="From Date"
             date={from}
-            mode='date'
-            showIcon={false}
-            placeholder='From Date'
-            format='YYYY-MM-DD'
-            customStyles={{
-              dateInput: {
-                borderWidth: 0
-              },
-              placeholderText: {
-                fontSize: 16,
-                color: 'grey',
-                alignSelf: 'flex-start'
-              },
-              dateText: {
-                fontSize: 16,
-                color: 'grey',
-                alignSelf: 'flex-start'
-              }
-            }}
-            onDateChange={value =>
-              setEducation(prevEdu => ({ ...prevEdu, from: value }))
+            onDateChange={date =>
+              setEducation(prevEdu => ({ ...prevEdu, from: date }))
             }
           />
 
           <TouchableOpacity
-            style={{ flexDirection: 'row', marginHorizontal: 10 }}
+            style={{ flexDirection: "row", marginHorizontal: 10 }}
             onPress={() =>
               setEducation(prev => ({ ...prev, current: !current }))
             }
           >
-            <Checkbox status={current ? 'checked' : 'unchecked'} />
-            <Paragraph style={{ color: 'grey', textAlignVertical: 'center' }}>
+            <Checkbox status={current ? "checked" : "unchecked"} />
+            <Paragraph style={{ color: "grey", textAlignVertical: "center" }}>
               Current Job
             </Paragraph>
           </TouchableOpacity>
 
           {!current && (
-            <DatePicker
-              style={{
-                width: '95%',
-                height: 60,
-                margin: 10,
-                marginTop: 20,
-                padding: 10,
-                borderWidth: 1,
-                borderColor: 'grey',
-                borderRadius: 5
-              }}
+            <CustomDatePicker
+              placeholder="To Date"
               date={to}
-              mode='date'
-              showIcon={false}
-              placeholder='Until Date'
-              format='MM / YYYY'
-              customStyles={{
-                dateInput: {
-                  borderWidth: 0
-                },
-                placeholderText: {
-                  fontSize: 16,
-                  color: 'grey',
-                  alignSelf: 'flex-start'
-                },
-                dateText: {
-                  fontSize: 16,
-                  color: 'grey',
-                  alignSelf: 'flex-start'
-                }
-              }}
-              onDateChange={value =>
-                setEducation(prevEdu => ({ ...prevEdu, to: value }))
+              onDateChange={date =>
+                setEducation(prevEdu => ({ ...prevEdu, to: date }))
               }
             />
           )}
@@ -278,10 +224,10 @@ const EditEducation = ({
             style={{ margin: 10 }}
             multiline
             numberOfLines={3}
-            autoCapitalize='sentences'
-            label='Description'
+            autoCapitalize="sentences"
+            label="Description"
             value={description}
-            name='description'
+            name="description"
             onChange={_handleChange}
           />
         </ScrollView>
@@ -302,7 +248,4 @@ const mapDispatchToProps = dispatch => ({
   editEmployeeEducationStart: info => dispatch(editEmployeeEducationStart(info))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditEducation);
+export default connect(mapStateToProps, mapDispatchToProps)(EditEducation);

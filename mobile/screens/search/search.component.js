@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Alert,
@@ -6,17 +6,16 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform
-} from 'react-native';
-import { Text, Divider } from 'react-native-paper';
-import { H1, ContainedButton, OutlinedInput } from '../../components';
+} from "react-native";
+import { H1, ContainedButton, OutlinedInput, Filter } from "../../components";
 
-import styles from './search.styles';
+import styles from "./search.styles";
 
 const Search = ({ citiesList, onSearch }) => {
   const [searchValues, setSearchValues] = useState({
-    position: '',
-    searching: false,
-    location: '',
+    position: "",
+    // searching: false,
+    // location: "",
     locationId: null
   });
   const { searching, position, location, locationId } = searchValues;
@@ -24,16 +23,16 @@ const Search = ({ citiesList, onSearch }) => {
   const handleLocationSelect = ({ id, city, country }) => {
     setSearchValues({
       ...searchValues,
-      searching: false,
-      location: `${city} - ${country}`,
+      // searching: false,
+      // location: `${city} - ${country}`,
       locationId: id
     });
   };
 
   const handleSearch = () => {
     if (position.trim().length < 1) {
-      Alert.alert('Missing Info', 'You should type a position to search for', [
-        { text: 'OK' }
+      Alert.alert("Missing Info", "You should type a position to search for", [
+        { text: "OK" }
       ]);
       return;
     }
@@ -43,30 +42,30 @@ const Search = ({ citiesList, onSearch }) => {
   return (
     <KeyboardAvoidingView
       style={styles.screen}
-      behavior='padding'
+      behavior="padding"
       keyboardVerticalOffset={5}
     >
-      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View
           style={{
             width: 300,
             height: 300,
             marginVertical: 10,
-            alignItems: 'center'
+            alignItems: "center"
           }}
         >
           <Image
-            source={require('../../assets/network.png')}
-            style={{ width: '100%', height: '100%', opacity: 0.5 }}
+            source={require("../../assets/network.png")}
+            style={{ width: "100%", height: "100%", opacity: 0.5 }}
           />
 
-          <H1 style={{ bottom: 25, position: 'absolute' }}>Careers Network</H1>
+          <H1 style={{ bottom: 25, position: "absolute" }}>Careers Network</H1>
         </View>
 
         <OutlinedInput
-          style={{ marginHorizontal: 10, marginBottom: 10, width: '90%' }}
-          label='Position'
-          name='position'
+          style={{ marginHorizontal: 10, marginBottom: 10, width: "90%" }}
+          label="Position"
+          name="position"
           value={position}
           onChange={({ name, value }) =>
             setSearchValues({
@@ -75,9 +74,18 @@ const Search = ({ citiesList, onSearch }) => {
               [name]: value
             })
           }
-          required='You have to add a position'
+          required="You have to add a position"
         />
 
+        <Filter
+          style={{ width: "90%" }}
+          list={citiesList}
+          label="Location"
+          onSelect={handleLocationSelect}
+          filterItem="city"
+          listItem={city => `${city.city} - ${city.country}`}
+        />
+        {/* 
         <OutlinedInput
           style={{ marginHorizontal: 10, marginBottom: 5, width: '90%' }}
           label='Location'
@@ -118,10 +126,10 @@ const Search = ({ citiesList, onSearch }) => {
                 })}
             </View>
           </View>
-        )}
+        )} */}
 
         <ContainedButton
-          icon={Platform.OS === 'android' ? 'md-search' : 'ios-serach'}
+          icon={Platform.OS === "android" ? "md-search" : "ios-serach"}
           style={styles.searchButton}
           onPress={handleSearch}
         >

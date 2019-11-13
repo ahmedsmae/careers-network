@@ -6,40 +6,22 @@ import { Appbar, Provider, Portal, FAB } from 'react-native-paper';
 
 import { selectCurrentEmployee } from '../../../redux/current-user/current-user.selectors';
 
-import References from './references.component';
+import SocialProfiles from './social-profiles.component';
 
 import Colors from '../../../constants/colors';
 
-const EmployeeEmployeeReferences = ({ navigation, currentEmployee }) => {
+const EmployeeEmployeeSocialProfiles = ({ navigation, currentEmployee }) => {
   const [showFabOptions, setShowFabOptions] = useState(false);
 
   return (
     <>
       <Appbar.Header>
         <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Your References' />
+        <Appbar.Content title='Your Social Profiles' />
       </Appbar.Header>
 
       <Provider>
-        <References
-          references={currentEmployee.references}
-          onReferencePress={ref =>
-            navigation.navigate('EditReference', { reference: ref })
-          }
-          onReferenceLongPress={ref =>
-            Alert.alert(
-              'Delete Reference',
-              'Are you sure you want to delete this reference ?',
-              [
-                {
-                  text: 'Yes'
-                  // onPress: () => deleteEmployeeEducationStart(edu._id)
-                },
-                { text: 'Cancel' }
-              ]
-            )
-          }
-        />
+        <SocialProfiles social_profiles={currentEmployee.social_profiles} />
 
         <Portal>
           <FAB.Group
@@ -49,9 +31,9 @@ const EmployeeEmployeeReferences = ({ navigation, currentEmployee }) => {
             color='white'
             actions={[
               {
-                icon: 'add',
-                label: 'Reference',
-                onPress: () => navigation.navigate('EditReference')
+                icon: 'edit',
+                label: 'Edit Social Profiles',
+                onPress: () => navigation.navigate('EditSocialProfiles')
               },
               {
                 icon: 'list',
@@ -72,17 +54,17 @@ const EmployeeEmployeeReferences = ({ navigation, currentEmployee }) => {
   );
 };
 
-const EmployerEmployeeReferences = ({ navigation }) => {
+const EmployerEmployeeSocialProfiles = ({ navigation }) => {
   const employee = navigation.getParam('reference');
 
   return (
     <>
       <Appbar.Header>
         <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Employee References' />
+        <Appbar.Content title='Employee Social Profiles' />
       </Appbar.Header>
 
-      <References references={employee.references} />
+      <SocialProfiles social_profiles={employee.social_profiles} />
 
       <FAB
         style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
@@ -99,12 +81,12 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({});
 
-export const EmployeeEmployeeReferencesContainer = connect(
+export const EmployeeEmployeeSocialProfilesContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(EmployeeEmployeeReferences);
+)(EmployeeEmployeeSocialProfiles);
 
-export const EmployerEmployeeReferencesContainer = connect(
+export const EmployerEmployeeSocialProfilesContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(EmployerEmployeeReferences);
+)(EmployerEmployeeSocialProfiles);

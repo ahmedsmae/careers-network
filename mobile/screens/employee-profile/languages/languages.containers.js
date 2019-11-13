@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { View, Text, Picker } from 'react-native';
-import { Appbar, Card, Button, FAB, Divider } from 'react-native-paper';
-import { OutlinedInput } from '../../../components';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { View, Text, Picker } from "react-native";
+import { Appbar, Card, Button, FAB, Divider } from "react-native-paper";
+import { OutlinedInput, Filter } from "../../../components";
 
-import { selectCurrentEmployee } from '../../../redux/current-user/current-user.selectors';
+import { selectCurrentEmployee } from "../../../redux/current-user/current-user.selectors";
 import {
   selectLanguages,
   selectLanguageLevels
-} from '../../../redux/constants/constants.selectors';
+} from "../../../redux/constants/constants.selectors";
 
-import Languages from './languages.component';
+import Languages from "./languages.component";
 
 const EmployeeEmployeeLanguages = ({
   navigation,
@@ -21,16 +21,16 @@ const EmployeeEmployeeLanguages = ({
 }) => {
   const [addLanguage, setAddLanguage] = useState(false);
   const [filtering, setFiltering] = useState(false);
-  const [languageQ, setLanguageQ] = useState('');
+  const [languageQ, setLanguageQ] = useState("");
   const [level, setLevel] = useState(levelsList[2]);
 
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Your Languages' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Your Languages" />
         <Appbar.Action
-          icon={addLanguage ? 'close' : 'add'}
+          icon={addLanguage ? "close" : "add"}
           onPress={() => setAddLanguage(!addLanguage)}
         />
       </Appbar.Header>
@@ -39,11 +39,17 @@ const EmployeeEmployeeLanguages = ({
         <>
           <Card style={{ margin: 10 }}>
             <Card.Title
-              title='Add Language'
-              subtitle='type and select from list'
+              title="Add Language"
+              subtitle="type and select from list"
             />
             <Card.Content>
-              <OutlinedInput
+              <Filter
+                list={languagesList}
+                label="Language"
+                onSelect={lang => setLanguageQ(lang)}
+                listItem={lang => lang}
+              />
+              {/* <OutlinedInput
                 label='Language'
                 value={languageQ}
                 onChange={({ value }) => {
@@ -51,9 +57,9 @@ const EmployeeEmployeeLanguages = ({
                   setFiltering(true);
                 }}
                 required='You should select a language'
-              />
+              /> */}
 
-              {filtering && (
+              {/* {filtering && (
                 <View
                   style={{
                     backgroundColor: 'lightgrey',
@@ -92,16 +98,16 @@ const EmployeeEmployeeLanguages = ({
                       }
                     })}
                 </View>
-              )}
+              )} */}
 
               <View
                 style={{
                   borderWidth: 1,
-                  borderColor: 'grey',
+                  borderColor: "grey",
                   marginTop: 5,
                   borderRadius: 5,
                   height: 60,
-                  justifyContent: 'center'
+                  justifyContent: "center"
                 }}
               >
                 <Picker
@@ -114,8 +120,8 @@ const EmployeeEmployeeLanguages = ({
                 </Picker>
               </View>
             </Card.Content>
-            <Card.Actions style={{ justifyContent: 'center' }}>
-              <Button mode='outlined' onPress={() => {}}>
+            <Card.Actions style={{ justifyContent: "center" }}>
+              <Button mode="outlined" onPress={() => {}}>
                 Add Language
               </Button>
             </Card.Actions>
@@ -131,30 +137,30 @@ const EmployeeEmployeeLanguages = ({
       />
 
       <FAB
-        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
-        icon='list'
-        onPress={() => navigation.navigate('EmployeeProfile')}
+        style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
+        icon="list"
+        onPress={() => navigation.navigate("EmployeeProfile")}
       />
     </>
   );
 };
 
 const EmployerEmployeeLanguages = ({ navigation }) => {
-  const employee = navigation.getParam('employee');
+  const employee = navigation.getParam("employee");
 
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Employee Languages' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Employee Languages" />
       </Appbar.Header>
 
       <Languages languages={employee.languages} levelsList={levelsList} />
 
       <FAB
-        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
-        icon='list'
-        onPress={() => navigation.navigate('EmployeeProfile')}
+        style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
+        icon="list"
+        onPress={() => navigation.navigate("EmployeeProfile")}
       />
     </>
   );

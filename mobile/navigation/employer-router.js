@@ -16,6 +16,7 @@ import { EmployerEmployeeLanguagesContainer } from '../screens/employee-profile/
 import { EmployerEmployeeSkillsContainer } from '../screens/employee-profile/skills/skills.containers';
 import { EmployerEmployeeInterestsContainer } from '../screens/employee-profile/interests/interests.containers';
 import { EmployerEmployeeReferencesContainer } from '../screens/employee-profile/references/references.containers';
+import { EmployerEmployeeSocialProfilesContainer } from '../screens/employee-profile/social-profiles/social-profiles.containers';
 
 import JobApplicationsScreen from '../screens/job-applications/job-applications.component';
 import ContactUsScreen from '../screens/contact-us/contact-us.component';
@@ -52,7 +53,8 @@ const employerJobsNavigator = createStackNavigator(
         EmployeeLanguages: EmployerEmployeeLanguagesContainer,
         EmployeeSkills: EmployerEmployeeSkillsContainer,
         EmployeeInterests: EmployerEmployeeInterestsContainer,
-        EmployeeReferences: EmployerEmployeeReferencesContainer
+        EmployeeReferences: EmployerEmployeeReferencesContainer,
+        EmployeeSocialProfiles: EmployerEmployeeSocialProfilesContainer
       },
       hideHeaderNavOptions
     )

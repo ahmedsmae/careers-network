@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { View, ScrollView, KeyboardAvoidingView } from 'react-native';
-import { Appbar, TextInput, Text, Divider } from 'react-native-paper';
-import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { View, ScrollView, KeyboardAvoidingView, Picker } from "react-native";
+import { Appbar, Text, RadioButton, Chip } from "react-native-paper";
+import { OutlinedInput, Filter, CustomDatePicker } from "../../components";
 
 import {
   selectCurrentEmployee,
   selectLoading,
   selectErrorMessage
-} from '../../redux/current-user/current-user.selectors';
+} from "../../redux/current-user/current-user.selectors";
 import {
   selectCityNameById,
-  selectCitiesList
-} from '../../redux/constants/constants.selectors';
-import { editEmployeeInfoStart } from '../../redux/current-user/current-user.actions';
+  selectCitiesList,
+  selectCountries,
+  selectNationalities,
+  selectReligions,
+  selectVisaTypes,
+  selectMaritalStatuses
+} from "../../redux/constants/constants.selectors";
+import { editEmployeeInfoStart } from "../../redux/current-user/current-user.actions";
 
-import styles from './edit-employee.styles';
+import styles from "./edit-employee.styles";
+import COLORS from "../../constants/colors";
 
 const EditEmployeeEnfo = ({
   navigation,
@@ -24,7 +30,12 @@ const EditEmployeeEnfo = ({
   citiesList,
   getCityName,
   loading,
-  errorMessage
+  errorMessage,
+  countriesList,
+  nationalitiesList,
+  religionsList,
+  visaTypesList,
+  maritalStatusesList
 }) => {
   const [employee, setEmployee] = useState(
     currentEmployee
@@ -34,13 +45,22 @@ const EditEmployeeEnfo = ({
           filtering: false
         }
       : {
-          first_name: '',
-          middle_name: '',
-          last_name: '',
-          contact_number: '',
-          location: '',
-          location_id: '',
-          web_site: '',
+          first_name: "",
+          middle_name: "",
+          last_name: "",
+          gender: "",
+          birth_date: null,
+          nationality: "",
+          religion: "",
+          marital_status: "",
+          number_of_dependents: "",
+          residence_country: "",
+          visa_type: "",
+          contact_number: "",
+          driving_licenses: ["Egypt", "UAE", "USA"],
+          has_a_car: false,
+          location: "",
+          location_id: "",
           bio,
           filtering: false
         }
@@ -50,10 +70,19 @@ const EditEmployeeEnfo = ({
     first_name,
     middle_name,
     last_name,
+    gender,
+    birth_date,
+    nationality,
+    religion,
+    marital_status,
+    number_of_dependents,
+    residence_country,
+    visa_type,
     contact_number,
+    driving_licenses,
+    has_a_car,
     location,
     location_id,
-    web_site,
     bio,
     filtering
   } = employee;
@@ -65,15 +94,18 @@ const EditEmployeeEnfo = ({
   const _handleLocationSelect = ({ id, city, country }) => {
     setEmployee(prev => ({
       ...prev,
-      filtering: false,
-      location: `${city} - ${country}`,
+      // filtering: false,
+      // location: `${city} - ${country}`,
       location_id: id
     }));
   };
 
   _handleSubmit = () => {
-    const { location, filtering, ...rest } = employee;
-    editEmployeeInfoStart(rest);
+    const { location, filtering, birth_date, ...rest } = employee;
+    const formatedBirthDate = birth_date
+      ? new Date(birth_date).toString()
+      : null;
+    editEmployeeInfoStart({ ...rest, birth_date: formatedBirthDate });
     if (!loading && errorMessage.length === 0) {
       navigation.goBack();
     }
@@ -82,114 +114,284 @@ const EditEmployeeEnfo = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Edit your info' />
-        <Appbar.Action icon='save' onPress={_handleSubmit} />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Edit your info" />
+        <Appbar.Action icon="save" onPress={_handleSubmit} />
       </Appbar.Header>
 
       <KeyboardAvoidingView
         style={styles.screen}
-        behavior='padding'
+        behavior="padding"
         keyboardVerticalOffset={5}
       >
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <OutlinedInput
             style={{ margin: 10 }}
-            autoCapitalize='words'
-            label='First Name'
+            autoCapitalize="words"
+            label="First Name"
             value={first_name}
-            name='first_name'
+            name="first_name"
             onChange={_handleChange}
           />
 
           <OutlinedInput
             style={{ margin: 10 }}
-            autoCapitalize='words'
-            label='Middle Name'
+            autoCapitalize="words"
+            label="Middle Name"
             value={middle_name}
-            name='middle_name'
+            name="middle_name"
             onChange={_handleChange}
           />
 
           <OutlinedInput
             style={{ margin: 10 }}
-            autoCapitalize='words'
-            label='Last Name'
+            autoCapitalize="words"
+            label="Last Name"
             value={last_name}
-            name='last_name'
+            name="last_name"
             onChange={_handleChange}
           />
 
+          <View
+            style={{
+              borderWidth: 1,
+              margin: 10,
+              padding: 5,
+              borderRadius: 5,
+              borderColor: "grey"
+            }}
+          >
+            <Picker
+              selectedValue={gender}
+              onValueChange={value =>
+                setEmployee(prev => ({ ...prev, gender: value }))
+              }
+            >
+              <Picker.Item color="grey" label="Choose Gender" value={null} />
+              <Picker.Item label="Male" value="Male" />
+              <Picker.Item label="Female" value="Female" />
+            </Picker>
+          </View>
+
+          <Filter
+            style={{ width: "95%", marginHorizontal: 10 }}
+            list={nationalitiesList}
+            value={nationality}
+            label="Nationality"
+            onSelect={nationality =>
+              setEmployee(prev => ({ ...prev, nationality }))
+            }
+            listItem={nat => nat}
+          />
+
+          <CustomDatePicker
+            placeholder="Birth Date"
+            date={birth_date}
+            onDateChange={date =>
+              setEmployee(prev => ({ ...prev, birth_date: date }))
+            }
+          />
+
+          <View
+            style={{
+              borderWidth: 1,
+              margin: 10,
+              padding: 5,
+              borderRadius: 5,
+              borderColor: "grey"
+            }}
+          >
+            <Picker
+              selectedValue={religion}
+              onValueChange={value =>
+                setEmployee(prev => ({ ...prev, religion: value }))
+              }
+            >
+              <Picker.Item color="grey" label="Choose Religion" value={null} />
+              {religionsList.map((religion, index) => (
+                <Picker.Item key={index} label={religion} value={religion} />
+              ))}
+            </Picker>
+          </View>
+
+          <View
+            style={{
+              borderWidth: 1,
+              margin: 10,
+              padding: 5,
+              borderRadius: 5,
+              borderColor: "grey"
+            }}
+          >
+            <Picker
+              selectedValue={marital_status}
+              onValueChange={value =>
+                setEmployee(prev => ({ ...prev, marital_status: value }))
+              }
+            >
+              <Picker.Item
+                color="grey"
+                label=" Choose Marital Status"
+                value={null}
+              />
+              {maritalStatusesList.map((status, index) => (
+                <Picker.Item key={index} label={status} value={status} />
+              ))}
+            </Picker>
+          </View>
+
           <OutlinedInput
             style={{ margin: 10 }}
-            keyboardType='phone-pad'
-            label='Contact Number'
-            value={contact_number}
-            name='contact_number'
+            keyboardType="numeric"
+            label="Number of Dependents"
+            value={number_of_dependents}
+            name="number_of_dependents"
             onChange={_handleChange}
           />
 
-          {/* <TextInput
-            style={{ margin: 10 }}
-            mode='outlined'
-            autoCapitalize='words'
-            label='First Name'
-            value={first_name}
-            name='first_name'
-            onChangeText={this._handleChange.bind(this, 'first_name')}
-          /> */}
+          <Filter
+            style={{ width: "95%", marginHorizontal: 10 }}
+            list={countriesList}
+            value={residence_country}
+            label="Residence Country"
+            onSelect={residence_country =>
+              setEmployee(prev => ({ ...prev, residence_country }))
+            }
+            listItem={country => country}
+          />
 
-          {/* <TextInput
-            style={{ margin: 10 }}
-            mode='outlined'
-            autoCapitalize='words'
-            label='Middle Name'
-            value={middle_name}
-            name='middle_name'
-            onChangeText={this._handleChange.bind(this, 'middle_name')}
-          /> */}
-
-          {/* <TextInput
-            style={{ margin: 10 }}
-            mode='outlined'
-            autoCapitalize='words'
-            label='Last Name'
-            value={last_name}
-            name='last_name'
-            onChangeText={this._handleChange.bind(this, 'last_name')}
-          /> */}
-
-          {/* <TextInput
-            style={{ margin: 10 }}
-            mode='outlined'
-            keyboardType='phone-pad'
-            label='Contact Number'
-            value={contact_number}
-            name='contact_number'
-            onChangeText={this._handleChange.bind(this, 'contact_number')}
-          /> */}
+          <View
+            style={{
+              borderWidth: 1,
+              margin: 10,
+              padding: 5,
+              borderRadius: 5,
+              borderColor: "grey"
+            }}
+          >
+            <Picker
+              selectedValue={visa_type}
+              onValueChange={value =>
+                setEmployee(prev => ({ ...prev, visa_type: value }))
+              }
+            >
+              <Picker.Item color="grey" label="Choose Visa Type" value={null} />
+              {visaTypesList.map((type, index) => (
+                <Picker.Item key={index} label={type} value={type} />
+              ))}
+            </Picker>
+          </View>
 
           <OutlinedInput
             style={{ margin: 10 }}
-            autoCapitalize='none'
-            label='Location'
+            keyboardType="phone-pad"
+            label="Contact Number"
+            value={contact_number}
+            name="contact_number"
+            onChange={_handleChange}
+          />
+
+          <RadioButton.Group
+            value={!!has_a_car}
+            onValueChange={value =>
+              setEmployee(prev => ({ ...prev, has_a_car: value }))
+            }
+          >
+            <View style={{ flexDirection: "row", margin: 10, marginTop: 0 }}>
+              <View
+                style={{ flexDirection: "row", flex: 1, alignItems: "center" }}
+              >
+                <RadioButton value={false} />
+                <Text style={{ fontSize: 16 }}>Don't have a Car</Text>
+              </View>
+              <View
+                style={{ flexDirection: "row", flex: 1, alignItems: "center" }}
+              >
+                <RadioButton value={true} />
+                <Text style={{ fontSize: 16 }}>Have a Car</Text>
+              </View>
+            </View>
+          </RadioButton.Group>
+
+          <View
+            style={{
+              borderWidth: 1,
+              margin: 10,
+              padding: 5,
+              borderRadius: 5,
+              borderColor: "grey"
+            }}
+          >
+            <Text style={{ fontSize: 16, margin: 5, color: "grey" }}>
+              Driving Licenses From
+            </Text>
+
+            {driving_licenses && driving_licenses.length > 0 && (
+              <View
+                style={{
+                  margin: 10,
+                  flexWrap: "wrap",
+                  alignItems: "flex-start",
+                  flexDirection: "row"
+                }}
+              >
+                {driving_licenses.map((license, index) => (
+                  <Chip
+                    key={index}
+                    onClose={() =>
+                      setEmployee(prev => ({
+                        ...prev,
+                        driving_licenses: driving_licenses.filter(
+                          (_, i) => i !== index
+                        )
+                      }))
+                    }
+                    style={{
+                      margin: 2,
+                      backgroundColor: COLORS.ACCENT
+                    }}
+                  >
+                    {license}
+                  </Chip>
+                ))}
+              </View>
+            )}
+
+            <Filter
+              style={{ width: "100%" }}
+              list={countriesList}
+              label="Add Country"
+              onSelect={country =>
+                setEmployee(prev => ({
+                  ...prev,
+                  driving_licenses: [...driving_licenses, country]
+                }))
+              }
+              listItem={country => country}
+              clearAfterSelect
+            />
+          </View>
+
+          <Filter
+            style={{ width: "95%", marginHorizontal: 10 }}
+            value={location_id && getCityName(location_id)}
+            list={citiesList}
+            label="Location"
+            onSelect={_handleLocationSelect}
+            filterItem="city"
+            listItem={city => `${city.city} - ${city.country}`}
+          />
+
+          {/* <OutlinedInput
+            style={{ margin: 10 }}
+            autoCapitalize="none"
+            label="Location"
             value={location}
-            name='location'
+            name="location"
             onChange={({ name, value }) =>
               setEmployee(prev => ({ ...prev, [name]: value, filtering: true }))
             }
           />
-
-          {/* <TextInput
-            style={{ marginHorizontal: 10, marginTop: 10 }}
-            mode='outlined'
-            value={location}
-            autoCapitalize='none'
-            label='Location'
-            onChangeText={text =>
-              this.setState({ location: text, filtering: true })
-            }
-          /> */}
 
           {filtering && (
             <View style={styles.locationsList}>
@@ -215,51 +417,19 @@ const EditEmployeeEnfo = ({
                   }
                 })}
             </View>
-          )}
+          )} */}
           <View style={{ marginBottom: 10 }} />
-
-          <OutlinedInput
-            style={{ margin: 10 }}
-            keyboardType='url'
-            autoCapitalize='none'
-            label='Website'
-            value={web_site}
-            name='web_site'
-            onChange={_handleChange}
-          />
 
           <OutlinedInput
             style={{ margin: 10 }}
             multiline
             numberOfLines={3}
-            autoCapitalize='sentences'
-            label='Bio'
+            autoCapitalize="sentences"
+            label="Bio"
             value={bio}
-            name='bio'
+            name="bio"
             onChange={_handleChange}
           />
-
-          {/* <TextInput
-            style={{ margin: 10 }}
-            mode='outlined'
-            keyboardType='url'
-            autoCapitalize='none'
-            label='Website'
-            value={web_site}
-            name='web_site'
-            onChangeText={this._handleChange.bind(this, 'web_site')}
-          /> */}
-
-          {/* <TextInput
-            style={{ margin: 10 }}
-            mode='outlined'
-            multiline
-            autoCapitalize='sentences'
-            label='Bio'
-            value={bio}
-            name='bio'
-            onChangeText={this._handleChange.bind(this, 'bio')}
-          /> */}
         </ScrollView>
       </KeyboardAvoidingView>
     </>
@@ -271,14 +441,16 @@ const mapStateToProps = state => ({
   citiesList: selectCitiesList(state),
   getCityName: id => selectCityNameById(id)(state),
   loading: selectLoading(state),
-  errorMessage: selectErrorMessage(state)
+  errorMessage: selectErrorMessage(state),
+  countriesList: selectCountries(state),
+  nationalitiesList: selectNationalities(state),
+  religionsList: selectReligions(state),
+  visaTypesList: selectVisaTypes(state),
+  maritalStatusesList: selectMaritalStatuses(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   editEmployeeInfoStart: info => dispatch(editEmployeeInfoStart(info))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditEmployeeEnfo);
+export default connect(mapStateToProps, mapDispatchToProps)(EditEmployeeEnfo);
