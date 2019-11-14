@@ -8,15 +8,18 @@ import {
   StyleSheet
 } from "react-native";
 import { Appbar, Paragraph } from "react-native-paper";
-import { OutlinedInput } from "../../components";
+import { OutlinedInput, PopupAlert } from "../../components";
 
 import { selectCurrentEmployee } from "../../redux/current-user/current-user.selectors";
+
+import { editEmployeeSocialProfilesStart } from "../../redux/current-user/current-user.actions";
 
 import { SOCIAL_MEDIA_BASE_URLS } from "../../redux/utils/urls";
 
 const EditSocialProfiles = ({
   navigation,
-  currentEmployee: { social_profiles }
+  currentEmployee: { social_profiles },
+  editEmployeeSocialProfilesStart
 }) => {
   const [socialProfiles, setSocialProfiles] = useState(
     social_profiles || {
@@ -30,6 +33,26 @@ const EditSocialProfiles = ({
       youtube: ""
     }
   );
+
+  const [disabled, setDisabled] = useState(false);
+  const [
+    {
+      popupShow,
+      popupMsg,
+      popupWidth,
+      popupDuration,
+      popupType,
+      onPopupComplete
+    },
+    setPopup
+  ] = useState({
+    popupShow: false,
+    popupMsg: "",
+    popupWidth: 150,
+    popupDuration: 1000,
+    popupType: "success",
+    onPopupComplete: () => setPopup(prev => ({ ...prev, popupShow: false }))
+  });
 
   const {
     website,
@@ -47,7 +70,40 @@ const EditSocialProfiles = ({
   };
 
   const _handleSubmit = () => {
-    // action
+    setDisabled(true);
+    editEmployeeSocialProfilesStart(socialProfiles, err => {
+      if (err) {
+        setPopup({
+          popupType: "danger",
+          popupMsg:
+            err.response && err.response.data && err.response.data.errors
+              ? err.response.data.errors.map(err => err.msg).toString()
+              : "Please check your connection",
+          popupShow: true,
+          popupWidth: 300,
+          popupDuration: 1000,
+          onPopupComplete: () => {
+            setDisabled(false);
+            setPopup(prev => ({ ...prev, popupShow: false }));
+          }
+        });
+        setDisabled(false);
+        return console.log(err);
+      }
+
+      setPopup({
+        popupType: "success",
+        popupMsg: "Social profiles edited successfully",
+        popupShow: true,
+        popupWidth: 300,
+        popupDuration: 600,
+        onPopupComplete: () => {
+          navigation.goBack();
+          setDisabled(false);
+          setPopup(prev => ({ ...prev, popupShow: false }));
+        }
+      });
+    });
   };
 
   return (
@@ -55,7 +111,11 @@ const EditSocialProfiles = ({
       <Appbar.Header>
         <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title="Edit Your Social Profiles" />
-        <Appbar.Action icon="save" onPress={_handleSubmit} />
+        <Appbar.Action
+          icon="save"
+          disabled={disabled}
+          onPress={_handleSubmit}
+        />
       </Appbar.Header>
 
       <KeyboardAvoidingView
@@ -172,6 +232,15 @@ const EditSocialProfiles = ({
             />
           </View>
         </ScrollView>
+        {popupShow && (
+          <PopupAlert
+            MESSAGE_TEXT={popupMsg}
+            MESSAGE_WIDTH={popupWidth}
+            MESSAGE_TYPE={popupType}
+            MESSAGE_DURATION={popupDuration}
+            onDisplayComplete={onPopupComplete}
+          />
+        )}
       </KeyboardAvoidingView>
     </>
   );
@@ -194,6 +263,9 @@ const mapStateToProps = createStructuredSelector({
   currentEmployee: selectCurrentEmployee
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  editEmployeeSocialProfilesStart: (socialProfilesData, callback) =>
+    dispatch(editEmployeeSocialProfilesStart(socialProfilesData, callback))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditSocialProfiles);

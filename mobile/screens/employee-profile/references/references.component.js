@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { Card, Title, Paragraph } from 'react-native-paper';
+import React from "react";
+import { View, Text } from "react-native";
+import { Card, Title, Paragraph } from "react-native-paper";
 
 const References = ({ references, onReferencePress, onReferenceLongPress }) => {
   return (
@@ -14,10 +14,10 @@ const References = ({ references, onReferencePress, onReferenceLongPress }) => {
               style={{ margin: 10 }}
               onPress={onReferencePress && onReferencePress.bind(this, ref)}
               onLongPress={
-                onReferenceLongPress && onReferenceLongPress.bind(this, ref)
+                onReferenceLongPress && onReferenceLongPress.bind(this, _id)
               }
             >
-              <Card.Title title={name} subtitle={position} />} />
+              <Card.Title title={name} subtitle={position} />
               <Card.Content>
                 <Title>{company}</Title>
                 <Paragraph>{email}</Paragraph>

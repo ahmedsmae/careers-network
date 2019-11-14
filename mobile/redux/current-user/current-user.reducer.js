@@ -1,4 +1,4 @@
-import CurrentUserActionTypes from './current-user.types';
+import CurrentUserActionTypes from "./current-user.types";
 
 const INITIAL_STATE = {
   currentUser: null,
@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   employer: null,
   admin: null,
   loading: false,
-  errorMessage: ''
+  errorMessage: ""
 };
 
 const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -26,10 +26,19 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.EDIT_EMPLOYER_INFO_START:
     case CurrentUserActionTypes.EDIT_EMPLOYER_AVATAR_START:
     case CurrentUserActionTypes.EDIT_EMPLOYER_COVER_START:
+    case CurrentUserActionTypes.ADD_EMPLOYEE_LANGUAGE_START:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_LANGUAGE_START:
+    case CurrentUserActionTypes.ADD_EMPLOYEE_SKILL_START:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_SKILL_START:
+    case CurrentUserActionTypes.ADD_EMPLOYEE_INTEREST_START:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_INTEREST_START:
+    case CurrentUserActionTypes.ADD_EDIT_EMPLOYEE_REFERENCE_START:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_REFERENCE_START:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_SOCIAL_PROFILES_START:
       return {
         ...state,
         loading: true,
-        errorMessage: ''
+        errorMessage: ""
       };
 
     case CurrentUserActionTypes.SIGN_UP_USER_SUCCESS:
@@ -43,7 +52,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
         employer: payload.employer,
         admin: payload.admin,
         loading: false,
-        errorMessage: ''
+        errorMessage: ""
       };
 
     case CurrentUserActionTypes.SIGN_OUT_USER_SUCCESS:
@@ -51,6 +60,15 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
       return INITIAL_STATE;
 
     case CurrentUserActionTypes.EDIT_EMPLOYEE_INFO_SUCCESS:
+    case CurrentUserActionTypes.ADD_EMPLOYEE_LANGUAGE_SUCCESS:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_LANGUAGE_SUCCESS:
+    case CurrentUserActionTypes.ADD_EMPLOYEE_SKILL_SUCCESS:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_SKILL_SUCCESS:
+    case CurrentUserActionTypes.ADD_EMPLOYEE_INTEREST_SUCCESS:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_INTEREST_SUCCESS:
+    case CurrentUserActionTypes.ADD_EDIT_EMPLOYEE_REFERENCE_SUCCESS:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_REFERENCE_SUCCESS:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_SOCIAL_PROFILES_SUCCESS:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_SUCCESS:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_SUCCESS:
     case CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_SUCCESS:
@@ -58,7 +76,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
         ...state,
         employee: payload,
         loading: false,
-        errorMessage: ''
+        errorMessage: ""
       };
 
     case CurrentUserActionTypes.EDIT_EMPLOYER_INFO_SUCCESS:
@@ -68,7 +86,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
         ...state,
         employer: payload,
         loading: false,
-        errorMessage: ''
+        errorMessage: ""
       };
 
     case CurrentUserActionTypes.SIGN_UP_USER_FAILURE:
@@ -87,6 +105,15 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
       };
 
     case CurrentUserActionTypes.EDIT_EMPLOYEE_INFO_FAILURE:
+    case CurrentUserActionTypes.ADD_EMPLOYEE_LANGUAGE_FAILURE:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_LANGUAGE_FAILURE:
+    case CurrentUserActionTypes.ADD_EMPLOYEE_SKILL_FAILURE:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_SKILL_FAILURE:
+    case CurrentUserActionTypes.ADD_EMPLOYEE_INTEREST_FAILURE:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_INTEREST_FAILURE:
+    case CurrentUserActionTypes.ADD_EDIT_EMPLOYEE_REFERENCE_FAILURE:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_REFERENCE_FAILURE:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_SOCIAL_PROFILES_FAILURE:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_FAILURE:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_FAILURE:
     case CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_FAILURE:

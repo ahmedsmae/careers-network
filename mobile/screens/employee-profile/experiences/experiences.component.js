@@ -1,10 +1,11 @@
-import React from 'react';
-import { Card, Title, Caption, Paragraph } from 'react-native-paper';
+import React from "react";
+import { Card, Title, Caption, Paragraph } from "react-native-paper";
 
-import URLS from '../../../redux/utils/urls';
+import URLS from "../../../redux/utils/urls";
 
 const Experiences = ({
-  employee: { _id, experiences },
+  experiences,
+  employeeId,
   onExperiencePress,
   onExperienceLongPress,
   getCityNameById
@@ -37,7 +38,7 @@ const Experiences = ({
               {hasCertificate && (
                 <Card.Cover
                   source={{
-                    uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${_id}/${exp._id}` //! change to serve experience image
+                    uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${exp._id}` //! change to serve experience image
                   }}
                 />
               )}

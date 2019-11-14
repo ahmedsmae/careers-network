@@ -34,7 +34,7 @@ router.post(
     const { _id, name, position, company, email, contact_number } = req.body;
 
     try {
-      const employee = await Employee.findOne({ owner: req.user._id });
+      let employee = await Employee.findOne({ owner: req.user._id });
 
       if (!employee) {
         return res
@@ -46,8 +46,9 @@ router.post(
 
       if (reference) {
         // Edit
-        employee.references.map(ref =>
-          ref._id == _id
+        const employeeObject = employee.toObject();
+        employee.references = employeeObject.references.map(ref =>
+          ref._id.toString() === _id.toString()
             ? { ...ref, name, position, company, email, contact_number }
             : ref
         );

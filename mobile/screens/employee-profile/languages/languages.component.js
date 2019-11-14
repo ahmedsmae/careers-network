@@ -3,7 +3,7 @@ import { View, Platform } from "react-native";
 import { Paragraph, Card } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 
-const Languages = ({ languages, levelsList, onLongPress }) => {
+const Languages = ({ languages, levelsList, onLanguageLongPress }) => {
   // const langs = [
   //   { _id: '0', language: 'Arabic', level: 'Native Speaker' },
   //   {
@@ -19,7 +19,9 @@ const Languages = ({ languages, levelsList, onLongPress }) => {
         <Card
           key={_id}
           style={{ margin: 10 }}
-          onLongPress={onLongPress && onLongPress}
+          onLongPress={
+            onLanguageLongPress && onLanguageLongPress.bind(this, _id)
+          }
         >
           <Card.Title title={language} />
           <Card.Content>

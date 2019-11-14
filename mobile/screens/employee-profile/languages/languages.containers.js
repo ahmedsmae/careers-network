@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import { View, Text, Picker } from "react-native";
+import { View, Picker, ScrollView, Alert } from "react-native";
 import { Appbar, Card, Button, FAB, Divider } from "react-native-paper";
-import { OutlinedInput, Filter } from "../../../components";
+import { Filter, PopupAlert } from "../../../components";
 
 import { selectCurrentEmployee } from "../../../redux/current-user/current-user.selectors";
 import {
@@ -11,18 +11,89 @@ import {
   selectLanguageLevels
 } from "../../../redux/constants/constants.selectors";
 
+import {
+  addEmployeeLanguageStart,
+  deleteEmployeeLanguageStart
+} from "../../../redux/current-user/current-user.actions";
+
 import Languages from "./languages.component";
 
 const EmployeeEmployeeLanguages = ({
   navigation,
   currentEmployee,
   languagesList,
-  levelsList
+  levelsList,
+  addEmployeeLanguageStart,
+  deleteEmployeeLanguageStart
 }) => {
   const [addLanguage, setAddLanguage] = useState(false);
-  const [filtering, setFiltering] = useState(false);
   const [languageQ, setLanguageQ] = useState("");
   const [level, setLevel] = useState(levelsList[2]);
+  const [disabled, setDisabled] = useState(false);
+  const [{ popupShow, popupMsg, popupWidth, popupType }, setPopup] = useState({
+    popupShow: false,
+    popupMsg: "",
+    popupWidth: 150,
+    popupType: "success"
+  });
+
+  const _handleSubmit = () => {
+    setDisabled(true);
+    addEmployeeLanguageStart(
+      { language: languageQ, level },
+      // callback function
+      err => {
+        if (err) {
+          setPopup({
+            popupType: "danger",
+            popupMsg:
+              err.response && err.response.data && err.response.data.errors
+                ? err.response.data.errors.map(err => err.msg).toString()
+                : "Please check your connection",
+            popupShow: true,
+            popupWidth: 300
+          });
+          setDisabled(false);
+          return console.log(err);
+        }
+
+        setPopup({
+          popupType: "success",
+          popupMsg: "Language added successfully",
+          popupShow: true,
+          popupWidth: 300
+        });
+        setLanguageQ("");
+        setLevel(levelsList[2]);
+        setAddLanguage(false);
+        setDisabled(false);
+      }
+    );
+  };
+
+  const _handleDelete = languageId => {
+    deleteEmployeeLanguageStart(languageId, err => {
+      if (err) {
+        setPopup({
+          popupType: "danger",
+          popupMsg:
+            err.response && err.response.data && err.response.data.errors
+              ? err.response.data.errors.map(err => err.msg).toString()
+              : "Please check your connection",
+          popupShow: true,
+          popupWidth: 300
+        });
+        return console.log(err);
+      }
+
+      setPopup({
+        popupType: "success",
+        popupMsg: "Language deleted successfully",
+        popupShow: true,
+        popupWidth: 300
+      });
+    });
+  };
 
   return (
     <>
@@ -49,56 +120,6 @@ const EmployeeEmployeeLanguages = ({
                 onSelect={lang => setLanguageQ(lang)}
                 listItem={lang => lang}
               />
-              {/* <OutlinedInput
-                label='Language'
-                value={languageQ}
-                onChange={({ value }) => {
-                  setLanguageQ(value);
-                  setFiltering(true);
-                }}
-                required='You should select a language'
-              /> */}
-
-              {/* {filtering && (
-                <View
-                  style={{
-                    backgroundColor: 'lightgrey',
-                    width: '100%',
-                    maxHeight: 200,
-                    overflow: 'hidden',
-                    borderRadius: 5,
-                    elevation: 10,
-                    marginVertical: 5
-                  }}
-                >
-                  {languagesList
-                    .filter(
-                      lang =>
-                        languageQ.trim().length > 0 &&
-                        lang
-                          .toLowerCase()
-                          .includes(languageQ.trim().toLowerCase())
-                    )
-                    .map((lang, index) => {
-                      if (index < 10) {
-                        return (
-                          <View key={index}>
-                            <Text
-                              style={{ padding: 5, margin: 5, elevation: 11 }}
-                              onPress={() => {
-                                setLanguageQ(lang);
-                                setFiltering(false);
-                              }}
-                            >
-                              {lang}
-                            </Text>
-                            <Divider />
-                          </View>
-                        );
-                      }
-                    })}
-                </View>
-              )} */}
 
               <View
                 style={{
@@ -121,7 +142,11 @@ const EmployeeEmployeeLanguages = ({
               </View>
             </Card.Content>
             <Card.Actions style={{ justifyContent: "center" }}>
-              <Button mode="outlined" onPress={() => {}}>
+              <Button
+                mode="outlined"
+                disabled={disabled}
+                onPress={_handleSubmit}
+              >
                 Add Language
               </Button>
             </Card.Actions>
@@ -130,11 +155,33 @@ const EmployeeEmployeeLanguages = ({
         </>
       )}
 
-      <Languages
-        languages={currentEmployee.languages}
-        levelsList={levelsList}
-        onLongPress={() => {}}
-      />
+      <ScrollView>
+        <Languages
+          languages={currentEmployee.languages}
+          levelsList={levelsList}
+          onLanguageLongPress={languageId =>
+            Alert.alert(
+              "Delete Language",
+              "Are you sure you want to delete this language ?",
+              [
+                { text: "Yes", onPress: _handleDelete.bind(this, languageId) },
+                { text: "Cancel" }
+              ]
+            )
+          }
+        />
+      </ScrollView>
+      {popupShow && (
+        <PopupAlert
+          MESSAGE_TEXT={popupMsg}
+          MESSAGE_WIDTH={popupWidth}
+          MESSAGE_TYPE={popupType}
+          MESSAGE_DURATION={1000}
+          onDisplayComplete={() =>
+            setPopup(prev => ({ ...prev, popupShow: false }))
+          }
+        />
+      )}
 
       <FAB
         style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
@@ -172,7 +219,12 @@ const mapStateToProps = createStructuredSelector({
   currentEmployee: selectCurrentEmployee
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  addEmployeeLanguageStart: (languageData, callback) =>
+    dispatch(addEmployeeLanguageStart(languageData, callback)),
+  deleteEmployeeLanguageStart: (languageId, callback) =>
+    dispatch(deleteEmployeeLanguageStart(languageId, callback))
+});
 
 export const EmployeeEmployeeLanguagesContainer = connect(
   mapStateToProps,

@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Alert } from 'react-native';
-import { Appbar, Portal, Provider, FAB } from 'react-native-paper';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { Alert } from "react-native";
+import { Appbar, Portal, Provider, FAB } from "react-native-paper";
 
 import {
   selectCurrentUser,
   selectCurrentEmployee,
   selectLoading
-} from '../../../redux/current-user/current-user.selectors';
-import { selectCityNameById } from '../../../redux/constants/constants.selectors';
+} from "../../../redux/current-user/current-user.selectors";
+import { selectCityNameById } from "../../../redux/constants/constants.selectors";
 
-import { deleteEmployeeEducationStart } from '../../../redux/current-user/current-user.actions';
+import { deleteEmployeeEducationStart } from "../../../redux/current-user/current-user.actions";
 
-import Educations from './educations.component';
+import Educations from "./educations.component";
 
-import Colors from '../../../constants/colors';
+import Colors from "../../../constants/colors";
 
 const EmployeeEmployeeEducations = ({
   currentEmployee,
@@ -27,26 +27,27 @@ const EmployeeEmployeeEducations = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Your Educations' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Your Educations" />
       </Appbar.Header>
 
       <Provider>
         <Educations
-          employee={currentEmployee}
+          educations={currentEmployee.educations}
+          employeeId={currentEmployee._id}
           onEducationPress={edu =>
-            navigation.navigate('EditEducation', { education: edu })
+            navigation.navigate("EditEducation", { education: edu })
           }
           onEducationLongPress={edu =>
             Alert.alert(
-              'Delete Education',
-              'Are you sure you want to delete this education ?',
+              "Delete Education",
+              "Are you sure you want to delete this education ?",
               [
                 {
-                  text: 'Yes',
+                  text: "Yes",
                   onPress: () => deleteEmployeeEducationStart(edu._id)
                 },
-                { text: 'Cancel' }
+                { text: "Cancel" }
               ]
             )
           }
@@ -56,19 +57,19 @@ const EmployeeEmployeeEducations = ({
         <Portal>
           <FAB.Group
             open={showFabOptions}
-            icon={'settings'}
+            icon={"settings"}
             fabStyle={{ backgroundColor: Colors.ACCENT }}
-            color='white'
+            color="white"
             actions={[
               {
-                icon: 'add',
-                label: 'Education',
-                onPress: () => navigation.navigate('EditEducation')
+                icon: "add",
+                label: "Education",
+                onPress: () => navigation.navigate("EditEducation")
               },
               {
-                icon: 'list',
-                label: 'Profile Sections',
-                onPress: () => navigation.navigate('EmployeeProfile')
+                icon: "list",
+                label: "Profile Sections",
+                onPress: () => navigation.navigate("EmployeeProfile")
               }
             ]}
             onStateChange={({ open }) => setShowFabOptions(open)}
@@ -85,22 +86,27 @@ const EmployeeEmployeeEducations = ({
 };
 
 const EmployerEmployeeEducations = ({ navigation, ...props }) => {
-  const employee = navigation.getParam('employee');
+  const employee = navigation.getParam("employee");
 
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Employee Educations' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Employee Educations" />
       </Appbar.Header>
 
-      <Educations employee={employee} {...props} currentUser={null} />
+      <Educations
+        educations={employee.educations}
+        employeeId={employee._id}
+        {...props}
+        currentUser={null}
+      />
 
       <FAB
-        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
+        style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
         small
-        icon='list'
-        onPress={() => navigation.navigate('EmployeeProfile')}
+        icon="list"
+        onPress={() => navigation.navigate("EmployeeProfile")}
       />
     </>
   );

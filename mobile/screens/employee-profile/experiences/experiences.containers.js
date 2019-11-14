@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Alert } from 'react-native';
-import { Appbar, Portal, Provider, FAB } from 'react-native-paper';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { Alert } from "react-native";
+import { Appbar, Portal, Provider, FAB } from "react-native-paper";
 
 import {
   selectCurrentUser,
   selectCurrentEmployee,
   selectLoading
-} from '../../../redux/current-user/current-user.selectors';
-import { selectCityNameById } from '../../../redux/constants/constants.selectors';
+} from "../../../redux/current-user/current-user.selectors";
+import { selectCityNameById } from "../../../redux/constants/constants.selectors";
 
 // import { deleteEmployeeEducationStart } from '../../../redux/current-user/current-user.actions';
 
-import Experiences from './experiences.component';
+import Experiences from "./experiences.component";
 
-import Colors from '../../../constants/colors';
+import Colors from "../../../constants/colors";
 
 const EmployeeEmployeeExperiences = ({
   currentEmployee,
@@ -27,26 +27,27 @@ const EmployeeEmployeeExperiences = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Your Experiences' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Your Experiences" />
       </Appbar.Header>
 
       <Provider>
         <Experiences
-          employee={currentEmployee}
+          experiences={currentEmployee.experiences}
+          employeeId={currentEmployee._id}
           onExperiencePress={exp =>
-            navigation.navigate('EditExperience', { experience: exp })
+            navigation.navigate("EditExperience", { experience: exp })
           }
           onExperienceLongPress={exp =>
             Alert.alert(
-              'Delete Experience',
-              'Are you sure you want to delete this experience ?',
+              "Delete Experience",
+              "Are you sure you want to delete this experience ?",
               [
                 {
-                  text: 'Yes'
+                  text: "Yes"
                   // onPress: () => deleteEmployeeEducationStart(edu._id)
                 },
-                { text: 'Cancel' }
+                { text: "Cancel" }
               ]
             )
           }
@@ -56,19 +57,19 @@ const EmployeeEmployeeExperiences = ({
         <Portal>
           <FAB.Group
             open={showFabOptions}
-            icon={'settings'}
+            icon={"settings"}
             fabStyle={{ backgroundColor: Colors.ACCENT }}
-            color='white'
+            color="white"
             actions={[
               {
-                icon: 'add',
-                label: 'Experience',
-                onPress: () => navigation.navigate('EditExperience')
+                icon: "add",
+                label: "Experience",
+                onPress: () => navigation.navigate("EditExperience")
               },
               {
-                icon: 'list',
-                label: 'Profile Sections',
-                onPress: () => navigation.navigate('EmployeeProfile')
+                icon: "list",
+                label: "Profile Sections",
+                onPress: () => navigation.navigate("EmployeeProfile")
               }
             ]}
             onStateChange={({ open }) => setShowFabOptions(open)}
@@ -85,22 +86,27 @@ const EmployeeEmployeeExperiences = ({
 };
 
 const EmployerEmployeeExperiences = ({ navigation, ...props }) => {
-  const employee = navigation.getParam('employee');
+  const employee = navigation.getParam("employee");
 
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Employee Experiences' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Employee Experiences" />
       </Appbar.Header>
 
-      <Experiences employee={employee} {...props} currentUser={null} />
+      <Experiences
+        experiences={employee.experiences}
+        employeeId={employee._id}
+        {...props}
+        currentUser={null}
+      />
 
       <FAB
-        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
+        style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
         small
-        icon='list'
-        onPress={() => navigation.navigate('EmployeeProfile')}
+        icon="list"
+        onPress={() => navigation.navigate("EmployeeProfile")}
       />
     </>
   );

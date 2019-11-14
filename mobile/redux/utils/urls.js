@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.1.100:5000';
+const BASE_URL = "http://192.168.1.100:5000";
 
 export default URLS = {
   SIGNUP: `${BASE_URL}/api/users/signup`,
@@ -13,9 +13,19 @@ export default URLS = {
 
   EDIT_EMPLOYEE_AVATAR: `${BASE_URL}/api/employees/avatars`,
   EDIT_EMPLOYEE_INFO: `${BASE_URL}/api/employees/info`,
+  ADD_EMPLOYEE_LANGUAGE: `${BASE_URL}/api/employees/languages`,
+  DELETE_EMPLOYEE_LANGUAGE: `${BASE_URL}/api/employees/languages`, // + /:languageid
+  ADD_EMPLOYEE_SKILL: `${BASE_URL}/api/employees/skills`,
+  DELETE_EMPLOYEE_SKILL: `${BASE_URL}/api/employees/skills`, // + /:skillid
+  ADD_EMPLOYEE_INTEREST: `${BASE_URL}/api/employees/interests`,
+  DELETE_EMPLOYEE_INTEREST: `${BASE_URL}/api/employees/interests`, // + /:interestid
+  ADD_EDIT_EMPLOYEE_REFERENCE: `${BASE_URL}/api/employees/references`,
+  DELETE_EMPLOYEE_REFERENCE: `${BASE_URL}/api/employees/references`, // + /:referenceid
+  EDIT_EMPLOYEE_SOCIAL_PROFILES: `${BASE_URL}/api/employees/socialprofiles`,
+  SERVE_EMPLOYEE_AVATAR: `${BASE_URL}/api/employees/avatars`, // + /:employeeid
+
   EDIT_EDUCATION_INFO: `${BASE_URL}/api/employees/educations`,
   EDIT_EDUCATION_IMAGE: `${BASE_URL}/api/employees/eduactions/setimage`, // + /:educationid
-  SERVE_EMPLOYEE_AVATAR: `${BASE_URL}/api/employees/avatars`, // + /:employeeid
   SERVE_EDUCATION_CERTIFICATE: `${BASE_URL}/api/employees/educations`, // + /:employeeid/:educationid
   DELETE_EMPLOYEE_EDUCATION: `${BASE_URL}/api/employees/educations`, // + /:educationid
 
@@ -61,12 +71,12 @@ export default URLS = {
 };
 
 export const SOCIAL_MEDIA_BASE_URLS = {
-  linkedin: 'https://www.linkedin.com/in/',
-  twitter: 'https://twitter.com/',
-  github: 'https://github.com/',
-  stackoverflow: 'https://stackoverflow.com/users/',
-  facebook: 'https://www.facebook.com/',
-  instagram: 'https://www.instagram.com/',
-  youtube: 'https://www.youtube.com/user/',
-  youtubeChannel: 'https://www.youtube.com/channel/'
+  linkedin: "https://www.linkedin.com/in/",
+  twitter: "https://twitter.com/",
+  github: "https://github.com/",
+  stackoverflow: "https://stackoverflow.com/users/",
+  facebook: "https://www.facebook.com/",
+  instagram: "https://www.instagram.com/",
+  youtube: "https://www.youtube.com/user/",
+  youtubeChannel: "https://www.youtube.com/channel/"
 };

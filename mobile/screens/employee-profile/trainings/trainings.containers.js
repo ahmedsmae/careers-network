@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Alert } from 'react-native';
-import { Appbar, Portal, Provider, FAB } from 'react-native-paper';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { Alert } from "react-native";
+import { Appbar, Portal, Provider, FAB } from "react-native-paper";
 
 import {
   selectCurrentUser,
   selectCurrentEmployee,
   selectLoading
-} from '../../../redux/current-user/current-user.selectors';
-import { selectCityNameById } from '../../../redux/constants/constants.selectors';
+} from "../../../redux/current-user/current-user.selectors";
+import { selectCityNameById } from "../../../redux/constants/constants.selectors";
 
 // import { deleteEmployeeEducationStart } from '../../../redux/current-user/current-user.actions';
 
-import Trainings from './trainings.component';
+import Trainings from "./trainings.component";
 
-import Colors from '../../../constants/colors';
+import Colors from "../../../constants/colors";
 
 const EmployeeEmployeeTrainings = ({
   currentEmployee,
@@ -27,26 +27,27 @@ const EmployeeEmployeeTrainings = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Your Trainings and Certifications' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Your Trainings and Certifications" />
       </Appbar.Header>
 
       <Provider>
         <Trainings
-          employee={currentEmployee}
+          trainings_certifications={currentEmployee.trainings_certifications}
+          employeeId={currentEmployee._id}
           onTrainingPress={train =>
-            navigation.navigate('EditTraining', { training: train })
+            navigation.navigate("EditTraining", { training: train })
           }
           onTrainingLongPress={train =>
             Alert.alert(
-              'Delete Training',
-              'Are you sure you want to delete this training ?',
+              "Delete Training",
+              "Are you sure you want to delete this training ?",
               [
                 {
-                  text: 'Yes'
+                  text: "Yes"
                   // onPress: () => deleteEmployeeEducationStart(edu._id)
                 },
-                { text: 'Cancel' }
+                { text: "Cancel" }
               ]
             )
           }
@@ -56,19 +57,19 @@ const EmployeeEmployeeTrainings = ({
         <Portal>
           <FAB.Group
             open={showFabOptions}
-            icon={'settings'}
+            icon={"settings"}
             fabStyle={{ backgroundColor: Colors.ACCENT }}
-            color='white'
+            color="white"
             actions={[
               {
-                icon: 'add',
-                label: 'Training',
-                onPress: () => navigation.navigate('EditTraining')
+                icon: "add",
+                label: "Training",
+                onPress: () => navigation.navigate("EditTraining")
               },
               {
-                icon: 'list',
-                label: 'Profile Sections',
-                onPress: () => navigation.navigate('EmployeeProfile')
+                icon: "list",
+                label: "Profile Sections",
+                onPress: () => navigation.navigate("EmployeeProfile")
               }
             ]}
             onStateChange={({ open }) => setShowFabOptions(open)}
@@ -85,22 +86,27 @@ const EmployeeEmployeeTrainings = ({
 };
 
 const EmployerEmployeeTrainings = ({ navigation, ...props }) => {
-  const employee = navigation.getParam('employee');
+  const employee = navigation.getParam("employee");
 
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Employee Trainings' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Employee Trainings" />
       </Appbar.Header>
 
-      <Trainings employee={employee} {...props} currentUser={null} />
+      <Trainings
+        trainings_certifications={employee.trainings_certifications}
+        employeeId={employee._id}
+        {...props}
+        currentUser={null}
+      />
 
       <FAB
-        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
+        style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
         small
-        icon='list'
-        onPress={() => navigation.navigate('EmployeeProfile')}
+        icon="list"
+        onPress={() => navigation.navigate("EmployeeProfile")}
       />
     </>
   );

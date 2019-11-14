@@ -26,6 +26,7 @@ import MyApplications from "../screens/my-applications/my-applications.component
 import EditApplicationScreen from "../screens/edit-application/edit-application.component";
 
 import HomeScreen from "../screens/home/home.component";
+import HomeSettingsScreen from "../screens/home-settings/home-settings.component";
 import FollowedEmployersScreen from "../screens/followed-employers/followed-employers.component";
 import MySavedJobsScreen from "../screens/my-saved-jobs/my-saved-jobs.component";
 import EditEmployeeInfoScreen from "../screens/edit-employee-info/edit-employee-info.component";
@@ -111,7 +112,13 @@ const employeeDrawerNavigator = createDrawerNavigator(
       navigationOptions: { drawerLabel: () => null }
     },
     Home: {
-      screen: HomeScreen,
+      screen: createStackNavigator(
+        {
+          HomeJobs: HomeScreen,
+          HomeSettings: HomeSettingsScreen
+        },
+        hideHeaderNavOptions
+      ),
       navigationOptions: {
         drawerLabel: "Home",
         drawerIcon: drawerConfig => (

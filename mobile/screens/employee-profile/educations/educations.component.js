@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import React, { useState } from "react";
+import { View, TouchableOpacity } from "react-native";
 import {
   Card,
   Title,
@@ -7,13 +7,14 @@ import {
   Paragraph,
   Portal,
   Dialog
-} from 'react-native-paper';
-import moment from 'moment';
+} from "react-native-paper";
+import moment from "moment";
 
-import URLS from '../../../redux/utils/urls';
+import URLS from "../../../redux/utils/urls";
 
 const Educations = ({
-  employee: { _id, educations },
+  educations,
+  employeeId,
   onEducationPress,
   onEducationLongPress,
   getCityNameById
@@ -45,7 +46,7 @@ const Educations = ({
                 onEducationLongPress && onEducationLongPress.bind(this, edu)
               }
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 {hasCertificate && (
                   <TouchableOpacity
                     onPress={() => setShowImage(true)}
@@ -54,7 +55,7 @@ const Educations = ({
                     <Card.Cover
                       style={{ borderRadius: 5, height: 120 }}
                       source={{
-                        uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${_id}/${edu._id}`
+                        uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${edu._id}`
                       }}
                     />
                   </TouchableOpacity>
@@ -72,8 +73,8 @@ const Educations = ({
                     <Caption>{description}</Caption>
                   )}
                   {!!from && (
-                    <Caption>{`from: ${moment(from).format('MMM Do')}  -  to: ${
-                      current ? 'current' : `${moment(to).format('MMM Do')}`
+                    <Caption>{`from: ${moment(from).format("MMM Do")}  -  to: ${
+                      current ? "current" : `${moment(to).format("MMM Do")}`
                     }`}</Caption>
                   )}
                 </Card.Content>
@@ -85,7 +86,7 @@ const Educations = ({
                   onDismiss={() => setShowImage(false)}
                 >
                   <Card.Cover
-                    style={{ borderRadius: 5, height: '100%', maxHeight: 400 }}
+                    style={{ borderRadius: 5, height: "100%", maxHeight: 400 }}
                     source={{
                       uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${_id}/${edu._id}`
                     }}
