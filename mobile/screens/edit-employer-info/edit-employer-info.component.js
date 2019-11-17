@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';
-import { Appbar, TextInput, Text, Divider } from 'react-native-paper';
-import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
+import { Appbar, Text, Divider } from 'react-native-paper';
+import { OutlinedInput } from '../../components';
 
 import {
   selectCurrentEmployer,
@@ -84,18 +84,18 @@ const EditEmployerInfo = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Edit Employer info' />
-        <Appbar.Action icon='save' onPress={_handleSave} />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Edit Employer info" />
+        <Appbar.Action icon="save" onPress={_handleSave} />
       </Appbar.Header>
 
       <ScrollView style={styles.screen}>
         <OutlinedInput
           style={{ margin: 10 }}
-          autoCapitalize='words'
-          label='Name'
+          autoCapitalize="words"
+          label="Name"
           value={name}
-          name='name'
+          name="name"
           onChange={_handleChange}
         />
 
@@ -111,10 +111,10 @@ const EditEmployerInfo = ({
 
         <OutlinedInput
           style={{ margin: 10 }}
-          autoCapitalize='words'
-          label='Kind'
+          autoCapitalize="words"
+          label="Kind"
           value={kind}
-          name='kind'
+          name="kind"
           onChange={_handleChange}
         />
 
@@ -130,10 +130,10 @@ const EditEmployerInfo = ({
 
         <OutlinedInput
           style={{ margin: 10 }}
-          autoCapitalize='words'
-          label='Speciality'
+          autoCapitalize="words"
+          label="Speciality"
           value={speciality}
-          name='speciality'
+          name="speciality"
           onChange={_handleChange}
         />
 
@@ -165,10 +165,10 @@ const EditEmployerInfo = ({
 
         <OutlinedInput
           style={{ margin: 10 }}
-          autoCapitalize='none'
-          label='Location'
+          autoCapitalize="none"
+          label="Location"
           value={location}
-          name='location'
+          name="location"
           onChange={({ name, value }) =>
             setEmployer(prev => ({ ...prev, [name]: value, filtering: true }))
           }
@@ -214,11 +214,11 @@ const EditEmployerInfo = ({
 
         <OutlinedInput
           style={{ margin: 10 }}
-          keyboardType='url'
-          autoCapitalize='none'
-          label='Website'
+          keyboardType="url"
+          autoCapitalize="none"
+          label="Website"
           value={web_site}
-          name='web_site'
+          name="web_site"
           onChange={_handleChange}
         />
 
@@ -237,10 +237,10 @@ const EditEmployerInfo = ({
           style={{ margin: 10 }}
           multiline
           numberOfLines={3}
-          autoCapitalize='sentences'
-          label='Bio'
+          autoCapitalize="sentences"
+          label="Bio"
           value={bio}
-          name='bio'
+          name="bio"
           onChange={this._handleChange}
         />
 
@@ -271,7 +271,4 @@ const mapDispatchToProps = dispatch => ({
   editEmployerInfoStart: data => dispatch(editEmployerInfoStart(data))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditEmployerInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(EditEmployerInfo);

@@ -1,4 +1,4 @@
-import CurrentUserActionTypes from "./current-user.types";
+import CurrentUserActionTypes from './current-user.types';
 
 // SIGN UP USER
 export const signUpUserStart = (email, password) => ({
@@ -291,6 +291,23 @@ export const editEmployeeSocialProfilesSuccess = employee => ({
 
 export const editEmployeeSocialProfilesFailure = errorMessage => ({
   type: CurrentUserActionTypes.EDIT_EMPLOYEE_SOCIAL_PROFILES_FAILURE,
+  payload: errorMessage
+});
+
+// EDIT EMPLOYEE PREFERED JOBS SETTINGS
+export const editEmployeePreferedJobsSettingsStart = (settings, callback) => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_PREFERED_JOBS_SETTINGS_START,
+  payload: settings,
+  callback
+});
+
+export const editEmployeePreferedJobsSettingsSuccess = employee => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_PREFERED_JOBS_SETTINGS_SUCCESS,
+  payload: employee
+});
+
+export const editEmployeePreferedJobsSettingsFailure = errorMessage => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_PREFERED_JOBS_SETTINGS_FAILURE,
   payload: errorMessage
 });
 

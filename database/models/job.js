@@ -109,6 +109,12 @@ jobSchema.pre('remove', async function(next) {
   next();
 });
 
+// create text index with the lovation_id, position and keywords
+jobSchema.index(
+  { location_id: 1, position: 'text', keywords: 'text' },
+  { weights: { position: 5, keywords: 1 } }
+);
+
 const Job = mongoose.model('Job', jobSchema);
 
 module.exports = Job;

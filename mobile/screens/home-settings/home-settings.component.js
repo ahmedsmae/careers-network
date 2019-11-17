@@ -1,30 +1,30 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { View, ScrollView, KeyboardAvoidingView } from "react-native";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import {
   Appbar,
   Chip,
-  Button,
   IconButton,
   Title,
   Divider,
   Caption
-} from "react-native-paper";
-import { OutlinedInput, Filter } from "../../components";
+} from 'react-native-paper';
+import { OutlinedInput, Filter, PopupAlert } from '../../components';
 
-import { selectCurrentEmployee } from "../../redux/current-user/current-user.selectors";
+import { selectCurrentEmployee } from '../../redux/current-user/current-user.selectors';
 import {
   selectCityNameById,
   selectCitiesList
-} from "../../redux/constants/constants.selectors";
+} from '../../redux/constants/constants.selectors';
 
-import {} from "../../redux/current-user/current-user.actions";
+import { editEmployeePreferedJobsSettingsStart } from '../../redux/current-user/current-user.actions';
 
 const HomeSettings = ({
   navigation,
   currentEmployee: { prefered_jobs_settings },
   citiesList,
-  getCityNameById
+  getCityNameById,
+  editEmployeePreferedJobsSettingsStart
 }) => {
   const [keywords, setKeywords] = useState(
     prefered_jobs_settings.keywords || []
@@ -33,10 +33,37 @@ const HomeSettings = ({
     prefered_jobs_settings.location_ids || []
   );
 
-  const [currentKeyword, setCurrentKeyword] = useState("");
+  const [currentKeyword, setCurrentKeyword] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  const [{ popupShow, popupMsg, popupWidth, popupType }, setPopup] = useState({
+    popupShow: false,
+    popupMsg: '',
+    popupWidth: 150,
+    popupType: 'success'
+  });
 
   const _handleSubmit = () => {
-    // action
+    setDisabled(true);
+    editEmployeePreferedJobsSettingsStart(
+      { keywords, location_ids: locationIds },
+      err => {
+        if (err) {
+          setPopup({
+            popupType: 'danger',
+            popupMsg:
+              err.response && err.response.data && err.response.data.errors
+                ? err.response.data.errors.map(err => err.msg).toString()
+                : 'Please check your connection',
+            popupShow: true,
+            popupWidth: 300
+          });
+          setDisabled(false);
+          return console.log(err);
+        }
+        setDisabled(false);
+        navigation.goBack();
+      }
+    );
   };
 
   return (
@@ -44,7 +71,11 @@ const HomeSettings = ({
       <Appbar.Header>
         <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title="Prefered Jobs Settings" />
-        <Appbar.Action icon="save" onPress={_handleSubmit} />
+        <Appbar.Action
+          disabled={disabled}
+          icon="save"
+          onPress={_handleSubmit}
+        />
       </Appbar.Header>
 
       <KeyboardAvoidingView
@@ -58,9 +89,9 @@ const HomeSettings = ({
           <View
             style={{
               marginVertical: 10,
-              flexWrap: "wrap",
-              alignItems: "flex-start",
-              flexDirection: "row"
+              flexWrap: 'wrap',
+              alignItems: 'flex-start',
+              flexDirection: 'row'
             }}
           >
             {locationIds.map((id, index) => (
@@ -95,9 +126,9 @@ const HomeSettings = ({
           <View
             style={{
               marginVertical: 10,
-              flexWrap: "wrap",
-              alignItems: "flex-start",
-              flexDirection: "row"
+              flexWrap: 'wrap',
+              alignItems: 'flex-start',
+              flexDirection: 'row'
             }}
           >
             {keywords.map((word, index) => (
@@ -115,13 +146,13 @@ const HomeSettings = ({
 
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              width: "100%"
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%'
             }}
           >
             <OutlinedInput
-              style={{ width: currentKeyword.length ? "85%" : null }}
+              style={{ width: currentKeyword.length ? '85%' : null }}
               label="New Keyword"
               value={currentKeyword}
               onChange={({ value }) => setCurrentKeyword(value)}
@@ -141,13 +172,24 @@ const HomeSettings = ({
                 color="green"
                 onPress={() => {
                   setKeywords(prev => prev.concat(currentKeyword));
-                  setCurrentKeyword("");
+                  setCurrentKeyword('');
                 }}
               />
             )}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      {popupShow && (
+        <PopupAlert
+          MESSAGE_TEXT={popupMsg}
+          MESSAGE_WIDTH={popupWidth}
+          MESSAGE_TYPE={popupType}
+          MESSAGE_DURATION={1000}
+          onDisplayComplete={() =>
+            setPopup(prev => ({ ...prev, popupShow: false }))
+          }
+        />
+      )}
     </>
   );
 };
@@ -158,6 +200,9 @@ const mapStateToProps = state => ({
   getCityNameById: id => selectCityNameById(id)(state)
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  editEmployeePreferedJobsSettingsStart: (settings, callback) =>
+    dispatch(editEmployeePreferedJobsSettingsStart(settings, callback))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeSettings);

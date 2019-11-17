@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { View, Alert } from 'react-native';
-import { Headline, Button, Paragraph } from 'react-native-paper';
-import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
+import { Button } from 'react-native-paper';
+import { H2, OutlinedInput, Link } from '../../components';
 
 import { selectCurrentUser } from '../../redux/current-user/current-user.selectors';
 import { signUpUserStart } from '../../redux/current-user/current-user.actions';
-
-import FormInput from '../../components/form-input/form-input.component';
 
 import styles from './sign-up.styles';
 
@@ -42,8 +40,8 @@ const SignUp = ({ currentUser, navigation, signUpUserStart }) => {
 
       <OutlinedInput
         style={{ marginHorizontal: 10, marginBottom: 10, width: '90%' }}
-        label='Email'
-        name='email'
+        label="Email"
+        name="email"
         value={email}
         onChange={({ name, value }) =>
           setCredentials({
@@ -51,13 +49,13 @@ const SignUp = ({ currentUser, navigation, signUpUserStart }) => {
             [name]: value
           })
         }
-        keyboardType='email-address'
+        keyboardType="email-address"
       />
 
       <OutlinedInput
         style={{ marginHorizontal: 10, marginBottom: 10, width: '90%' }}
-        label='Password'
-        name='password'
+        label="Password"
+        name="password"
         value={password}
         onChange={({ name, value }) =>
           setCredentials({
@@ -70,8 +68,8 @@ const SignUp = ({ currentUser, navigation, signUpUserStart }) => {
 
       <OutlinedInput
         style={{ marginHorizontal: 10, marginBottom: 10, width: '90%' }}
-        label='Confirm Password'
-        name='confirmPassword'
+        label="Confirm Password"
+        name="confirmPassword"
         value={confirmPassword}
         onChange={({ name, value }) =>
           setCredentials({
@@ -82,9 +80,15 @@ const SignUp = ({ currentUser, navigation, signUpUserStart }) => {
         secureTextEntry
       />
 
-      <ContainedButton style={styles.button} onPress={handleSignUp}>
+      <Button
+        style={styles.button}
+        icon="search"
+        mode="contained"
+        size={25}
+        onPress={handleSignUp}
+      >
         Sign Up
-      </ContainedButton>
+      </Button>
 
       <Link
         style={{ marginTop: 50 }}
@@ -92,58 +96,6 @@ const SignUp = ({ currentUser, navigation, signUpUserStart }) => {
       >
         Already have an account!
       </Link>
-
-      {/* <Headline style={styles.headline}>Sign Up</Headline>
-      <FormInput
-        style={styles.textInput}
-        label='Email'
-        name='email'
-        value={email}
-        keyboardType='email-address'
-        onChange={({ name, value }) =>
-          setCredentials({
-            ...credentials,
-            [name]: value
-          })
-        }
-      />
-      <FormInput
-        style={styles.textInput}
-        label='Password'
-        value={password}
-        name='password'
-        secureTextEntry
-        onChange={({ name, value }) =>
-          setCredentials({
-            ...credentials,
-            [name]: value
-          })
-        }
-      />
-      <FormInput
-        style={styles.textInput}
-        label='Confirm Password'
-        value={confirmPassword}
-        name='confirmPassword'
-        secureTextEntry
-        onChange={({ name, value }) =>
-          setCredentials({
-            ...credentials,
-            [name]: value
-          })
-        }
-      />
-
-      <Button style={styles.button} mode='contained' onPress={handleSignUp}>
-        Sign Up
-      </Button>
-
-      <Paragraph
-        style={styles.signIn}
-        onPress={() => navigation.navigate('SignIn')}
-      >
-        Already have an account!
-      </Paragraph> */}
     </View>
   );
 };
@@ -157,7 +109,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(signUpUserStart(email, password))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

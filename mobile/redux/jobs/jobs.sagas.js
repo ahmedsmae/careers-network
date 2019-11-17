@@ -115,17 +115,16 @@ function* getAllEmployerJobsAsync({ payload }) {
   }
 }
 
-function* getHomeJobsAsync({ payload }) {
+function* getHomeJobsAsync() {
   try {
     yield setAuthToken();
 
     const response = yield call(axios, {
       method: 'get',
-      // url: URLS.GET_ALL_EMPLOYER_JOBS,
-      data: payload
+      url: URLS.GET_EMPLOYEE_HOME_JOBS
     });
 
-    yield put(getHomeJobsSuccess(response.data.jobs));
+    yield put(getHomeJobsSuccess(response.data.homeJobs));
   } catch (err) {
     Toast.show(err.message, {
       backgroundColor: 'red',

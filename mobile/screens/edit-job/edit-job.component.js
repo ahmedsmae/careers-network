@@ -1,37 +1,28 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { View, ScrollView, KeyboardAvoidingView, Alert } from "react-native";
-import {
-  Appbar,
-  TextInput,
-  RadioButton,
-  Divider,
-  Text,
-  Caption,
-  IconButton
-} from "react-native-paper";
-import { H2, ContainedButton, OutlinedInput, Link } from "../../components";
-import DatePicker from "react-native-datepicker";
-import { CustomDatePicker, Filter } from "../../components";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { View, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { Appbar, RadioButton, Divider, Text } from 'react-native-paper';
+import { OutlinedInput } from '../../components';
+import { CustomDatePicker, Filter } from '../../components';
 
-import { selectCurrentEmployer } from "../../redux/current-user/current-user.selectors";
+import { selectCurrentEmployer } from '../../redux/current-user/current-user.selectors';
 import {
   selectCityNameById,
   selectCitiesList
-} from "../../redux/constants/constants.selectors";
+} from '../../redux/constants/constants.selectors';
 import {
   selectLoading,
   selectErrorMessage
-} from "../../redux/jobs/jobs.selectors";
+} from '../../redux/jobs/jobs.selectors';
 import {
   createNewJobStart,
   updateExistingJobStart
-} from "../../redux/jobs/jobs.actions";
+} from '../../redux/jobs/jobs.actions';
 
-import ManageKeywords from "./manage-keywords.component";
-import ManageQuestions from "./manage-questions.component";
+import ManageKeywords from './manage-keywords.component';
+import ManageQuestions from './manage-questions.component';
 
-import styles from "./edit-job.styles";
+import styles from './edit-job.styles';
 
 const EditJob = ({
   navigation,
@@ -42,27 +33,27 @@ const EditJob = ({
   loading,
   errorMessage
 }) => {
-  const job = navigation.getParam("job");
+  const job = navigation.getParam('job');
 
   const [currentJob, setCurrentJob] = useState(
     job
       ? { ...job, location: getCityName(job.location_id), filtering: false }
       : {
-          position: "",
-          location_id: "",
-          location: "",
-          referance_number: "",
-          status: "AVAILABLE",
-          applying_email: "",
-          applying_link: "",
-          responsibilities: "",
-          requirements: "",
-          min_salary: "",
-          max_salary: "",
-          currency: "",
-          other_info: "",
+          position: '',
+          location_id: '',
+          location: '',
+          referance_number: '',
+          status: 'AVAILABLE',
+          applying_email: '',
+          applying_link: '',
+          responsibilities: '',
+          requirements: '',
+          min_salary: '',
+          max_salary: '',
+          currency: '',
+          other_info: '',
           keywords: [],
-          expiry: "",
+          expiry: '',
           questions: [],
           filtering: false
         }
@@ -103,27 +94,27 @@ const EditJob = ({
 
   const _handleSave = () => {
     if (position.trim().length === 0) {
-      Alert.alert("Missing Info", "Position is required", [{ text: "OK" }]);
+      Alert.alert('Missing Info', 'Position is required', [{ text: 'OK' }]);
       return;
     }
 
     if (applying_email.trim().length === 0) {
-      Alert.alert("Missing Info", "Applying Email is required", [
-        { text: "OK" }
+      Alert.alert('Missing Info', 'Applying Email is required', [
+        { text: 'OK' }
       ]);
       return;
     }
 
     if (responsibilities.trim().length === 0) {
-      Alert.alert("Missing Info", "Job Responsibilities are required", [
-        { text: "OK" }
+      Alert.alert('Missing Info', 'Job Responsibilities are required', [
+        { text: 'OK' }
       ]);
       return;
     }
 
     if (requirements.trim().length === 0) {
-      Alert.alert("Missing Info", "Position Requirements are required", [
-        { text: "OK" }
+      Alert.alert('Missing Info', 'Position Requirements are required', [
+        { text: 'OK' }
       ]);
       return;
     }
@@ -142,7 +133,7 @@ const EditJob = ({
     <>
       <Appbar.Header>
         <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title={job ? "Edit Job" : "Add Job"} />
+        <Appbar.Content title={job ? 'Edit Job' : 'Add Job'} />
         <Appbar.Action icon="save" onPress={_handleSave} />
       </Appbar.Header>
 
@@ -164,7 +155,7 @@ const EditJob = ({
           <Divider />
 
           <Filter
-            style={{ width: "95%", marginHorizontal: 10 }}
+            style={{ width: '95%', marginHorizontal: 10 }}
             list={citiesList}
             label="Location"
             onSelect={_handleLocationSelect}
@@ -232,18 +223,18 @@ const EditJob = ({
             Job Status
           </Text>
           <RadioButton.Group
-            onValueChange={_handleChange.bind(this, "status")}
+            onValueChange={_handleChange.bind(this, 'status')}
             value={status}
           >
-            <View style={{ flexDirection: "row", margin: 10, marginTop: 0 }}>
+            <View style={{ flexDirection: 'row', margin: 10, marginTop: 0 }}>
               <View
-                style={{ flexDirection: "row", flex: 1, alignItems: "center" }}
+                style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
               >
                 <RadioButton value="AVAILABLE" />
                 <Text style={{ fontSize: 16 }}>Available</Text>
               </View>
               <View
-                style={{ flexDirection: "row", flex: 1, alignItems: "center" }}
+                style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
               >
                 <RadioButton value="TAKEN" />
                 <Text style={{ fontSize: 16 }}>Taken</Text>
@@ -303,7 +294,7 @@ const EditJob = ({
           <Text style={{ margin: 10, marginBottom: 0, fontSize: 16 }}>
             Salary Range
           </Text>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: 'row' }}>
             <OutlinedInput
               style={{ margin: 10, marginTop: 0, flex: 1 }}
               keyboardType="number-pad"

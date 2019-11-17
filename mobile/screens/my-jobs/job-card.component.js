@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
-import { Card, Text, Title, Paragraph, Caption } from 'react-native-paper';
+import { Card, Title, Paragraph, Caption } from 'react-native-paper';
 
 import { selectCityNameById } from '../../redux/constants/constants.selectors';
 

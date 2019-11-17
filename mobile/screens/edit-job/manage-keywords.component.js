@@ -1,24 +1,17 @@
-import React, { useState } from "react";
-import { View } from "react-native";
-import {
-  TextInput,
-  Text,
-  Caption,
-  IconButton,
-  Chip,
-  Colors
-} from "react-native-paper";
-import { H2, ContainedButton, OutlinedInput, Link } from "../../components";
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Text, Caption, IconButton, Chip, Colors } from 'react-native-paper';
+import { OutlinedInput } from '../../components';
 
-import AppColors from "../../constants/colors";
+import AppColors from '../../constants/colors';
 
 const ManageKeywords = ({ keywords, onAddKeyword, onRemoveKeyword }) => {
   const [showAddKeyword, setShowAddKeyword] = useState(false);
-  const [newKeyword, setNewKeyword] = useState("");
+  const [newKeyword, setNewKeyword] = useState('');
 
   return (
     <View>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <View style={{ flex: 1 }}>
           <Text style={{ margin: 10, marginBottom: 0, fontSize: 16 }}>
             Keywords
@@ -39,14 +32,14 @@ const ManageKeywords = ({ keywords, onAddKeyword, onRemoveKeyword }) => {
       {showAddKeyword && (
         <View
           style={{
-            flexDirection: "row",
+            flexDirection: 'row',
             marginVertical: 10,
-            alignItems: "center",
+            alignItems: 'center',
             marginHorizontal: 10
           }}
         >
           <OutlinedInput
-            style={{ flex: 1, backgroundColor: "transparent" }}
+            style={{ flex: 1, backgroundColor: 'transparent' }}
             autoCapitalize="words"
             label="New Keyword"
             value={newKeyword}
@@ -55,14 +48,14 @@ const ManageKeywords = ({ keywords, onAddKeyword, onRemoveKeyword }) => {
 
           {newKeyword.trim().length > 0 && (
             <IconButton
-              style={{ color: "green", marginRight: 20 }}
+              style={{ color: 'green', marginRight: 20 }}
               icon="check"
               size={30}
               color={Colors.green500}
               onPress={() => {
                 onAddKeyword(newKeyword);
                 setShowAddKeyword(false);
-                setNewKeyword("");
+                setNewKeyword('');
               }}
             />
           )}
@@ -73,9 +66,9 @@ const ManageKeywords = ({ keywords, onAddKeyword, onRemoveKeyword }) => {
         <View
           style={{
             margin: 10,
-            flexWrap: "wrap",
-            alignItems: "flex-start",
-            flexDirection: "row"
+            flexWrap: 'wrap',
+            alignItems: 'flex-start',
+            flexDirection: 'row'
           }}
         >
           {keywords.map((word, index) => (

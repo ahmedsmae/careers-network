@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.1.100:5000";
+const BASE_URL = 'http://192.168.1.100:5000';
 
 export default URLS = {
   SIGNUP: `${BASE_URL}/api/users/signup`,
@@ -22,6 +22,7 @@ export default URLS = {
   ADD_EDIT_EMPLOYEE_REFERENCE: `${BASE_URL}/api/employees/references`,
   DELETE_EMPLOYEE_REFERENCE: `${BASE_URL}/api/employees/references`, // + /:referenceid
   EDIT_EMPLOYEE_SOCIAL_PROFILES: `${BASE_URL}/api/employees/socialprofiles`,
+  EDIT_EMPLOYEE_PREFERED_JOBS_SETTINGS: `${BASE_URL}/api/employees/preferedjobssettings`,
   SERVE_EMPLOYEE_AVATAR: `${BASE_URL}/api/employees/avatars`, // + /:employeeid
 
   EDIT_EDUCATION_INFO: `${BASE_URL}/api/employees/educations`,
@@ -40,6 +41,7 @@ export default URLS = {
   DELETE_JOB: `${BASE_URL}/api/jobs/`, // + /:jobid
   GET_ALL_EMPLOYER_JOBS: `${BASE_URL}/api/jobs/employerjobs`, // + /:employerid
   SEARCH_JOBS: `${BASE_URL}/api/jobs/search`, // + /:position/:locationid
+  GET_EMPLOYEE_HOME_JOBS: `${BASE_URL}/api/jobs/homejobs/`,
   PUBLIC_GET_ALL_EMPLOYER_JOBS: `${BASE_URL}/api/jobs`, // + /:employeeid
 
   CREATE_NEW_APPLICATION: `${BASE_URL}/api/applications/`,
@@ -71,12 +73,12 @@ export default URLS = {
 };
 
 export const SOCIAL_MEDIA_BASE_URLS = {
-  linkedin: "https://www.linkedin.com/in/",
-  twitter: "https://twitter.com/",
-  github: "https://github.com/",
-  stackoverflow: "https://stackoverflow.com/users/",
-  facebook: "https://www.facebook.com/",
-  instagram: "https://www.instagram.com/",
-  youtube: "https://www.youtube.com/user/",
-  youtubeChannel: "https://www.youtube.com/channel/"
+  linkedin: 'https://www.linkedin.com/in/',
+  twitter: 'https://twitter.com/',
+  github: 'https://github.com/',
+  stackoverflow: 'https://stackoverflow.com/users/',
+  facebook: 'https://www.facebook.com/',
+  instagram: 'https://www.instagram.com/',
+  youtube: 'https://www.youtube.com/user/',
+  youtubeChannel: 'https://www.youtube.com/channel/'
 };

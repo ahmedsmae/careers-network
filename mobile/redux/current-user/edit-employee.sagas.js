@@ -1,12 +1,12 @@
-import { takeLatest, call, put, all } from "redux-saga/effects";
-import Toast from "react-native-root-toast";
-import axios from "axios";
+import { takeLatest, call, put, all } from 'redux-saga/effects';
+import Toast from 'react-native-root-toast';
+import axios from 'axios';
 
-import URLS from "../utils/urls";
-import setAuthToken from "../utils/setAuthToken";
-import { createImageFormData } from "./current-user.utils";
+import URLS from '../utils/urls';
+import setAuthToken from '../utils/setAuthToken';
+import { createImageFormData } from './current-user.utils';
 
-import CurrentUserActionTypes from "./current-user.types";
+import CurrentUserActionTypes from './current-user.types';
 import {
   editEmployeeInfoSuccess,
   editEmployeeInfoFailure,
@@ -33,28 +33,30 @@ import {
   editEmployeeEducationSuccess,
   editEmployeeEducationFailure,
   deleteEmployeeEducationSuccess,
-  deleteEmployeeEducationFailure
-} from "./current-user.actions";
+  deleteEmployeeEducationFailure,
+  editEmployeePreferedJobsSettingsSuccess,
+  editEmployeePreferedJobsSettingsFailure
+} from './current-user.actions';
 
 function* editEmployeeInfoAsync({ payload }) {
   try {
     yield setAuthToken();
 
     const response = yield call(axios, {
-      method: "post",
+      method: 'post',
       url: URLS.EDIT_EMPLOYEE_INFO,
       data: payload
     });
 
     yield put(editEmployeeInfoSuccess(response.data.employee));
-    Toast.show("Your info updated successfully", {
-      backgroundColor: "green",
+    Toast.show('Your info updated successfully', {
+      backgroundColor: 'green',
       duration: Toast.durations.SHORT
     });
   } catch (err) {
     if (err.response && err.response.data && err.response.data.errors) {
       Toast.show(err.response.data.errors.map(err => err.msg).toString(), {
-        backgroundColor: "red",
+        backgroundColor: 'red',
         duration: Toast.durations.LONG
       });
     }
@@ -67,7 +69,7 @@ function* addEmployeeLanguageAsync({ payload, callback }) {
     yield setAuthToken();
 
     const response = yield call(axios, {
-      method: "post",
+      method: 'post',
       url: URLS.ADD_EMPLOYEE_LANGUAGE,
       timeout: 8000,
       data: payload
@@ -86,7 +88,7 @@ function* deleteEmployeeLanguageAsync({ payload, callback }) {
     yield setAuthToken();
 
     const response = yield call(axios, {
-      method: "delete",
+      method: 'delete',
       url: `${URLS.DELETE_EMPLOYEE_LANGUAGE}/${payload}`
     });
 
@@ -103,7 +105,7 @@ function* addEmployeeSkillAsync({ payload, callback }) {
     yield setAuthToken();
 
     const response = yield call(axios, {
-      method: "post",
+      method: 'post',
       url: URLS.ADD_EMPLOYEE_SKILL,
       data: payload
     });
@@ -121,7 +123,7 @@ function* deleteEmployeeSkillAsync({ payload, callback }) {
     yield setAuthToken();
 
     const response = yield call(axios, {
-      method: "delete",
+      method: 'delete',
       url: `${URLS.DELETE_EMPLOYEE_SKILL}/${payload}`
     });
 
@@ -138,7 +140,7 @@ function* addEmployeeInterestAsync({ payload, callback }) {
     yield setAuthToken();
 
     const response = yield call(axios, {
-      method: "post",
+      method: 'post',
       url: URLS.ADD_EMPLOYEE_INTEREST,
       data: payload
     });
@@ -156,7 +158,7 @@ function* deleteEmployeeInterestAsync({ payload, callback }) {
     yield setAuthToken();
 
     const response = yield call(axios, {
-      method: "delete",
+      method: 'delete',
       url: `${URLS.DELETE_EMPLOYEE_INTEREST}/${payload}`
     });
 
@@ -173,7 +175,7 @@ function* addEditEmployeeReferenceAsync({ payload, callback }) {
     yield setAuthToken();
 
     const response = yield call(axios, {
-      method: "post",
+      method: 'post',
       url: URLS.ADD_EDIT_EMPLOYEE_REFERENCE,
       data: payload
     });
@@ -191,7 +193,7 @@ function* deleteEmployeeReferenceAsync({ payload, callback }) {
     yield setAuthToken();
 
     const response = yield call(axios, {
-      method: "delete",
+      method: 'delete',
       url: `${URLS.DELETE_EMPLOYEE_REFERENCE}/${payload}`
     });
 
@@ -208,7 +210,7 @@ function* editEmployeeSocialProfilesAsync({ payload, callback }) {
     yield setAuthToken();
 
     const response = yield call(axios, {
-      method: "post",
+      method: 'post',
       url: URLS.EDIT_EMPLOYEE_SOCIAL_PROFILES,
       data: payload
     });
@@ -221,28 +223,46 @@ function* editEmployeeSocialProfilesAsync({ payload, callback }) {
   }
 }
 
+function* editEmployeePreferedJobsSettingsAsync({ payload, callback }) {
+  try {
+    yield setAuthToken();
+
+    const response = yield call(axios, {
+      method: 'post',
+      url: URLS.EDIT_EMPLOYEE_PREFERED_JOBS_SETTINGS,
+      data: payload
+    });
+
+    yield call(callback);
+    yield put(editEmployeePreferedJobsSettingsSuccess(response.data.employee));
+  } catch (err) {
+    yield call(callback, err);
+    yield put(editEmployeePreferedJobsSettingsFailure(err.message));
+  }
+}
+
 function* editEmployeeAvatarAsync({ payload }) {
   try {
     yield setAuthToken();
 
-    const fd = yield createImageFormData("avatar", payload);
+    const fd = yield createImageFormData('avatar', payload);
 
     const response = yield call(axios.post, URLS.EDIT_EMPLOYEE_AVATAR, fd);
 
     yield put(editEmployeeAvatarSuccess(response.data.employee));
-    Toast.show("Avatar updated successfully", {
-      backgroundColor: "green",
+    Toast.show('Avatar updated successfully', {
+      backgroundColor: 'green',
       duration: Toast.durations.SHORT
     });
   } catch (err) {
     if (err.response && err.response.data && err.response.data.error) {
       Toast.show(err.response.data.error, {
-        backgroundColor: "red",
+        backgroundColor: 'red',
         duration: Toast.durations.LONG
       });
     } else {
-      Toast.show("Something went wrong...", {
-        backgroundColor: "red",
+      Toast.show('Something went wrong...', {
+        backgroundColor: 'red',
         duration: Toast.durations.LONG
       });
     }
@@ -257,13 +277,13 @@ function* editEmployeeEducationAsync({ payload }) {
 
     let response;
     response = yield call(axios, {
-      method: "post",
+      method: 'post',
       url: URLS.EDIT_EDUCATION_INFO,
       data: otherProps
     });
 
     if (!!certificate_image) {
-      const fd = yield createImageFormData("certificate", certificate_image);
+      const fd = yield createImageFormData('certificate', certificate_image);
 
       response = yield call(
         axios.post,
@@ -273,13 +293,13 @@ function* editEmployeeEducationAsync({ payload }) {
     }
 
     yield put(editEmployeeEducationSuccess(response.data.employee));
-    Toast.show("Educations updated successfully", {
-      backgroundColor: "green",
+    Toast.show('Educations updated successfully', {
+      backgroundColor: 'green',
       duration: Toast.durations.SHORT
     });
   } catch (err) {
     Toast.show(err.message, {
-      backgroundColor: "red",
+      backgroundColor: 'red',
       duration: Toast.durations.LONG
     });
     yield put(editEmployeeEducationFailure(err.message));
@@ -291,18 +311,18 @@ function* deleteEmployeeEducationAsync({ payload }) {
     yield setAuthToken();
 
     const response = yield call(axios, {
-      method: "delete",
+      method: 'delete',
       url: `${URLS.DELETE_EMPLOYEE_EDUCATION}/${payload}`
     });
 
     yield put(deleteEmployeeEducationSuccess(response.data.employee));
-    Toast.show("Education deleted successfully", {
-      backgroundColor: "green",
+    Toast.show('Education deleted successfully', {
+      backgroundColor: 'green',
       duration: Toast.durations.SHORT
     });
   } catch (err) {
     Toast.show(err.message, {
-      backgroundColor: "red",
+      backgroundColor: 'red',
       duration: Toast.durations.LONG
     });
     yield put(deleteEmployeeEducationFailure(err.message));
@@ -379,6 +399,13 @@ function* editEmployeeSocialProfilesStart() {
   );
 }
 
+function* editEmployeePreferedJobsSettingsStart() {
+  yield takeLatest(
+    CurrentUserActionTypes.EDIT_EMPLOYEE_PREFERED_JOBS_SETTINGS_START,
+    editEmployeePreferedJobsSettingsAsync
+  );
+}
+
 function* editEmployeeAvatarStart() {
   yield takeLatest(
     CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_START,
@@ -414,6 +441,7 @@ export default function* editEmployeeSagas() {
     call(deleteEmployeeInterestStart),
     call(addEditEmployeeReferenceStart),
     call(deleteEmployeeReferenceStart),
-    call(editEmployeeSocialProfilesStart)
+    call(editEmployeeSocialProfilesStart),
+    call(editEmployeePreferedJobsSettingsStart)
   ]);
 }

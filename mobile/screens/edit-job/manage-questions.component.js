@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Alert } from 'react-native';
+import { View } from 'react-native';
 import {
-  TextInput,
   Text,
   Caption,
   IconButton,
-  Chip,
   Divider,
   Colors,
   RadioButton,
   Button
 } from 'react-native-paper';
-import { H2, ContainedButton, OutlinedInput, Link } from '../../components';
+import { OutlinedInput } from '../../components';
 
 import AppColors from '../../constants/colors';
 import { QUESTION_TYPES } from '../../utils/types';
@@ -81,7 +79,7 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
 
         <IconButton
           style={{ marginRight: 30 }}
-          icon='add'
+          icon="add"
           size={30}
           onPress={() => setShowAddQuestion(true)}
         />
@@ -151,9 +149,9 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
           <OutlinedInput
             style={{ margin: 10 }}
             autoFocus
-            label='Question ?'
+            label="Question ?"
             value={question_text}
-            name='question_text'
+            name="question_text"
             onChange={({ name, value }) =>
               setNewQuestion(prev => ({ ...prev, [name]: value }))
             }
@@ -184,7 +182,7 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
                   style={{ flex: 1 }}
                   label={`Answer Option ${answer_options.length + 1}`}
                   value={newAnswer}
-                  name='newAnswer'
+                  name="newAnswer"
                   onChange={({ value }) => setNewAnswer(value)}
                 />
 
@@ -198,7 +196,7 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
                 {newAnswer.trim().length > 0 && (
                   <IconButton
                     style={{ color: 'green', marginRight: 20 }}
-                    icon='check'
+                    icon="check"
                     size={30}
                     color={Colors.green500}
                     onPress={() => {
@@ -237,7 +235,7 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
                     </Text>
                     <IconButton
                       style={{ color: 'green', marginRight: 20 }}
-                      icon='close'
+                      icon="close"
                       size={30}
                       color={Colors.red500}
                       onPress={() =>
@@ -260,8 +258,8 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
           {isQuestionReady() && (
             <Button
               style={{ marginTop: 10 }}
-              icon='check'
-              mode='contained'
+              icon="check"
+              mode="contained"
               color={AppColors.ACCENT}
               onPress={_handleAddQuestion}
             >
@@ -297,7 +295,7 @@ const ManageQuestions = ({ questions, onAddQuestion, onRemoveQuestion }) => {
               {questionCard(question)}
               <IconButton
                 style={{ color: 'green', marginRight: 20 }}
-                icon='close'
+                icon="close"
                 size={30}
                 color={Colors.red500}
                 onPress={onRemoveQuestion.bind(this, index)}

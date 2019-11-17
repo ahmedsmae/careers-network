@@ -1,4 +1,4 @@
-import CurrentUserActionTypes from "./current-user.types";
+import CurrentUserActionTypes from './current-user.types';
 
 const INITIAL_STATE = {
   currentUser: null,
@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   employer: null,
   admin: null,
   loading: false,
-  errorMessage: ""
+  errorMessage: ''
 };
 
 const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -35,10 +35,11 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.ADD_EDIT_EMPLOYEE_REFERENCE_START:
     case CurrentUserActionTypes.DELETE_EMPLOYEE_REFERENCE_START:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_SOCIAL_PROFILES_START:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_PREFERED_JOBS_SETTINGS_START:
       return {
         ...state,
         loading: true,
-        errorMessage: ""
+        errorMessage: ''
       };
 
     case CurrentUserActionTypes.SIGN_UP_USER_SUCCESS:
@@ -52,7 +53,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
         employer: payload.employer,
         admin: payload.admin,
         loading: false,
-        errorMessage: ""
+        errorMessage: ''
       };
 
     case CurrentUserActionTypes.SIGN_OUT_USER_SUCCESS:
@@ -72,11 +73,12 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_SUCCESS:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_SUCCESS:
     case CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_SUCCESS:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_PREFERED_JOBS_SETTINGS_SUCCESS:
       return {
         ...state,
         employee: payload,
         loading: false,
-        errorMessage: ""
+        errorMessage: ''
       };
 
     case CurrentUserActionTypes.EDIT_EMPLOYER_INFO_SUCCESS:
@@ -86,7 +88,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
         ...state,
         employer: payload,
         loading: false,
-        errorMessage: ""
+        errorMessage: ''
       };
 
     case CurrentUserActionTypes.SIGN_UP_USER_FAILURE:
@@ -114,6 +116,7 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.ADD_EDIT_EMPLOYEE_REFERENCE_FAILURE:
     case CurrentUserActionTypes.DELETE_EMPLOYEE_REFERENCE_FAILURE:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_SOCIAL_PROFILES_FAILURE:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_PREFERED_JOBS_SETTINGS_FAILURE:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_FAILURE:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_FAILURE:
     case CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_FAILURE:

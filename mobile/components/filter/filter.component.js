@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { View } from "react-native";
-import { Text, Divider } from "react-native-paper";
-import { OutlinedInput } from "../custom-input/custom-input.rnc";
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Text, Divider } from 'react-native-paper';
+import { OutlinedInput } from '../custom-input/custom-input.rnc';
 
 const Filter = ({
   list,
@@ -11,9 +11,10 @@ const Filter = ({
   filterItem,
   listItem,
   style,
+  onClear,
   clearAfterSelect
 }) => {
-  const [query, setQuery] = useState(value || "");
+  const [query, setQuery] = useState(value || '');
   const [filtering, setFiltering] = useState(false);
 
   return (
@@ -21,10 +22,10 @@ const Filter = ({
       {filtering && (
         <View
           style={{
-            backgroundColor: "lightgrey",
-            width: "100%",
+            backgroundColor: 'lightgrey',
+            width: '100%',
             maxHeight: 200,
-            overflow: "hidden",
+            overflow: 'hidden',
             borderRadius: 5,
             marginBottom: 10
           }}
@@ -49,7 +50,7 @@ const Filter = ({
                         onSelect(item);
                         setFiltering(false);
                         setQuery(listItem(item));
-                        clearAfterSelect && setQuery("");
+                        clearAfterSelect && setQuery('');
                       }}
                     >
                       {listItem(item)}
@@ -63,10 +64,11 @@ const Filter = ({
       )}
 
       <OutlinedInput
-        style={{ marginBottom: 5, width: "100%" }}
+        style={{ marginBottom: 5, width: '100%' }}
         label={label}
         value={query}
         onChange={({ value }) => {
+          onClear && onClear();
           setQuery(value);
           setFiltering(true);
         }}

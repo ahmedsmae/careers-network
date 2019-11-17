@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { View, FlatList } from 'react-native';
-import { Text, Appbar } from 'react-native-paper';
+import { FlatList } from 'react-native';
+import { Appbar } from 'react-native-paper';
+import { SorryParagraph } from '../../components';
 
 import { selectSavedJobs } from '../../redux/saved/saved.selectors';
 
@@ -12,19 +13,23 @@ const MySavedJobs = ({ navigation, savedJobs }) => {
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='My Saved Jobs' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="My Saved Jobs" />
       </Appbar.Header>
-      <FlatList
-        data={savedJobs}
-        keyExtractor={item => item._id}
-        renderItem={({ item: { job } }) => (
-          <JobCard
-            job={job}
-            onPress={() => navigation.navigate('EmployeeShowJob', { job })}
-          />
-        )}
-      />
+      {savedJobs.length === 0 ? (
+        <SorryParagraph subtitle="You don't have any saved jobs yet" />
+      ) : (
+        <FlatList
+          data={savedJobs}
+          keyExtractor={item => item._id}
+          renderItem={({ item: { job } }) => (
+            <JobCard
+              job={job}
+              onPress={() => navigation.navigate('EmployeeShowJob', { job })}
+            />
+          )}
+        />
+      )}
     </>
   );
 };
