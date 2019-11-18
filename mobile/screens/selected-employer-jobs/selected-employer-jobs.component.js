@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { View, Text, ScrollView, FlatList } from 'react-native';
-import {
-  Appbar,
-  FAB,
-  Searchbar,
-  Button,
-  Provider,
-  Menu,
-  Divider
-} from 'react-native-paper';
+import { FlatList } from 'react-native';
+import { Appbar, Searchbar, Provider } from 'react-native-paper';
 
 import { selectCurrentUser } from '../../redux/current-user/current-user.selectors';
 import { selectSelectedEmployerJobs } from '../../redux/jobs/jobs.selectors';
@@ -29,7 +21,7 @@ const MyJobs = ({
   const employerId = navigation.getParam('employerId');
 
   useEffect(() => {
-    publicGetEmployerJobsStart(employerId);
+    publicGetEmployerJobsStart(employerId, err => {});
   }, [publicGetEmployerJobsStart, employerId]);
 
   const [searchMode, setSearchMode] = useState(false);
@@ -45,10 +37,10 @@ const MyJobs = ({
         <Appbar.Header style={{ backgroundColor: Colors.PRIMARY }}>
           {searchMode ? (
             <Searchbar
-              placeholder='Search by position'
+              placeholder="Search by position"
               value={searchQ}
               autoFocus
-              clearButtonMode='always'
+              clearButtonMode="always"
               onChangeText={text => {
                 setSearchQ(text);
                 if (text.length === 0) {
@@ -59,14 +51,14 @@ const MyJobs = ({
           ) : (
             <>
               <Appbar.Action
-                icon='menu'
-                color='white'
+                icon="menu"
+                color="white"
                 onPress={() => navigation.toggleDrawer()}
               />
-              <Appbar.Content title='Employer Jobs' color='white' />
+              <Appbar.Content title="Employer Jobs" color="white" />
               <Appbar.Action
-                icon='search'
-                color='white'
+                icon="search"
+                color="white"
                 onPress={() => setSearchMode(true)}
               />
             </>
@@ -98,11 +90,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  publicGetEmployerJobsStart: employerId =>
-    dispatch(publicGetEmployerJobsStart(employerId))
+  publicGetEmployerJobsStart: (employerId, callback) =>
+    dispatch(publicGetEmployerJobsStart(employerId, callback))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MyJobs);
+export default connect(mapStateToProps, mapDispatchToProps)(MyJobs);

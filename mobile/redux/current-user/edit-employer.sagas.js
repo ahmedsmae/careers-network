@@ -1,5 +1,4 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import Toast from 'react-native-root-toast';
 import axios from 'axios';
 
 import URLS from '../utils/urls';
@@ -16,7 +15,7 @@ import {
   editEmployerCoverFailure
 } from './current-user.actions';
 
-function* editEmployerInfoAsync({ payload }) {
+function* editEmployerInfoAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -26,74 +25,40 @@ function* editEmployerInfoAsync({ payload }) {
       data: payload
     });
 
+    yield call(callback);
     yield put(editEmployerInfoSuccess(response.data.employer));
-    Toast.show('Your info updated successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    if (err.response && err.response.data && err.response.data.errors) {
-      Toast.show(err.response.data.errors.map(err => err.msg).toString(), {
-        backgroundColor: 'red',
-        duration: Toast.durations.LONG
-      });
-    }
+    yield call(callback, err);
     yield put(editEmployerInfoFailure(err.message));
   }
 }
 
-function* editEmployerAvatarAsync({ payload }) {
+function* editEmployerAvatarAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
     const fd = yield createImageFormData('avatar', payload);
     const response = yield call(axios.post, URLS.EDIT_EMPLOYER_AVATAR, fd);
 
+    yield call(callback);
     yield put(editEmployerAvatarSuccess(response.data.employer));
-    Toast.show('Avatar updated successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    if (err.response && err.response.data && err.response.data.error) {
-      Toast.show(err.response.data.error, {
-        backgroundColor: 'red',
-        duration: Toast.durations.LONG
-      });
-    } else {
-      Toast.show('Something went wrong...', {
-        backgroundColor: 'red',
-        duration: Toast.durations.LONG
-      });
-    }
+    yield call(callback, err);
     yield put(editEmployerAvatarFailure(err.message));
   }
 }
 
-function* editEmployerCoverAsync({ payload }) {
+function* editEmployerCoverAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
     const fd = yield createImageFormData('cover', payload);
     const response = yield call(axios.post, URLS.EDIT_EMPLOYER_COVER, fd);
 
+    yield call(callback);
     yield put(editEmployerCoverSuccess(response.data.employer));
-    Toast.show('Cover updated successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    if (err.response && err.response.data && err.response.data.error) {
-      Toast.show(err.response.data.error, {
-        backgroundColor: 'red',
-        duration: Toast.durations.LONG
-      });
-    } else {
-      Toast.show('Something went wrong...', {
-        backgroundColor: 'red',
-        duration: Toast.durations.LONG
-      });
-    }
+    yield call(callback, err);
     yield put(editEmployerCoverFailure(err.message));
   }
 }

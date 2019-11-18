@@ -1,9 +1,10 @@
 import ApplicationsActionTypes from './applications.types';
 
 // CREATE NEW APPLICATION
-export const createNewApplicationStart = appData => ({
+export const createNewApplicationStart = (appData, callback) => ({
   type: ApplicationsActionTypes.CREATE_NEW_APPLICATION_START,
-  payload: appData
+  payload: appData,
+  callback
 });
 
 export const createNewApplicationSuccess = employeeApplications => ({
@@ -17,9 +18,10 @@ export const createNewApplicationFailure = errorMessage => ({
 });
 
 // UPDATE EXISTING APPLICATION
-export const updateExistingApplicationStart = appData => ({
+export const updateExistingApplicationStart = (appData, callback) => ({
   type: ApplicationsActionTypes.UPDATE_EXISTING_APPLICATION_START,
-  payload: appData
+  payload: appData,
+  callback
 });
 
 export const updateExistingApplicationSuccess = employeeApplications => ({
@@ -33,9 +35,10 @@ export const updateExistingApplicationFailure = errorMessage => ({
 });
 
 // DELETE APPLICATION
-export const deleteApplicationStart = appId => ({
+export const deleteApplicationStart = (appId, callback) => ({
   type: ApplicationsActionTypes.DELETE_APPLICATION_START,
-  payload: appId
+  payload: appId,
+  callback
 });
 
 export const deleteApplicationSuccess = employeeApplications => ({
@@ -49,8 +52,9 @@ export const deleteApplicationFailure = errorMessage => ({
 });
 
 // GET ALL EMPLOYEE APPLICATIONS
-export const getAllEmployeeApplicationsStart = () => ({
-  type: ApplicationsActionTypes.GET_ALL_EMPLOYEE_APPLICATIONS_START
+export const getAllEmployeeApplicationsStart = callback => ({
+  type: ApplicationsActionTypes.GET_ALL_EMPLOYEE_APPLICATIONS_START,
+  callback
 });
 
 export const getAllEmployeeApplicationsSuccess = employeeApplications => ({
@@ -64,9 +68,10 @@ export const getAllEmployeeApplicationsFailure = errorMessage => ({
 });
 
 // GET ALL JOB APPLICATIONS
-export const getAllJobApplicationsStart = jobId => ({
+export const getAllJobApplicationsStart = (jobId, callback) => ({
   type: ApplicationsActionTypes.GET_ALL_JOB_APPLICATIONS_START,
-  payload: jobId
+  payload: jobId,
+  callback
 });
 
 export const getAllJobApplicationsSuccess = jobApplications => ({

@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { View, ScrollView } from 'react-native';
-import { Appbar, Text, Divider } from 'react-native-paper';
-import { OutlinedInput } from '../../components';
+import { Appbar } from 'react-native-paper';
+import { OutlinedInput, Filter } from '../../components';
 
-import {
-  selectCurrentEmployer,
-  selectLoading,
-  selectErrorMessage
-} from '../../redux/current-user/current-user.selectors';
+import { selectCurrentEmployer } from '../../redux/current-user/current-user.selectors';
 import {
   selectCityNameById,
   selectCitiesList
 } from '../../redux/constants/constants.selectors';
 import { editEmployerInfoStart } from '../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
 import ManageContacts from './manage-contacts.component';
 
@@ -25,8 +22,7 @@ const EditEmployerInfo = ({
   citiesList,
   getCityName,
   editEmployerInfoStart,
-  loading,
-  errorMessage
+  showPopupApi
 }) => {
   const [employer, setEmployer] = useState(
     currentEmployer
@@ -56,29 +52,38 @@ const EditEmployerInfo = ({
     location,
     location_id,
     web_site,
-    bio,
-    filtering
+    bio
   } = employer;
+  const [disabled, setDisabled] = useState(false);
 
-  const _handleChange = (name, value) => {
+  const _handleChange = (name, value) =>
     setEmployer(prev => ({ ...prev, [name]: value }));
-  };
 
-  const _handleLocationSelect = ({ id, city, country }) => {
-    setEmployer(prev => ({
-      ...prev,
-      filtering: false,
-      location: `${city} - ${country}`,
-      location_id: id
-    }));
-  };
+  const _handleLocationSelect = ({ id }) =>
+    setEmployer(prev => ({ ...prev, location_id: id }));
 
   const _handleSave = () => {
     const { location, filtering, ...rest } = employer;
-    editEmployerInfoStart(rest);
-    if (!loading && errorMessage.length === 0) {
+    editEmployerInfoStart(rest, err => {
+      if (err) {
+        showPopupApi({
+          type: 'danger',
+          message:
+            err.response && err.response.data && err.response.data.errors
+              ? err.response.data.errors.map(err => err.msg).toString()
+              : 'Please check your connection'
+        });
+        setDisabled(false);
+        return console.log(err);
+      }
+
+      showPopupApi({
+        message: 'Info edited successfully',
+        duration: 600
+      });
+      setDisabled(false);
       navigation.goBack();
-    }
+    });
   };
 
   return (
@@ -86,7 +91,7 @@ const EditEmployerInfo = ({
       <Appbar.Header>
         <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title="Edit Employer info" />
-        <Appbar.Action icon="save" onPress={_handleSave} />
+        <Appbar.Action icon="save" disabled={disabled} onPress={_handleSave} />
       </Appbar.Header>
 
       <ScrollView style={styles.screen}>
@@ -99,16 +104,6 @@ const EditEmployerInfo = ({
           onChange={_handleChange}
         />
 
-        {/* <TextInput
-          style={{ margin: 10 }}
-          mode='outlined'
-          autoCapitalize='words'
-          label='Name'
-          value={name}
-          name='name'
-          onChangeText={_handleChange.bind(this, 'name')}
-        /> */}
-
         <OutlinedInput
           style={{ margin: 10 }}
           autoCapitalize="words"
@@ -118,16 +113,6 @@ const EditEmployerInfo = ({
           onChange={_handleChange}
         />
 
-        {/* <TextInput
-          style={{ margin: 10 }}
-          mode='outlined'
-          autoCapitalize='words'
-          label='Kind'
-          value={kind}
-          name='kind'
-          onChangeText={_handleChange.bind(this, 'kind')}
-        /> */}
-
         <OutlinedInput
           style={{ margin: 10 }}
           autoCapitalize="words"
@@ -136,16 +121,6 @@ const EditEmployerInfo = ({
           name="speciality"
           onChange={_handleChange}
         />
-
-        {/* <TextInput
-          style={{ margin: 10 }}
-          mode='outlined'
-          autoCapitalize='words'
-          label='Speciality'
-          value={speciality}
-          name='speciality'
-          onChangeText={_handleChange.bind(this, 'speciality')}
-        /> */}
 
         <ManageContacts
           contacts={contact_numbers}
@@ -163,53 +138,15 @@ const EditEmployerInfo = ({
           }
         />
 
-        <OutlinedInput
-          style={{ margin: 10 }}
-          autoCapitalize="none"
+        <Filter
+          style={{ width: '90%' }}
+          list={citiesList}
           label="Location"
-          value={location}
-          name="location"
-          onChange={({ name, value }) =>
-            setEmployer(prev => ({ ...prev, [name]: value, filtering: true }))
-          }
+          onSelect={_handleLocationSelect}
+          filterItem="city"
+          listItem={city => `${city.city} - ${city.country}`}
         />
 
-        {/* <TextInput
-          style={{ marginHorizontal: 10, marginTop: 10 }}
-          value={location}
-          mode='outlined'
-          autoCapitalize='none'
-          label='Location'
-          onChangeText={text =>
-            setEmployer(prev => ({ ...prev, location: text, filtering: true }))
-          }
-        /> */}
-
-        {filtering && (
-          <View style={styles.locationsList}>
-            {citiesList
-              .filter(
-                ({ city }) =>
-                  location.trim().length > 0 &&
-                  city.toLowerCase().includes(location.trim().toLowerCase())
-              )
-              .map((city, index) => {
-                if (index < 10) {
-                  return (
-                    <View key={city.id}>
-                      <Text
-                        style={styles.locationListItem}
-                        onPress={_handleLocationSelect.bind(this, city)}
-                      >
-                        {`${city.city} - ${city.country}`}
-                      </Text>
-                      <Divider />
-                    </View>
-                  );
-                }
-              })}
-          </View>
-        )}
         <View style={{ marginBottom: 10 }} />
 
         <OutlinedInput
@@ -222,17 +159,6 @@ const EditEmployerInfo = ({
           onChange={_handleChange}
         />
 
-        {/* <TextInput
-          style={{ margin: 10 }}
-          mode='outlined'
-          keyboardType='url'
-          autoCapitalize='none'
-          label='Website'
-          value={web_site}
-          name='web_site'
-          onChangeText={_handleChange.bind(this, 'web_site')}
-        /> */}
-
         <OutlinedInput
           style={{ margin: 10 }}
           multiline
@@ -243,17 +169,6 @@ const EditEmployerInfo = ({
           name="bio"
           onChange={this._handleChange}
         />
-
-        {/* <TextInput
-          style={{ margin: 10 }}
-          mode='outlined'
-          multiline
-          autoCapitalize='sentences'
-          label='Bio'
-          value={bio}
-          name='bio'
-          onChangeText={_handleChange.bind(this, 'bio')}
-        /> */}
       </ScrollView>
     </>
   );
@@ -262,13 +177,13 @@ const EditEmployerInfo = ({
 const mapStateToProps = state => ({
   currentEmployer: selectCurrentEmployer(state),
   citiesList: selectCitiesList(state),
-  getCityName: id => selectCityNameById(id)(state),
-  loading: selectLoading(state),
-  errorMessage: selectErrorMessage(state)
+  getCityName: id => selectCityNameById(id)(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  editEmployerInfoStart: data => dispatch(editEmployerInfoStart(data))
+  editEmployerInfoStart: (data, callback) =>
+    dispatch(editEmployerInfoStart(data, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditEmployerInfo);

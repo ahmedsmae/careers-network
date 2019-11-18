@@ -1,5 +1,4 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import Toast from 'react-native-root-toast';
 import axios from 'axios';
 
 import URLS from '../utils/urls';
@@ -14,7 +13,7 @@ import {
   getAllEmployeeSavedJobsFailure
 } from './saved.actions';
 
-function* saveJobAsync({ payload }) {
+function* saveJobAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -23,21 +22,15 @@ function* saveJobAsync({ payload }) {
       url: `${URLS.SAVE_JOB}/${payload}`
     });
 
+    yield call(callback);
     yield put(saveJobSuccess(response.data.employeeSavedJobs));
-    Toast.show('Job saved successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(saveJobFailure(err.message));
   }
 }
 
-function* unsaveJobAsync({ payload }) {
+function* unsaveJobAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -46,21 +39,15 @@ function* unsaveJobAsync({ payload }) {
       url: `${URLS.UNSAVE_JOB}/${payload}`
     });
 
+    yield call(callback);
     yield put(unsaveJobSuccess(response.data.employeeSavedJobs));
-    Toast.show('Job unsaved successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(unsaveJobFailure(err.message));
   }
 }
 
-function* getAllEmployeeSavedJobsAsync() {
+function* getAllEmployeeSavedJobsAsync({ callback }) {
   try {
     yield setAuthToken();
 
@@ -69,12 +56,10 @@ function* getAllEmployeeSavedJobsAsync() {
       url: URLS.GET_ALL_EMPLOYEE_SAVED_JOBS
     });
 
+    yield call(callback);
     yield put(getAllEmployeeSavedJobsSuccess(response.data.employeeSavedJobs));
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(getAllEmployeeSavedJobsFailure(err.message));
   }
 }
@@ -82,9 +67,11 @@ function* getAllEmployeeSavedJobsAsync() {
 function* saveJobStart() {
   yield takeLatest(SavedActionTypes.SAVE_JOB_START, saveJobAsync);
 }
+
 function* unsaveJobStart() {
   yield takeLatest(SavedActionTypes.UNSAVE_JOB_START, unsaveJobAsync);
 }
+
 function* getAllEmployeeSavedJobsStart() {
   yield takeLatest(
     SavedActionTypes.GET_ALL_EMPLOYEE_SAVED_JOBS_START,

@@ -7,19 +7,35 @@ import { H2, OutlinedInput, Link } from '../../components';
 
 import { selectCurrentUser } from '../../redux/current-user/current-user.selectors';
 import { signInUserStart } from '../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
 import styles from './sign-in.styles';
 
-const SignIn = ({ currentUser, navigation, signInUserStart }) => {
+const SignIn = ({ currentUser, navigation, signInUserStart, showPopupApi }) => {
   useEffect(() => {
     currentUser && navigation.navigate('Search');
   }, [currentUser]);
 
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const { email, password } = credentials;
+  const [disabled, setDisabled] = useState(false);
 
   const handleSignIn = () => {
-    signInUserStart(email.trim(), password);
+    signInUserStart(email.trim(), password, err => {
+      if (err) {
+        showPopupApi({
+          type: 'danger',
+          message:
+            err.response && err.response.data && err.response.data.errors
+              ? err.response.data.errors.map(err => err.msg).toString()
+              : 'Please check your connection'
+        });
+        setDisabled(false);
+        return console.log(err);
+      }
+
+      setDisabled(false);
+    });
   };
 
   return (
@@ -55,6 +71,7 @@ const SignIn = ({ currentUser, navigation, signInUserStart }) => {
 
       <Button
         style={styles.button}
+        disabled={disabled}
         icon="search"
         mode="contained"
         size={25}
@@ -82,8 +99,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  signInUserStart: (email, password) =>
-    dispatch(signInUserStart(email, password))
+  signInUserStart: (email, password, callback) =>
+    dispatch(signInUserStart(email, password, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

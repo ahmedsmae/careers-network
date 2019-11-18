@@ -19,7 +19,7 @@ import {
   deleteApplicationFailure
 } from './applications.actions';
 
-function* createNewApplicationAsync({ payload }) {
+function* createNewApplicationAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -29,21 +29,15 @@ function* createNewApplicationAsync({ payload }) {
       data: payload
     });
 
+    yield call(callback);
     yield put(createNewApplicationSuccess(response.data.employeeApplications));
-    Toast.show('Application created successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(createNewApplicationFailure(err.message));
   }
 }
 
-function* updateExistingApplicationAsync({ payload }) {
+function* updateExistingApplicationAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -53,23 +47,17 @@ function* updateExistingApplicationAsync({ payload }) {
       data: payload
     });
 
+    yield call(callback);
     yield put(
       updateExistingApplicationSuccess(response.data.employeeApplications)
     );
-    Toast.show('Application updated successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(updateExistingApplicationFailure(err.message));
   }
 }
 
-function* deleteApplicationAsync({ payload }) {
+function* deleteApplicationAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -78,21 +66,15 @@ function* deleteApplicationAsync({ payload }) {
       url: `${URLS.DELETE_APPLICATION}/${payload}`
     });
 
+    yield call(callback);
     yield put(deleteApplicationSuccess(response.data.employeeApplications));
-    Toast.show('Application deleted successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(deleteApplicationFailure(err.message));
   }
 }
 
-function* getAllEmployeeApplicationsAsync() {
+function* getAllEmployeeApplicationsAsync({ callback }) {
   try {
     yield setAuthToken();
 
@@ -101,19 +83,17 @@ function* getAllEmployeeApplicationsAsync() {
       url: URLS.GET_ALL_EMPLOYEE_APPLICATIONS
     });
 
+    yield call(callback);
     yield put(
       getAllEmployeeApplicationsSuccess(response.data.employeeApplications)
     );
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(getAllEmployeeApplicationsFailure(err.message));
   }
 }
 
-function* getAllJobApplicationsAsync({ payload }) {
+function* getAllJobApplicationsAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -122,12 +102,10 @@ function* getAllJobApplicationsAsync({ payload }) {
       url: `${URLS.GET_ALL_JOB_APPLICATIONS}/${payload}`
     });
 
+    yield call(callback);
     yield put(getAllJobApplicationsSuccess(response.data.jobApplications));
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(getAllJobApplicationsFailure(err.message));
   }
 }

@@ -7,10 +7,11 @@ import { H2, OutlinedInput, Link } from '../../components';
 
 import { selectCurrentUser } from '../../redux/current-user/current-user.selectors';
 import { signUpUserStart } from '../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
 import styles from './sign-up.styles';
 
-const SignUp = ({ currentUser, navigation, signUpUserStart }) => {
+const SignUp = ({ currentUser, navigation, signUpUserStart, showPopupApi }) => {
   useEffect(() => {
     currentUser && navigation.navigate('Search');
   }, [currentUser]);
@@ -21,6 +22,7 @@ const SignUp = ({ currentUser, navigation, signUpUserStart }) => {
     confirmPassword: ''
   });
   const { email, password, confirmPassword } = credentials;
+  const [disabled, setDisabled] = useState(false);
 
   const handleSignUp = () => {
     if (password !== confirmPassword) {
@@ -31,7 +33,21 @@ const SignUp = ({ currentUser, navigation, signUpUserStart }) => {
       );
     }
 
-    signUpUserStart(email.trim(), password);
+    signUpUserStart(email.trim(), password, err => {
+      if (err) {
+        showPopupApi({
+          type: 'danger',
+          message:
+            err.response && err.response.data && err.response.data.errors
+              ? err.response.data.errors.map(err => err.msg).toString()
+              : 'Please check your connection'
+        });
+        setDisabled(false);
+        return console.log(err);
+      }
+
+      setDisabled(false);
+    });
   };
 
   return (
@@ -82,6 +98,7 @@ const SignUp = ({ currentUser, navigation, signUpUserStart }) => {
 
       <Button
         style={styles.button}
+        disabled={disabled}
         icon="search"
         mode="contained"
         size={25}
@@ -105,8 +122,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  signUpUserStart: (email, password) =>
-    dispatch(signUpUserStart(email, password))
+  signUpUserStart: (email, password, callback) =>
+    dispatch(signUpUserStart(email, password, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

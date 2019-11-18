@@ -1,38 +1,25 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { ScrollView, KeyboardAvoidingView } from "react-native";
-import { Appbar } from "react-native-paper";
-import { OutlinedInput, PopupAlert } from "../../components";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { ScrollView, KeyboardAvoidingView } from 'react-native';
+import { Appbar } from 'react-native-paper';
+import { OutlinedInput } from '../../components';
 
-import { addEditEmployeeReferenceStart } from "../../redux/current-user/current-user.actions";
+import { addEditEmployeeReferenceStart } from '../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
-const EditReference = ({ navigation, addEditEmployeeReferenceStart }) => {
-  const ref = navigation.getParam("reference");
+const EditReference = ({
+  navigation,
+  addEditEmployeeReferenceStart,
+  showPopupApi
+}) => {
+  const ref = navigation.getParam('reference');
 
   const [currentRef, setCurrentRef] = useState(
     ref
       ? ref
-      : { name: "", position: "", company: "", email: "", contact_number: "" }
+      : { name: '', position: '', company: '', email: '', contact_number: '' }
   );
   const [disabled, setDisabled] = useState(false);
-  const [
-    {
-      popupShow,
-      popupMsg,
-      popupWidth,
-      popupDuration,
-      popupType,
-      onPopupComplete
-    },
-    setPopup
-  ] = useState({
-    popupShow: false,
-    popupMsg: "",
-    popupWidth: 150,
-    popupDuration: 1000,
-    popupType: "success",
-    onPopupComplete: () => setPopup(prev => ({ ...prev, popupShow: false }))
-  });
 
   const { name, position, company, email, contact_number } = currentRef;
 
@@ -44,36 +31,23 @@ const EditReference = ({ navigation, addEditEmployeeReferenceStart }) => {
     setDisabled(true);
     addEditEmployeeReferenceStart(currentRef, err => {
       if (err) {
-        setPopup({
-          popupType: "danger",
-          popupMsg:
+        showPopupApi({
+          type: 'danger',
+          message:
             err.response && err.response.data && err.response.data.errors
               ? err.response.data.errors.map(err => err.msg).toString()
-              : "Please check your connection",
-          popupShow: true,
-          popupWidth: 300,
-          popupDuration: 1000,
-          onPopupComplete: () => {
-            setDisabled(false);
-            setPopup(prev => ({ ...prev, popupShow: false }));
-          }
+              : 'Please check your connection'
         });
         setDisabled(false);
         return console.log(err);
       }
 
-      setPopup({
-        popupType: "success",
-        popupMsg: "Reference added successfully",
-        popupShow: true,
-        popupWidth: 300,
-        popupDuration: 600,
-        onPopupComplete: () => {
-          navigation.goBack();
-          setDisabled(false);
-          setPopup(prev => ({ ...prev, popupShow: false }));
-        }
+      showPopupApi({
+        message: 'Reference added successfully',
+        duration: 600
       });
+      navigation.goBack();
+      setDisabled(false);
     });
   };
 
@@ -81,7 +55,7 @@ const EditReference = ({ navigation, addEditEmployeeReferenceStart }) => {
     <>
       <Appbar.Header>
         <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title={!!ref ? "Edit Reference" : "Add Reference"} />
+        <Appbar.Content title={!!ref ? 'Edit Reference' : 'Add Reference'} />
         <Appbar.Action
           icon="save"
           disabled={disabled}
@@ -142,16 +116,6 @@ const EditReference = ({ navigation, addEditEmployeeReferenceStart }) => {
             onChange={_handleChange}
           />
         </ScrollView>
-
-        {popupShow && (
-          <PopupAlert
-            MESSAGE_TEXT={popupMsg}
-            MESSAGE_WIDTH={popupWidth}
-            MESSAGE_TYPE={popupType}
-            MESSAGE_DURATION={popupDuration}
-            onDisplayComplete={onPopupComplete}
-          />
-        )}
       </KeyboardAvoidingView>
     </>
   );
@@ -159,7 +123,8 @@ const EditReference = ({ navigation, addEditEmployeeReferenceStart }) => {
 
 const mapDispatchToProps = dispatch => ({
   addEditEmployeeReferenceStart: (referenceData, callback) =>
-    dispatch(addEditEmployeeReferenceStart(referenceData, callback))
+    dispatch(addEditEmployeeReferenceStart(referenceData, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export default connect(null, mapDispatchToProps)(EditReference);

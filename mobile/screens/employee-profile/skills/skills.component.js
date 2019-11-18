@@ -1,7 +1,7 @@
-import React from "react";
-import { View, Platform } from "react-native";
-import { Paragraph, Card } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
+import React from 'react';
+import { View, Platform } from 'react-native';
+import { Paragraph, Card } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 
 const Skills = ({ skills, levelsList, onSkillLongPress }) => {
   // const sks = [
@@ -19,12 +19,12 @@ const Skills = ({ skills, levelsList, onSkillLongPress }) => {
         >
           <Card.Title title={skill} />
           <Card.Content>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: 'row' }}>
               {levelsList.map((_, i) => (
                 <Ionicons
                   key={i}
-                  name={Platform.OS === "android" ? "md-star" : "ios-star"}
-                  color={levelsList.indexOf(level) < i ? "lightgrey" : "orange"}
+                  name={Platform.OS === 'android' ? 'md-star' : 'ios-star'}
+                  color={levelsList.indexOf(level) < i ? 'lightgrey' : 'orange'}
                   size={24}
                 />
               ))}

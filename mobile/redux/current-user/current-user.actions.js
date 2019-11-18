@@ -1,9 +1,10 @@
 import CurrentUserActionTypes from './current-user.types';
 
 // SIGN UP USER
-export const signUpUserStart = (email, password) => ({
+export const signUpUserStart = (email, password, callback) => ({
   type: CurrentUserActionTypes.SIGN_UP_USER_START,
-  payload: { email, password }
+  payload: { email, password },
+  callback
 });
 
 export const signUpUserSuccess = result => ({
@@ -17,9 +18,10 @@ export const signUpUserFailure = errorMessage => ({
 });
 
 // SIGN IN USER
-export const signInUserStart = (email, password) => ({
+export const signInUserStart = (email, password, callback) => ({
   type: CurrentUserActionTypes.SIGN_IN_USER_START,
-  payload: { email, password }
+  payload: { email, password },
+  callback
 });
 
 export const signInUserSuccess = result => ({
@@ -33,8 +35,9 @@ export const signInUserFailure = errorMessage => ({
 });
 
 // LOADING USER
-export const loadingUserStart = () => ({
-  type: CurrentUserActionTypes.LOADING_USER_START
+export const loadingUserStart = callback => ({
+  type: CurrentUserActionTypes.LOADING_USER_START,
+  callback
 });
 
 export const loadingUserSuccess = results => ({
@@ -48,9 +51,10 @@ export const loadingUserFailure = errorMessage => ({
 });
 
 // CHANGE PASSWORD
-export const changePasswordStart = (oldPassword, newPassword) => ({
+export const changePasswordStart = (oldPassword, newPassword, callback) => ({
   type: CurrentUserActionTypes.CHANGE_PASSWORD_START,
-  payload: { oldPassword, newPassword }
+  payload: { oldPassword, newPassword },
+  callback
 });
 
 export const changePasswordSuccess = results => ({
@@ -64,9 +68,10 @@ export const changePasswordFailure = errorMessage => ({
 });
 
 // FORGET PASSWORD
-export const forgetPasswordStart = email => ({
+export const forgetPasswordStart = (email, callback) => ({
   type: CurrentUserActionTypes.FORGET_PASSWORD_START,
-  payload: email
+  payload: email,
+  callback
 });
 
 export const forgetPasswordSuccess = () => ({
@@ -79,9 +84,10 @@ export const forgetPasswordFailure = errorMessage => ({
 });
 
 // CONTACT US
-export const contactUsStart = contactData => ({
+export const contactUsStart = (contactData, callback) => ({
   type: CurrentUserActionTypes.CONTACT_US_START,
-  payload: contactData
+  payload: contactData,
+  callback
 });
 
 export const contactUsSuccess = () => ({
@@ -94,8 +100,9 @@ export const contactUsFailure = errorMessage => ({
 });
 
 // SIGNOUT USER
-export const signoutUserStart = () => ({
-  type: CurrentUserActionTypes.SIGN_OUT_USER_START
+export const signoutUserStart = callback => ({
+  type: CurrentUserActionTypes.SIGN_OUT_USER_START,
+  callback
 });
 
 export const signoutUserSuccess = () => ({
@@ -108,9 +115,10 @@ export const signoutUserFailure = errorMessage => ({
 });
 
 // DELETE USER
-export const deleteUserStart = deleteData => ({
+export const deleteUserStart = (deleteData, callback) => ({
   type: CurrentUserActionTypes.DELETE_USER_START,
-  payload: deleteData
+  payload: deleteData,
+  callback
 });
 
 export const deleteUserSuccess = () => ({
@@ -123,9 +131,10 @@ export const deleteUserFailure = errorMessage => ({
 });
 
 // EDIT EMPLOYEE INFO
-export const editEmployeeInfoStart = info => ({
+export const editEmployeeInfoStart = (info, callback) => ({
   type: CurrentUserActionTypes.EDIT_EMPLOYEE_INFO_START,
-  payload: info
+  payload: info,
+  callback
 });
 
 export const editEmployeeInfoSuccess = employee => ({
@@ -312,9 +321,10 @@ export const editEmployeePreferedJobsSettingsFailure = errorMessage => ({
 });
 
 // EDIT EMPLOYEE AVATAR
-export const editEmployeeAvatarStart = avatar => ({
+export const editEmployeeAvatarStart = (avatar, callback) => ({
   type: CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_START,
-  payload: avatar
+  payload: avatar,
+  callback
 });
 
 export const editEmployeeAvatarSuccess = employee => ({
@@ -328,9 +338,10 @@ export const editEmployeeAvatarFailure = errorMessage => ({
 });
 
 // EDIT EMPLOYEE EDUCATION
-export const editEmployeeEducationStart = education => ({
+export const editEmployeeEducationStart = (education, callback) => ({
   type: CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_START,
-  payload: education
+  payload: education,
+  callback
 });
 
 export const editEmployeeEducationSuccess = employee => ({
@@ -344,9 +355,10 @@ export const editEmployeeEducationFailure = errorMessage => ({
 });
 
 // DELETE EMPLOYEE EDUCATION
-export const deleteEmployeeEducationStart = educationId => ({
+export const deleteEmployeeEducationStart = (educationId, callback) => ({
   type: CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_START,
-  payload: educationId
+  payload: educationId,
+  callback
 });
 
 export const deleteEmployeeEducationSuccess = employee => ({
@@ -360,9 +372,10 @@ export const deleteEmployeeEducationFailure = errorMessage => ({
 });
 
 // EDIT EMPLOYER INFO
-export const editEmployerInfoStart = info => ({
+export const editEmployerInfoStart = (info, callback) => ({
   type: CurrentUserActionTypes.EDIT_EMPLOYER_INFO_START,
-  payload: info
+  payload: info,
+  callback
 });
 
 export const editEmployerInfoSuccess = employer => ({
@@ -376,9 +389,10 @@ export const editEmployerInfoFailure = errorMessage => ({
 });
 
 // EDIT EMPLOYER AVATAR
-export const editEmployerAvatarStart = avatar => ({
+export const editEmployerAvatarStart = (avatar, callback) => ({
   type: CurrentUserActionTypes.EDIT_EMPLOYER_AVATAR_START,
-  payload: avatar
+  payload: avatar,
+  callback
 });
 
 export const editEmployerAvatarSuccess = employer => ({
@@ -392,9 +406,10 @@ export const editEmployerAvatarFailure = errorMessage => ({
 });
 
 // EDIT EMPLOYER COVER
-export const editEmployerCoverStart = cover => ({
+export const editEmployerCoverStart = (cover, callback) => ({
   type: CurrentUserActionTypes.EDIT_EMPLOYER_COVER_START,
-  payload: cover
+  payload: cover,
+  callback
 });
 
 export const editEmployerCoverSuccess = employer => ({

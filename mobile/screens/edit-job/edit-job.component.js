@@ -10,14 +10,12 @@ import {
   selectCityNameById,
   selectCitiesList
 } from '../../redux/constants/constants.selectors';
-import {
-  selectLoading,
-  selectErrorMessage
-} from '../../redux/jobs/jobs.selectors';
+
 import {
   createNewJobStart,
   updateExistingJobStart
 } from '../../redux/jobs/jobs.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
 import ManageKeywords from './manage-keywords.component';
 import ManageQuestions from './manage-questions.component';
@@ -30,18 +28,16 @@ const EditJob = ({
   getCityName,
   createNewJobStart,
   updateExistingJobStart,
-  loading,
-  errorMessage
+  showPopupApi
 }) => {
   const job = navigation.getParam('job');
 
   const [currentJob, setCurrentJob] = useState(
     job
-      ? { ...job, location: getCityName(job.location_id), filtering: false }
+      ? job
       : {
           position: '',
           location_id: '',
-          location: '',
           referance_number: '',
           status: 'AVAILABLE',
           applying_email: '',
@@ -54,15 +50,13 @@ const EditJob = ({
           other_info: '',
           keywords: [],
           expiry: '',
-          questions: [],
-          filtering: false
+          questions: []
         }
   );
 
   const {
     position,
     location_id,
-    location,
     referance_number,
     status,
     applying_email,
@@ -75,24 +69,17 @@ const EditJob = ({
     other_info,
     keywords,
     expiry,
-    questions,
-    filtering
+    questions
   } = currentJob;
+  const [disabled, setDisabled] = useState(false);
 
-  const _handleChange = ({ name, value }) => {
+  const _handleChange = ({ name, value }) =>
     setCurrentJob(prev => ({ ...prev, [name]: value }));
-  };
 
-  const _handleLocationSelect = ({ id, city, country }) => {
-    setCurrentJob(prev => ({
-      ...prev,
-      // filtering: false,
-      // location: `${city} - ${country}`,
-      location_id: id
-    }));
-  };
+  const _handleLocationSelect = ({ id }) =>
+    setCurrentJob(prev => ({ ...prev, location_id: id }));
 
-  const _handleSave = () => {
+  const _handleSubmit = () => {
     if (position.trim().length === 0) {
       Alert.alert('Missing Info', 'Position is required', [{ text: 'OK' }]);
       return;
@@ -119,14 +106,52 @@ const EditJob = ({
       return;
     }
 
-    const { location, filtering, expiry, ...rest } = currentJob;
+    const { expiry, ...rest } = currentJob;
     const formatedExpiry = expiry ? new Date(expiry).toString() : null;
     job
-      ? updateExistingJobStart({ ...currentJob, expiry: formatedExpiry })
-      : createNewJobStart({ ...rest, expiry: formatedExpiry });
-    if (!loading && errorMessage.length === 0) {
-      navigation.goBack();
-    }
+      ? updateExistingJobStart(
+          { ...currentJob, expiry: formatedExpiry },
+          err => {
+            if (err) {
+              showPopupApi({
+                type: 'danger',
+                message:
+                  err.response && err.response.data && err.response.data.errors
+                    ? err.response.data.errors.map(err => err.msg).toString()
+                    : 'Please check your connection'
+              });
+              setDisabled(false);
+              return console.log(err);
+            }
+
+            showPopupApi({
+              message: 'Job updated successfully',
+              duration: 600
+            });
+            setDisabled(false);
+            navigation.goBack();
+          }
+        )
+      : createNewJobStart({ ...rest, expiry: formatedExpiry }, err => {
+          if (err) {
+            showPopupApi({
+              type: 'danger',
+              message:
+                err.response && err.response.data && err.response.data.errors
+                  ? err.response.data.errors.map(err => err.msg).toString()
+                  : 'Please check your connection'
+            });
+            setDisabled(false);
+            return console.log(err);
+          }
+
+          showPopupApi({
+            message: 'Job saved successfully',
+            duration: 600
+          });
+          setDisabled(false);
+          navigation.goBack();
+        });
   };
 
   return (
@@ -134,7 +159,11 @@ const EditJob = ({
       <Appbar.Header>
         <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title={job ? 'Edit Job' : 'Add Job'} />
-        <Appbar.Action icon="save" onPress={_handleSave} />
+        <Appbar.Action
+          icon="save"
+          disabled={disabled}
+          onPress={_handleSubmit}
+        />
       </Appbar.Header>
 
       <KeyboardAvoidingView
@@ -156,6 +185,7 @@ const EditJob = ({
 
           <Filter
             style={{ width: '95%', marginHorizontal: 10 }}
+            value={getCityName(location_id)}
             list={citiesList}
             label="Location"
             onSelect={_handleLocationSelect}
@@ -163,48 +193,6 @@ const EditJob = ({
             listItem={city => `${city.city} - ${city.country}`}
           />
 
-          {/* <OutlinedInput
-            style={{ margin: 10 }}
-            autoCapitalize="none"
-            label="Location"
-            value={location}
-            name="location"
-            onChange={({ name, value }) =>
-              setCurrentJob(prev => ({
-                ...prev,
-                [name]: value,
-                filtering: true
-              }))
-            }
-          />
-
-          {filtering && (
-            <View style={styles.locationListContainer}>
-              <View style={styles.locationsList}>
-                {citiesList
-                  .filter(
-                    ({ city }) =>
-                      location.trim().length > 0 &&
-                      city.toLowerCase().includes(location.trim().toLowerCase())
-                  )
-                  .map((city, index) => {
-                    if (index < 10) {
-                      return (
-                        <View key={city.id}>
-                          <Text
-                            style={styles.locationListItem}
-                            onPress={_handleLocationSelect.bind(this, city)}
-                          >
-                            {`${city.city} - ${city.country}`}
-                          </Text>
-                          <Divider />
-                        </View>
-                      );
-                    }
-                  })}
-              </View>
-            </View>
-          )} */}
           <View style={{ marginBottom: 10 }} />
 
           <Divider />
@@ -390,14 +378,15 @@ const EditJob = ({
 const mapStateToProps = state => ({
   currentEmployer: selectCurrentEmployer(state),
   citiesList: selectCitiesList(state),
-  getCityName: id => selectCityNameById(id)(state),
-  loading: selectLoading(state),
-  errorMessage: selectErrorMessage(state)
+  getCityName: id => selectCityNameById(id)(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  createNewJobStart: data => dispatch(createNewJobStart(data)),
-  updateExistingJobStart: data => dispatch(updateExistingJobStart(data))
+  createNewJobStart: (data, callback) =>
+    dispatch(createNewJobStart(data, callback)),
+  updateExistingJobStart: (data, callback) =>
+    dispatch(updateExistingJobStart(data, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditJob);

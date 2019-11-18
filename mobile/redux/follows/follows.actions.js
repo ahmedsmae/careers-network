@@ -1,9 +1,10 @@
 import FollowsActionTypes from './follows.types';
 
 // FOLLOW EMPLOYER
-export const followEmployerStart = employerId => ({
+export const followEmployerStart = (employerId, callback) => ({
   type: FollowsActionTypes.FOLLOW_EMPLOYER_START,
-  payload: employerId
+  payload: employerId,
+  callback
 });
 
 export const followEmployerSuccess = employeeFollows => ({
@@ -17,9 +18,10 @@ export const followEmployerFailure = errorMessage => ({
 });
 
 // UNFOLLOW EMPLOYER
-export const unfollowEmployerStart = followId => ({
+export const unfollowEmployerStart = (followId, callback) => ({
   type: FollowsActionTypes.UNFOLLOW_EMPLOYER_START,
-  payload: followId
+  payload: followId,
+  callback
 });
 
 export const unfollowEmployerSuccess = employeeFollows => ({
@@ -33,8 +35,9 @@ export const unfollowEmployerFailure = errorMessage => ({
 });
 
 // GET ALL EMPLOYEE FOLLOWS
-export const getAllEmployeeFollowsStart = () => ({
-  type: FollowsActionTypes.GET_ALL_EMPLOYEE_FOLLOWS_START
+export const getAllEmployeeFollowsStart = callback => ({
+  type: FollowsActionTypes.GET_ALL_EMPLOYEE_FOLLOWS_START,
+  callback
 });
 
 export const getAllEmployeeFollowsSuccess = employeeFollows => ({

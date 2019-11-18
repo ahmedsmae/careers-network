@@ -1,92 +1,78 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import { View, Picker, ScrollView, Alert } from "react-native";
-import { Appbar, Card, Button, FAB, Divider } from "react-native-paper";
-import { OutlinedInput, PopupAlert } from "../../../components";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { View, Picker, ScrollView, Alert } from 'react-native';
+import { Appbar, Card, Button, FAB, Divider } from 'react-native-paper';
+import { OutlinedInput } from '../../../components';
 
-import { selectCurrentEmployee } from "../../../redux/current-user/current-user.selectors";
-import { selectSkillLevels } from "../../../redux/constants/constants.selectors";
+import { selectCurrentEmployee } from '../../../redux/current-user/current-user.selectors';
+import { selectSkillLevels } from '../../../redux/constants/constants.selectors';
 
 import {
   addEmployeeSkillStart,
   deleteEmployeeSkillStart
-} from "../../../redux/current-user/current-user.actions";
+} from '../../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../../redux/api-utilities/api-utilities.actions';
 
-import Skills from "./skills.component";
+import Skills from './skills.component';
 
 const EmployeeEmployeeSkills = ({
   navigation,
   currentEmployee,
   levelsList,
   addEmployeeSkillStart,
-  deleteEmployeeSkillStart
+  deleteEmployeeSkillStart,
+  showPopupApi
 }) => {
   const [addSkill, setAddSkill] = useState(false);
-  const [skill, setSkill] = useState("");
+  const [skill, setSkill] = useState('');
   const [level, setLevel] = useState(levelsList[1]);
   const [disabled, setDisabled] = useState(false);
-  const [{ popupShow, popupMsg, popupWidth, popupType }, setPopup] = useState({
-    popupShow: false,
-    popupMsg: "",
-    popupWidth: 150,
-    popupType: "success"
-  });
 
   const _handleSubmit = () => {
     setDisabled(true);
-    addEmployeeLanguageStart(
-      { language: languageQ, level },
-      // callback function
-      err => {
-        if (err) {
-          setPopup({
-            popupType: "danger",
-            popupMsg:
-              err.response && err.response.data && err.response.data.errors
-                ? err.response.data.errors.map(err => err.msg).toString()
-                : "Please check your connection",
-            popupShow: true,
-            popupWidth: 300
-          });
-          setDisabled(false);
-          return console.log(err);
-        }
-
-        setPopup({
-          popupType: "success",
-          popupMsg: "Skill added successfully",
-          popupShow: true,
-          popupWidth: 300
+    addEmployeeSkillStart({ skill, level }, err => {
+      if (err) {
+        showPopupApi({
+          type: 'danger',
+          message:
+            err.response && err.response.data && err.response.data.errors
+              ? err.response.data.errors.map(err => err.msg).toString()
+              : 'Please check your connection'
         });
-        setSkill("");
-        setLevel(levelsList[1]);
-        setAddSkill(false);
         setDisabled(false);
+        return console.log(err);
       }
-    );
+
+      showPopupApi({
+        message: 'Skill added successfully',
+        duration: 600
+      });
+      setSkill('');
+      setLevel(levelsList[1]);
+      setAddSkill(false);
+      setDisabled(false);
+    });
   };
 
   const _handleDelete = skillid => {
+    console.log(skillid);
+
     deleteEmployeeSkillStart(skillid, err => {
       if (err) {
-        setPopup({
-          popupType: "danger",
-          popupMsg:
+        showPopupApi({
+          type: 'danger',
+          message:
             err.response && err.response.data && err.response.data.errors
               ? err.response.data.errors.map(err => err.msg).toString()
-              : "Please check your connection",
-          popupShow: true,
-          popupWidth: 300
+              : 'Please check your connection'
         });
         return console.log(err);
       }
 
-      setPopup({
-        popupType: "success",
-        popupMsg: "Skill deleted successfully",
-        popupShow: true,
-        popupWidth: 300
+      showPopupApi({
+        message: 'Skill deleted successfully',
+        duration: 600
       });
     });
   };
@@ -97,7 +83,7 @@ const EmployeeEmployeeSkills = ({
         <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title="Your Skills" />
         <Appbar.Action
-          icon={addSkill ? "close" : "add"}
+          icon={addSkill ? 'close' : 'add'}
           onPress={() => setAddSkill(!addSkill)}
         />
       </Appbar.Header>
@@ -117,11 +103,11 @@ const EmployeeEmployeeSkills = ({
               <View
                 style={{
                   borderWidth: 1,
-                  borderColor: "grey",
+                  borderColor: 'grey',
                   marginTop: 5,
                   borderRadius: 5,
                   height: 60,
-                  justifyContent: "center"
+                  justifyContent: 'center'
                 }}
               >
                 <Picker
@@ -134,7 +120,7 @@ const EmployeeEmployeeSkills = ({
                 </Picker>
               </View>
             </Card.Content>
-            <Card.Actions style={{ justifyContent: "center" }}>
+            <Card.Actions style={{ justifyContent: 'center' }}>
               <Button
                 mode="outlined"
                 disabled={disabled}
@@ -154,39 +140,28 @@ const EmployeeEmployeeSkills = ({
           levelsList={levelsList}
           onSkillLongPress={skillid =>
             Alert.alert(
-              "Delete Skill",
-              "Are you sure you want to delete this skill ?",
+              'Delete Skill',
+              'Are you sure you want to delete this skill ?',
               [
-                { text: "Yes", onPress: _handleDelete.bind(this, skillid) },
-                { text: "Cancel" }
+                { text: 'Yes', onPress: _handleDelete.bind(this, skillid) },
+                { text: 'Cancel' }
               ]
             )
           }
         />
       </ScrollView>
 
-      {popupShow && (
-        <PopupAlert
-          MESSAGE_TEXT={popupMsg}
-          MESSAGE_WIDTH={popupWidth}
-          MESSAGE_TYPE={popupType}
-          MESSAGE_DURATION={1000}
-          onDisplayComplete={() =>
-            setPopup(prev => ({ ...prev, popupShow: false }))
-          }
-        />
-      )}
       <FAB
-        style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
+        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
         icon="list"
-        onPress={() => navigation.navigate("EmployeeProfile")}
+        onPress={() => navigation.navigate('EmployeeProfile')}
       />
     </>
   );
 };
 
 const EmployerEmployeeSkills = ({ navigation }) => {
-  const employee = navigation.getParam("employee");
+  const employee = navigation.getParam('employee');
 
   return (
     <>
@@ -198,9 +173,9 @@ const EmployerEmployeeSkills = ({ navigation }) => {
       <Skills skills={employee.skills} levelsList={levelsList} />
 
       <FAB
-        style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
+        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
         icon="list"
-        onPress={() => navigation.navigate("EmployeeProfile")}
+        onPress={() => navigation.navigate('EmployeeProfile')}
       />
     </>
   );
@@ -215,7 +190,8 @@ const mapDispatchToProps = dispatch => ({
   addEmployeeSkillStart: (skillData, callback) =>
     dispatch(addEmployeeSkillStart(skillData, callback)),
   deleteEmployeeSkillStart: (skillid, callback) =>
-    dispatch(deleteEmployeeSkillStart((skillid, callback)))
+    dispatch(deleteEmployeeSkillStart(skillid, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export const EmployeeEmployeeSkillsContainer = connect(

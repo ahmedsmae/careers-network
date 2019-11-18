@@ -11,7 +11,7 @@ import { H1, OutlinedInput, Filter } from '../../components';
 
 import styles from './search.styles';
 
-const Search = ({ citiesList, onSearch }) => {
+const Search = ({ citiesList, onSearch, disabled }) => {
   const [{ position, locationId }, setSearchValues] = useState({
     position: '',
     locationId: null
@@ -79,6 +79,7 @@ const Search = ({ citiesList, onSearch }) => {
 
         <Button
           style={styles.searchButton}
+          disabled={disabled}
           icon="search"
           mode="contained"
           size={25}

@@ -1,5 +1,4 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import Toast from 'react-native-root-toast';
 import axios from 'axios';
 
 import URLS from '../utils/urls';
@@ -38,7 +37,7 @@ import {
   editEmployeePreferedJobsSettingsFailure
 } from './current-user.actions';
 
-function* editEmployeeInfoAsync({ payload }) {
+function* editEmployeeInfoAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -48,18 +47,10 @@ function* editEmployeeInfoAsync({ payload }) {
       data: payload
     });
 
+    yield call(callback);
     yield put(editEmployeeInfoSuccess(response.data.employee));
-    Toast.show('Your info updated successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    if (err.response && err.response.data && err.response.data.errors) {
-      Toast.show(err.response.data.errors.map(err => err.msg).toString(), {
-        backgroundColor: 'red',
-        duration: Toast.durations.LONG
-      });
-    }
+    yield call(callback, err);
     yield put(editEmployeeInfoFailure(err.message));
   }
 }
@@ -241,7 +232,7 @@ function* editEmployeePreferedJobsSettingsAsync({ payload, callback }) {
   }
 }
 
-function* editEmployeeAvatarAsync({ payload }) {
+function* editEmployeeAvatarAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -249,28 +240,15 @@ function* editEmployeeAvatarAsync({ payload }) {
 
     const response = yield call(axios.post, URLS.EDIT_EMPLOYEE_AVATAR, fd);
 
+    yield call(callback);
     yield put(editEmployeeAvatarSuccess(response.data.employee));
-    Toast.show('Avatar updated successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    if (err.response && err.response.data && err.response.data.error) {
-      Toast.show(err.response.data.error, {
-        backgroundColor: 'red',
-        duration: Toast.durations.LONG
-      });
-    } else {
-      Toast.show('Something went wrong...', {
-        backgroundColor: 'red',
-        duration: Toast.durations.LONG
-      });
-    }
+    yield call(callback, err);
     yield put(editEmployeeAvatarFailure(err.message));
   }
 }
 
-function* editEmployeeEducationAsync({ payload }) {
+function* editEmployeeEducationAsync({ payload, callback }) {
   const { certificate_image, ...otherProps } = payload;
   try {
     yield setAuthToken();
@@ -292,21 +270,15 @@ function* editEmployeeEducationAsync({ payload }) {
       );
     }
 
+    yield call(callback);
     yield put(editEmployeeEducationSuccess(response.data.employee));
-    Toast.show('Educations updated successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(editEmployeeEducationFailure(err.message));
   }
 }
 
-function* deleteEmployeeEducationAsync({ payload }) {
+function* deleteEmployeeEducationAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -315,16 +287,10 @@ function* deleteEmployeeEducationAsync({ payload }) {
       url: `${URLS.DELETE_EMPLOYEE_EDUCATION}/${payload}`
     });
 
+    yield call(callback);
     yield put(deleteEmployeeEducationSuccess(response.data.employee));
-    Toast.show('Education deleted successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(deleteEmployeeEducationFailure(err.message));
   }
 }

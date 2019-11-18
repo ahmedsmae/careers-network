@@ -6,6 +6,7 @@ import { Provider as StoreProvider } from 'react-redux';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { useScreens } from 'react-native-screens';
+import { ApiContainer } from './components';
 
 import store from './redux/store';
 import appTheme from './app.theme';
@@ -28,7 +29,7 @@ const App = ({ loadingUserStart, currentUser }) => {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {
-    loadingUserStart();
+    loadingUserStart(err => {});
   }, [loadingUserStart]);
 
   if (!fontLoaded) {
@@ -41,7 +42,12 @@ const App = ({ loadingUserStart, currentUser }) => {
   }
 
   const Layout = createRootNavigator(currentUser);
-  return <Layout />;
+  return (
+    <>
+      <Layout />
+      <ApiContainer />
+    </>
+  );
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -49,13 +55,10 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadingUserStart: () => dispatch(loadingUserStart())
+  loadingUserStart: callback => dispatch(loadingUserStart(callback))
 });
 
-const AppContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);
 
 export default () => (
   <StoreProvider store={store}>

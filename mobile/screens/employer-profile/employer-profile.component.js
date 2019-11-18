@@ -1,16 +1,6 @@
 import React from 'react';
 import { View, ScrollView, Image } from 'react-native';
-import {
-  Divider,
-  Caption,
-  Paragraph,
-  Title,
-  Headline
-} from 'react-native-paper';
-
-import CustomText from '../../components/custom-text/custom-text.component';
-import CustomHeader from '../../components/custom-header/custom-header.component';
-import UserImage from '../../components/user-image/user-image.component';
+import { Divider, Paragraph, Title, Headline } from 'react-native-paper';
 
 import styles from './employer-profile.styles';
 

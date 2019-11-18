@@ -5,7 +5,7 @@ import CustomIcon from './custom-icon/custom-icon.component';
 import Filter from './filter/filter.component';
 import CustomDatePicker from './custom-date-picker/custom-date-picker.component';
 import ImagePicker from './image-picker/image-picker.component';
-import PopupAlert from './popup-alert/popup-alert.component';
+import ApiContainer from './api-container/api-container.component';
 import SorryParagraph from './sorry-paragraph/sorry-paragraph.component';
 
 export {
@@ -13,6 +13,6 @@ export {
   Filter,
   CustomDatePicker,
   ImagePicker,
-  PopupAlert,
-  SorryParagraph
+  SorryParagraph,
+  ApiContainer
 };

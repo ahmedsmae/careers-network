@@ -25,7 +25,7 @@ import {
   publicGetEmployerJobsFailure
 } from './jobs.actions';
 
-function* createNewJobAsync({ payload }) {
+function* createNewJobAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -35,21 +35,15 @@ function* createNewJobAsync({ payload }) {
       data: payload
     });
 
+    yield call(callback);
     yield put(createNewJobSuccess(response.data.employerJobs));
-    Toast.show('Job created successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(createNewJobFailure(err.message));
   }
 }
 
-function* updateExistingJobAsync({ payload }) {
+function* updateExistingJobAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -59,21 +53,15 @@ function* updateExistingJobAsync({ payload }) {
       data: payload
     });
 
+    yield call(callback);
     yield put(updateExistingJobSuccess(response.data.employerJobs));
-    Toast.show('Job updated successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(updateExistingJobFailure(err.message));
   }
 }
 
-function* deleteJobAsync({ payload }) {
+function* deleteJobAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -82,21 +70,15 @@ function* deleteJobAsync({ payload }) {
       url: `${URLS.DELETE_JOB}/${payload}`
     });
 
+    yield call(callback);
     yield put(deleteJobSuccess(response.data.employerJobs));
-    Toast.show('Job deleted successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(deleteJobFailure(err.message));
   }
 }
 
-function* getAllEmployerJobsAsync({ payload }) {
+function* getAllEmployerJobsAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -105,17 +87,15 @@ function* getAllEmployerJobsAsync({ payload }) {
       url: `${URLS.GET_ALL_EMPLOYER_JOBS}/${payload}`
     });
 
+    yield call(callback);
     yield put(getAllEmployerJobsSuccess(response.data.employerJobs));
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(getAllEmployerJobsFailure(err.message));
   }
 }
 
-function* getHomeJobsAsync() {
+function* getHomeJobsAsync({ callback }) {
   try {
     yield setAuthToken();
 
@@ -124,17 +104,15 @@ function* getHomeJobsAsync() {
       url: URLS.GET_EMPLOYEE_HOME_JOBS
     });
 
+    yield call(callback);
     yield put(getHomeJobsSuccess(response.data.homeJobs));
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(getHomeJobsFailure(err.message));
   }
 }
 
-function* getFollowingJobsAsync({ payload }) {
+function* getFollowingJobsAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -143,17 +121,15 @@ function* getFollowingJobsAsync({ payload }) {
       url: `${URLS.GET_FOLLOWING_EMPLOYERS_JOBS}/${payload}`
     });
 
+    yield call(callback);
     yield put(getFollowingJobsSuccess(response.data.jobs));
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(getFollowingJobsFailure(err.message));
   }
 }
 
-function* searchJobsAsync({ payload }) {
+function* searchJobsAsync({ payload, callback }) {
   const { position, location_id } = payload;
 
   try {
@@ -164,17 +140,15 @@ function* searchJobsAsync({ payload }) {
       url: `${URLS.SEARCH_JOBS}/${position}/${location_id}`
     });
 
+    yield call(callback);
     yield put(searchJobsSuccess(response.data.jobsResult));
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(searchJobsFailure(err.message));
   }
 }
 
-function* publicGetEmployerJobsAsync({ payload }) {
+function* publicGetEmployerJobsAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -183,12 +157,10 @@ function* publicGetEmployerJobsAsync({ payload }) {
       url: `${URLS.PUBLIC_GET_ALL_EMPLOYER_JOBS}/${payload}`
     });
 
+    yield call(callback);
     yield put(publicGetEmployerJobsSuccess(response.data.employerJobs));
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(publicGetEmployerJobsFailure(err.message));
   }
 }

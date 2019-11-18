@@ -21,7 +21,7 @@ const MyJobs = ({
   myJobs
 }) => {
   useEffect(() => {
-    currentEmployer && getAllEmployerJobsStart(currentEmployer._id);
+    currentEmployer && getAllEmployerJobsStart(currentEmployer._id, err => {});
   }, [currentEmployer, getAllEmployerJobsStart]);
 
   const [showMenu, setShowMenu] = useState(false);
@@ -193,8 +193,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getAllEmployerJobsStart: employerId =>
-    dispatch(getAllEmployerJobsStart(employerId))
+  getAllEmployerJobsStart: (employerId, callback) =>
+    dispatch(getAllEmployerJobsStart(employerId, callback))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyJobs);

@@ -1,14 +1,10 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { View, ScrollView, KeyboardAvoidingView, Picker } from "react-native";
-import { Appbar, Text, RadioButton, Chip } from "react-native-paper";
-import { OutlinedInput, Filter, CustomDatePicker } from "../../components";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { View, ScrollView, KeyboardAvoidingView, Picker } from 'react-native';
+import { Appbar, Text, RadioButton, Chip } from 'react-native-paper';
+import { OutlinedInput, Filter, CustomDatePicker } from '../../components';
 
-import {
-  selectCurrentEmployee,
-  selectLoading,
-  selectErrorMessage
-} from "../../redux/current-user/current-user.selectors";
+import { selectCurrentEmployee } from '../../redux/current-user/current-user.selectors';
 import {
   selectCityNameById,
   selectCitiesList,
@@ -17,11 +13,12 @@ import {
   selectReligions,
   selectVisaTypes,
   selectMaritalStatuses
-} from "../../redux/constants/constants.selectors";
-import { editEmployeeInfoStart } from "../../redux/current-user/current-user.actions";
+} from '../../redux/constants/constants.selectors';
+import { editEmployeeInfoStart } from '../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
-import styles from "./edit-employee.styles";
-import COLORS from "../../constants/colors";
+import styles from './edit-employee.styles';
+import COLORS from '../../constants/colors';
 
 const EditEmployeeEnfo = ({
   navigation,
@@ -29,13 +26,12 @@ const EditEmployeeEnfo = ({
   editEmployeeInfoStart,
   citiesList,
   getCityName,
-  loading,
-  errorMessage,
   countriesList,
   nationalitiesList,
   religionsList,
   visaTypesList,
-  maritalStatusesList
+  maritalStatusesList,
+  showPopupApi
 }) => {
   const [employee, setEmployee] = useState(
     currentEmployee
@@ -45,22 +41,22 @@ const EditEmployeeEnfo = ({
           filtering: false
         }
       : {
-          first_name: "",
-          middle_name: "",
-          last_name: "",
-          gender: "",
+          first_name: '',
+          middle_name: '',
+          last_name: '',
+          gender: '',
           birth_date: null,
-          nationality: "",
-          religion: "",
-          marital_status: "",
-          number_of_dependents: "",
-          residence_country: "",
-          visa_type: "",
-          contact_number: "",
-          driving_licenses: ["Egypt", "UAE", "USA"],
+          nationality: '',
+          religion: '',
+          marital_status: '',
+          number_of_dependents: '',
+          residence_country: '',
+          visa_type: '',
+          contact_number: '',
+          driving_licenses: ['Egypt', 'UAE', 'USA'],
           has_a_car: false,
-          location: "",
-          location_id: "",
+          location: '',
+          location_id: '',
           bio,
           filtering: false
         }
@@ -81,34 +77,43 @@ const EditEmployeeEnfo = ({
     contact_number,
     driving_licenses,
     has_a_car,
-    location,
     location_id,
-    bio,
-    filtering
+    bio
   } = employee;
+  const [disabled, setDisabled] = useState(false);
 
   const _handleChange = ({ name, value }) => {
     setEmployee(prev => ({ ...prev, [name]: value }));
   };
 
-  const _handleLocationSelect = ({ id, city, country }) => {
-    setEmployee(prev => ({
-      ...prev,
-      // filtering: false,
-      // location: `${city} - ${country}`,
-      location_id: id
-    }));
-  };
+  const _handleLocationSelect = ({ id }) =>
+    setEmployee(prev => ({ ...prev, location_id: id }));
 
   _handleSubmit = () => {
     const { location, filtering, birth_date, ...rest } = employee;
     const formatedBirthDate = birth_date
       ? new Date(birth_date).toString()
       : null;
-    editEmployeeInfoStart({ ...rest, birth_date: formatedBirthDate });
-    if (!loading && errorMessage.length === 0) {
+    editEmployeeInfoStart({ ...rest, birth_date: formatedBirthDate }, err => {
+      if (err) {
+        showPopupApi({
+          type: 'danger',
+          message:
+            err.response && err.response.data && err.response.data.errors
+              ? err.response.data.errors.map(err => err.msg).toString()
+              : 'Please check your connection'
+        });
+        setDisabled(false);
+        return console.log(err);
+      }
+
+      showPopupApi({
+        message: 'Info edited successfully',
+        duration: 600
+      });
+      setDisabled(false);
       navigation.goBack();
-    }
+    });
   };
 
   return (
@@ -116,7 +121,11 @@ const EditEmployeeEnfo = ({
       <Appbar.Header>
         <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title="Edit your info" />
-        <Appbar.Action icon="save" onPress={_handleSubmit} />
+        <Appbar.Action
+          icon="save"
+          disabled={disabled}
+          onPress={_handleSubmit}
+        />
       </Appbar.Header>
 
       <KeyboardAvoidingView
@@ -158,7 +167,7 @@ const EditEmployeeEnfo = ({
               margin: 10,
               padding: 5,
               borderRadius: 5,
-              borderColor: "grey"
+              borderColor: 'grey'
             }}
           >
             <Picker
@@ -174,7 +183,7 @@ const EditEmployeeEnfo = ({
           </View>
 
           <Filter
-            style={{ width: "95%", marginHorizontal: 10 }}
+            style={{ width: '95%', marginHorizontal: 10 }}
             list={nationalitiesList}
             value={nationality}
             label="Nationality"
@@ -198,7 +207,7 @@ const EditEmployeeEnfo = ({
               margin: 10,
               padding: 5,
               borderRadius: 5,
-              borderColor: "grey"
+              borderColor: 'grey'
             }}
           >
             <Picker
@@ -220,7 +229,7 @@ const EditEmployeeEnfo = ({
               margin: 10,
               padding: 5,
               borderRadius: 5,
-              borderColor: "grey"
+              borderColor: 'grey'
             }}
           >
             <Picker
@@ -250,7 +259,7 @@ const EditEmployeeEnfo = ({
           />
 
           <Filter
-            style={{ width: "95%", marginHorizontal: 10 }}
+            style={{ width: '95%', marginHorizontal: 10 }}
             list={countriesList}
             value={residence_country}
             label="Residence Country"
@@ -266,7 +275,7 @@ const EditEmployeeEnfo = ({
               margin: 10,
               padding: 5,
               borderRadius: 5,
-              borderColor: "grey"
+              borderColor: 'grey'
             }}
           >
             <Picker
@@ -297,15 +306,15 @@ const EditEmployeeEnfo = ({
               setEmployee(prev => ({ ...prev, has_a_car: value }))
             }
           >
-            <View style={{ flexDirection: "row", margin: 10, marginTop: 0 }}>
+            <View style={{ flexDirection: 'row', margin: 10, marginTop: 0 }}>
               <View
-                style={{ flexDirection: "row", flex: 1, alignItems: "center" }}
+                style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
               >
                 <RadioButton value={false} />
                 <Text style={{ fontSize: 16 }}>Don't have a Car</Text>
               </View>
               <View
-                style={{ flexDirection: "row", flex: 1, alignItems: "center" }}
+                style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
               >
                 <RadioButton value={true} />
                 <Text style={{ fontSize: 16 }}>Have a Car</Text>
@@ -319,10 +328,10 @@ const EditEmployeeEnfo = ({
               margin: 10,
               padding: 5,
               borderRadius: 5,
-              borderColor: "grey"
+              borderColor: 'grey'
             }}
           >
-            <Text style={{ fontSize: 16, margin: 5, color: "grey" }}>
+            <Text style={{ fontSize: 16, margin: 5, color: 'grey' }}>
               Driving Licenses From
             </Text>
 
@@ -330,9 +339,9 @@ const EditEmployeeEnfo = ({
               <View
                 style={{
                   margin: 10,
-                  flexWrap: "wrap",
-                  alignItems: "flex-start",
-                  flexDirection: "row"
+                  flexWrap: 'wrap',
+                  alignItems: 'flex-start',
+                  flexDirection: 'row'
                 }}
               >
                 {driving_licenses.map((license, index) => (
@@ -358,7 +367,7 @@ const EditEmployeeEnfo = ({
             )}
 
             <Filter
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               list={countriesList}
               label="Add Country"
               onSelect={country =>
@@ -373,7 +382,7 @@ const EditEmployeeEnfo = ({
           </View>
 
           <Filter
-            style={{ width: "95%", marginHorizontal: 10 }}
+            style={{ width: '95%', marginHorizontal: 10 }}
             value={location_id && getCityName(location_id)}
             list={citiesList}
             label="Location"
@@ -382,42 +391,6 @@ const EditEmployeeEnfo = ({
             listItem={city => `${city.city} - ${city.country}`}
           />
 
-          {/* <OutlinedInput
-            style={{ margin: 10 }}
-            autoCapitalize="none"
-            label="Location"
-            value={location}
-            name="location"
-            onChange={({ name, value }) =>
-              setEmployee(prev => ({ ...prev, [name]: value, filtering: true }))
-            }
-          />
-
-          {filtering && (
-            <View style={styles.locationsList}>
-              {citiesList
-                .filter(
-                  ({ city }) =>
-                    location.trim().length > 0 &&
-                    city.toLowerCase().includes(location.trim().toLowerCase())
-                )
-                .map((city, index) => {
-                  if (index < 10) {
-                    return (
-                      <View key={city.id}>
-                        <Text
-                          style={styles.locationListItem}
-                          onPress={_handleLocationSelect.bind(this, city)}
-                        >
-                          {`${city.city} - ${city.country}`}
-                        </Text>
-                        <Divider />
-                      </View>
-                    );
-                  }
-                })}
-            </View>
-          )} */}
           <View style={{ marginBottom: 10 }} />
 
           <OutlinedInput
@@ -440,8 +413,6 @@ const mapStateToProps = state => ({
   currentEmployee: selectCurrentEmployee(state),
   citiesList: selectCitiesList(state),
   getCityName: id => selectCityNameById(id)(state),
-  loading: selectLoading(state),
-  errorMessage: selectErrorMessage(state),
   countriesList: selectCountries(state),
   nationalitiesList: selectNationalities(state),
   religionsList: selectReligions(state),
@@ -450,7 +421,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  editEmployeeInfoStart: info => dispatch(editEmployeeInfoStart(info))
+  editEmployeeInfoStart: (info, callback) =>
+    dispatch(editEmployeeInfoStart(info, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditEmployeeEnfo);

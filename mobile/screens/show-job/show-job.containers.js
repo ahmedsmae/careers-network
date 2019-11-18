@@ -21,11 +21,8 @@ import {
   getAllJobApplicationsStart
 } from '../../redux/applications/applications.actions';
 import { saveJobStart, unsaveJobStart } from '../../redux/saved/saved.actions';
-import {
-  selectLoading,
-  selectErrorMessage
-} from '../../redux/jobs/jobs.selectors';
 import { deleteJobStart } from '../../redux/jobs/jobs.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
 import ShowJob from './show-job.component';
 import UserImage from '../../components/user-image/user-image.component';
@@ -42,10 +39,13 @@ const EmployeeShowJob = ({
   isJobSaved,
   getSavedIdByJobId,
   saveJobStart,
-  unsaveJobStart
+  unsaveJobStart,
+  showPopupApi
 }) => {
   const job = navigation.getParam('job');
   const application = getApplicationByJobId(job._id);
+
+  const [disabled, setDisabled] = useState(false);
 
   const generateLabel = () => {
     if (application) {
@@ -62,18 +62,68 @@ const EmployeeShowJob = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Show Job' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Show Job" />
         {isJobSaved(job._id) ? (
           <Appbar.Action
-            icon='star'
-            color='yellow'
-            onPress={() => unsaveJobStart(getSavedIdByJobId(job._id))}
+            disabled={disabled}
+            icon="star"
+            color="yellow"
+            onPress={() =>
+              unsaveJobStart(getSavedIdByJobId(job._id), err => {
+                if (err) {
+                  showPopupApi({
+                    type: 'danger',
+                    message:
+                      err.response &&
+                      err.response.data &&
+                      err.response.data.errors
+                        ? err.response.data.errors
+                            .map(err => err.msg)
+                            .toString()
+                        : 'Please check your connection'
+                  });
+                  setDisabled(false);
+                  return console.log(err);
+                }
+
+                showPopupApi({
+                  message: 'Jon unsaved successfully',
+                  duration: 600
+                });
+                setDisabled(false);
+              })
+            }
           />
         ) : (
           <Appbar.Action
-            icon='star-border'
-            onPress={() => saveJobStart(job._id)}
+            disabled={disabled}
+            icon="star-border"
+            onPress={() =>
+              saveJobStart(job._id, err => {
+                if (err) {
+                  showPopupApi({
+                    type: 'danger',
+                    message:
+                      err.response &&
+                      err.response.data &&
+                      err.response.data.errors
+                        ? err.response.data.errors
+                            .map(err => err.msg)
+                            .toString()
+                        : 'Please check your connection'
+                  });
+                  setDisabled(false);
+                  return console.log(err);
+                }
+
+                showPopupApi({
+                  message: 'Job saved successfully',
+                  duration: 600
+                });
+                setDisabled(false);
+              })
+            }
           />
         )}
       </Appbar.Header>
@@ -107,8 +157,8 @@ const EmployeeShowJob = ({
       <FAB
         style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
         label={generateLabel()}
-        icon='edit'
-        color='white'
+        icon="edit"
+        color="white"
         onPress={() => {
           if (job.questions.length > 0) {
             navigation.navigate('EditApplication', { job, application });
@@ -126,20 +176,21 @@ const EmployerShowJob = ({
   navigation,
   getAllJobApplicationsStart,
   deleteJobStart,
-  loading,
-  errorMessage
+  showPopupApi
 }) => {
   const job = navigation.getParam('job');
 
   const [showOptions, setShowOptions] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Show Job' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Show Job" />
         <Appbar.Action
-          icon='delete'
+          disabled={disabled}
+          icon="delete"
           onPress={() => {
             Alert.alert(
               'Delete Job',
@@ -147,15 +198,35 @@ const EmployerShowJob = ({
               [
                 {
                   text: 'DELETE',
-                  onPress: () => deleteJobStart(job._id)
+                  onPress: () =>
+                    deleteJobStart(job._id, err => {
+                      if (err) {
+                        showPopupApi({
+                          type: 'danger',
+                          message:
+                            err.response &&
+                            err.response.data &&
+                            err.response.data.errors
+                              ? err.response.data.errors
+                                  .map(err => err.msg)
+                                  .toString()
+                              : 'Please check your connection'
+                        });
+                        setDisabled(false);
+                        return console.log(err);
+                      }
+
+                      showPopupApi({
+                        message: 'Job deleted successfully',
+                        duration: 600
+                      });
+                      setDisabled(false);
+                      navigation.goBack();
+                    })
                 },
                 { text: 'CANCEL' }
               ]
             );
-
-            if (!loading && errorMessage.length === 0) {
-              navigation.goBack();
-            }
           }}
         />
       </Appbar.Header>
@@ -166,9 +237,9 @@ const EmployerShowJob = ({
         <Portal>
           <FAB.Group
             open={showOptions}
-            icon='settings'
+            icon="settings"
             fabStyle={{ backgroundColor: Colors.ACCENT }}
-            color='white'
+            color="white"
             actions={[
               {
                 icon: 'edit',
@@ -203,7 +274,7 @@ const NoAuthShowJob = ({ navigation }) => {
   return (
     <>
       <Appbar.Header>
-        <Appbar.Content title='Show Job' />
+        <Appbar.Content title="Show Job" />
       </Appbar.Header>
 
       {job.owner._id && (
@@ -234,9 +305,9 @@ const NoAuthShowJob = ({ navigation }) => {
 
       <FAB
         style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
-        label='Apply'
-        icon='edit'
-        color='white'
+        label="Apply"
+        icon="edit"
+        color="white"
         // open email with appling_email from the job
         onPress={() => {}}
       />
@@ -247,19 +318,20 @@ const NoAuthShowJob = ({ navigation }) => {
 const mapStateToProps = state => ({
   getApplicationByJobId: jobId => selectApplicationByJobId(jobId)(state),
   isJobSaved: jobId => selectIsJobSaved(jobId)(state),
-  getSavedIdByJobId: jobId => selectSavedIdByJobId(jobId)(state),
-  loading: selectLoading(state),
-  errorMessage: selectErrorMessage(state)
+  getSavedIdByJobId: jobId => selectSavedIdByJobId(jobId)(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  createNewApplicationStart: appData =>
-    dispatch(createNewApplicationStart(appData)),
-  getAllJobApplicationsStart: jobId =>
-    dispatch(getAllJobApplicationsStart(jobId)),
-  saveJobStart: jobId => dispatch(saveJobStart(jobId)),
-  unsaveJobStart: saveId => dispatch(unsaveJobStart(saveId)),
-  deleteJobStart: jobId => dispatch(deleteJobStart(jobId))
+  createNewApplicationStart: (appData, callback) =>
+    dispatch(createNewApplicationStart(appData, callback)),
+  getAllJobApplicationsStart: (jobId, callback) =>
+    dispatch(getAllJobApplicationsStart(jobId, callback)),
+  saveJobStart: (jobId, callback) => dispatch(saveJobStart(jobId, callback)),
+  unsaveJobStart: (saveId, callback) =>
+    dispatch(unsaveJobStart(saveId, callback)),
+  deleteJobStart: (jobId, callback) =>
+    dispatch(deleteJobStart(jobId, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export const EmployeeShowJobContainer = connect(

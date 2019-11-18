@@ -1,32 +1,29 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView
-} from "react-native";
-import { Appbar, Checkbox, Paragraph } from "react-native-paper";
+} from 'react-native';
+import { Appbar, Checkbox, Paragraph } from 'react-native-paper';
 import {
   OutlinedInput,
   ImagePicker,
   Filter,
   CustomDatePicker
-} from "../../components";
+} from '../../components';
 
-import URLS from "../../redux/utils/urls";
+import URLS from '../../redux/utils/urls';
 
-import {
-  selectCurrentEmployee,
-  selectLoading,
-  selectErrorMessage
-} from "../../redux/current-user/current-user.selectors";
+import { selectCurrentEmployee } from '../../redux/current-user/current-user.selectors';
 import {
   selectCityNameById,
   selectCitiesList
-} from "../../redux/constants/constants.selectors";
-import { editEmployeeEducationStart } from "../../redux/current-user/current-user.actions";
+} from '../../redux/constants/constants.selectors';
+import { editEmployeeEducationStart } from '../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
-import styles from "./edit-education.styles";
+import styles from './edit-education.styles';
 
 const EditEducation = ({
   navigation,
@@ -34,24 +31,23 @@ const EditEducation = ({
   editEmployeeEducationStart,
   getCityNameById,
   citiesList,
-  loading,
-  errorMessage
+  showPopupApi
 }) => {
-  const edu = navigation.getParam("education");
+  const edu = navigation.getParam('education');
 
   const [education, setEducation] = useState(
     !!edu
       ? { ...edu, location: getCityNameById(edu.location_id), filtering: false }
       : {
-          subject: "",
-          institute: "",
-          location_id: "",
-          description: "",
+          subject: '',
+          institute: '',
+          location_id: '',
+          description: '',
           from: null,
           current: false,
           to: null,
           certificate_image: null,
-          location: "",
+          location: '',
           hasCertificate: false,
           filtering: false
         }
@@ -62,43 +58,59 @@ const EditEducation = ({
     subject,
     institute,
     description,
-    // location,
-    // filtering,
     hasCertificate,
     from,
     current,
     to
   } = education;
+  const [disabled, setDisabled] = useState(false);
 
   const _handleChange = ({ name, value }) => {
     setEducation(prevEdu => ({ ...prevEdu, [name]: value }));
   };
 
-  const _handleLocationSelect = ({ id, city, country }) => {
-    setEducation(prev => ({
-      ...prev,
-      // filtering: false,
-      // location: `${city} - ${country}`,
-      location_id: id
-    }));
-  };
+  const _handleLocationSelect = ({ id }) =>
+    setEducation(prev => ({ ...prev, location_id: id }));
 
   const _handleSubmit = () => {
     const { location, filtering, from, to, ...rest } = education;
     const formatedFrom = from ? new Date(from).toString() : null;
     const formatedTo = to ? new Date(to).toString() : null;
-    editEmployeeEducationStart({ ...rest, from: formatedFrom, to: formatedTo });
-    if (!loading && errorMessage.length === 0) {
-      navigation.goBack();
-    }
+    editEmployeeEducationStart(
+      { ...rest, from: formatedFrom, to: formatedTo },
+      err => {
+        if (err) {
+          showPopupApi({
+            type: 'danger',
+            message:
+              err.response && err.response.data && err.response.data.errors
+                ? err.response.data.errors.map(err => err.msg).toString()
+                : 'Please check your connection'
+          });
+          setDisabled(false);
+          return console.log(err);
+        }
+
+        showPopupApi({
+          message: 'Education edited successfully',
+          duration: 600
+        });
+        setDisabled(false);
+        navigation.goBack();
+      }
+    );
   };
 
   return (
     <>
       <Appbar.Header>
         <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title={!!edu ? "Edit Education" : "Add Education"} />
-        <Appbar.Action icon="save" onPress={_handleSubmit} />
+        <Appbar.Content title={!!edu ? 'Edit Education' : 'Add Education'} />
+        <Appbar.Action
+          icon="save"
+          disabled={disabled}
+          onPress={_handleSubmit}
+        />
       </Appbar.Header>
 
       <KeyboardAvoidingView
@@ -139,56 +151,13 @@ const EditEducation = ({
           />
 
           <Filter
-            style={{ width: "95%", marginHorizontal: 10 }}
+            style={{ width: '95%', marginHorizontal: 10 }}
             list={citiesList}
             label="Location"
             onSelect={_handleLocationSelect}
             filterItem="city"
             listItem={city => `${city.city} - ${city.country}`}
           />
-
-          {/* <OutlinedInput
-            style={{ margin: 10 }}
-            autoCapitalize='none'
-            label='Location'
-            name='location'
-            value={location}
-            onChange={({ name, value }) =>
-              setEducation(prev => ({
-                ...prev,
-                [name]: value,
-                filtering: true
-              }))
-            }
-          />
-
-          {filtering && (
-            <View style={styles.locationListContainer}>
-              <View style={styles.locationsList}>
-                {citiesList
-                  .filter(
-                    ({ city }) =>
-                      location.trim().length > 0 &&
-                      city.toLowerCase().includes(location.trim().toLowerCase())
-                  )
-                  .map((city, index) => {
-                    if (index < 10) {
-                      return (
-                        <View key={city.id}>
-                          <Text
-                            style={styles.locationListItem}
-                            onPress={_handleLocationSelect.bind(this, city)}
-                          >
-                            {`${city.city} - ${city.country}`}
-                          </Text>
-                          <Divider />
-                        </View>
-                      );
-                    }
-                  })}
-              </View>
-            </View>
-          )} */}
 
           <CustomDatePicker
             placeholder="From Date"
@@ -199,13 +168,13 @@ const EditEducation = ({
           />
 
           <TouchableOpacity
-            style={{ flexDirection: "row", marginHorizontal: 10 }}
+            style={{ flexDirection: 'row', marginHorizontal: 10 }}
             onPress={() =>
               setEducation(prev => ({ ...prev, current: !current }))
             }
           >
-            <Checkbox status={current ? "checked" : "unchecked"} />
-            <Paragraph style={{ color: "grey", textAlignVertical: "center" }}>
+            <Checkbox status={current ? 'checked' : 'unchecked'} />
+            <Paragraph style={{ color: 'grey', textAlignVertical: 'center' }}>
               Current Job
             </Paragraph>
           </TouchableOpacity>
@@ -239,13 +208,13 @@ const EditEducation = ({
 const mapStateToProps = state => ({
   citiesList: selectCitiesList(state),
   currentEmployee: selectCurrentEmployee(state),
-  loading: selectLoading(state),
-  errorMessage: selectErrorMessage(state),
   getCityNameById: id => selectCityNameById(id)(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  editEmployeeEducationStart: info => dispatch(editEmployeeEducationStart(info))
+  editEmployeeEducationStart: (info, callback) =>
+    dispatch(editEmployeeEducationStart(info, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditEducation);

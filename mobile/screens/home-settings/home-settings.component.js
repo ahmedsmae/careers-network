@@ -9,7 +9,7 @@ import {
   Divider,
   Caption
 } from 'react-native-paper';
-import { OutlinedInput, Filter, PopupAlert } from '../../components';
+import { OutlinedInput, Filter } from '../../components';
 
 import { selectCurrentEmployee } from '../../redux/current-user/current-user.selectors';
 import {
@@ -18,13 +18,15 @@ import {
 } from '../../redux/constants/constants.selectors';
 
 import { editEmployeePreferedJobsSettingsStart } from '../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
 const HomeSettings = ({
   navigation,
   currentEmployee: { prefered_jobs_settings },
   citiesList,
   getCityNameById,
-  editEmployeePreferedJobsSettingsStart
+  editEmployeePreferedJobsSettingsStart,
+  showPopupApi
 }) => {
   const [keywords, setKeywords] = useState(
     prefered_jobs_settings.keywords || []
@@ -35,12 +37,6 @@ const HomeSettings = ({
 
   const [currentKeyword, setCurrentKeyword] = useState('');
   const [disabled, setDisabled] = useState(false);
-  const [{ popupShow, popupMsg, popupWidth, popupType }, setPopup] = useState({
-    popupShow: false,
-    popupMsg: '',
-    popupWidth: 150,
-    popupType: 'success'
-  });
 
   const _handleSubmit = () => {
     setDisabled(true);
@@ -48,18 +44,21 @@ const HomeSettings = ({
       { keywords, location_ids: locationIds },
       err => {
         if (err) {
-          setPopup({
-            popupType: 'danger',
-            popupMsg:
+          showPopupApi({
+            type: 'danger',
+            message:
               err.response && err.response.data && err.response.data.errors
                 ? err.response.data.errors.map(err => err.msg).toString()
-                : 'Please check your connection',
-            popupShow: true,
-            popupWidth: 300
+                : 'Please check your connection'
           });
           setDisabled(false);
           return console.log(err);
         }
+
+        showPopupApi({
+          message: 'Settings edited successfully',
+          duration: 600
+        });
         setDisabled(false);
         navigation.goBack();
       }
@@ -179,17 +178,6 @@ const HomeSettings = ({
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      {popupShow && (
-        <PopupAlert
-          MESSAGE_TEXT={popupMsg}
-          MESSAGE_WIDTH={popupWidth}
-          MESSAGE_TYPE={popupType}
-          MESSAGE_DURATION={1000}
-          onDisplayComplete={() =>
-            setPopup(prev => ({ ...prev, popupShow: false }))
-          }
-        />
-      )}
     </>
   );
 };
@@ -202,7 +190,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   editEmployeePreferedJobsSettingsStart: (settings, callback) =>
-    dispatch(editEmployeePreferedJobsSettingsStart(settings, callback))
+    dispatch(editEmployeePreferedJobsSettingsStart(settings, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeSettings);

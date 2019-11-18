@@ -1,9 +1,10 @@
 import JobsActionTypes from './jobs.types';
 
 // CREATE NEW JOB
-export const createNewJobStart = jobData => ({
+export const createNewJobStart = (jobData, callback) => ({
   type: JobsActionTypes.CREATE_NEW_JOB_START,
-  payload: jobData
+  payload: jobData,
+  callback
 });
 
 export const createNewJobSuccess = employerJobs => ({
@@ -17,9 +18,10 @@ export const createNewJobFailure = errorMessage => ({
 });
 
 // UPDATE EXISTING JOB
-export const updateExistingJobStart = jobData => ({
+export const updateExistingJobStart = (jobData, callback) => ({
   type: JobsActionTypes.UPDATE_EXISTING_JOB_START,
-  payload: jobData
+  payload: jobData,
+  callback
 });
 
 export const updateExistingJobSuccess = employerJobs => ({
@@ -33,9 +35,10 @@ export const updateExistingJobFailure = errorMessage => ({
 });
 
 // DELETE JOB
-export const deleteJobStart = jobId => ({
+export const deleteJobStart = (jobId, callback) => ({
   type: JobsActionTypes.DELETE_JOB_START,
-  payload: jobId
+  payload: jobId,
+  callback
 });
 
 export const deleteJobSuccess = employerJobs => ({
@@ -49,9 +52,10 @@ export const deleteJobFailure = errorMessage => ({
 });
 
 // GET ALL EMPLOYER JOBS
-export const getAllEmployerJobsStart = employerId => ({
+export const getAllEmployerJobsStart = (employerId, callback) => ({
   type: JobsActionTypes.GET_ALL_EMPLOYER_JOBS_START,
-  payload: employerId
+  payload: employerId,
+  callback
 });
 
 export const getAllEmployerJobsSuccess = employerJobs => ({
@@ -65,8 +69,9 @@ export const getAllEmployerJobsFailure = errorMessage => ({
 });
 
 // GET HOME JOBS
-export const getHomeJobsStart = () => ({
-  type: JobsActionTypes.GET_HOME_JOBS_START
+export const getHomeJobsStart = callback => ({
+  type: JobsActionTypes.GET_HOME_JOBS_START,
+  callback
 });
 
 export const getHomeJobsSuccess = homeJobs => ({
@@ -80,9 +85,10 @@ export const getHomeJobsFailure = errorMessage => ({
 });
 
 // GET FOLLOWING JOBS
-export const getFollowingJobsStart = employeeId => ({
+export const getFollowingJobsStart = (employeeId, callback) => ({
   type: JobsActionTypes.GET_FOLLOWING_JOBS_START,
-  payload: employeeId
+  payload: employeeId,
+  callback
 });
 
 export const getFollowingJobsSuccess = followingJobs => ({
@@ -96,9 +102,10 @@ export const getFollowingJobsFailure = errorMessage => ({
 });
 
 // SEARCH JOBS
-export const searchJobsStart = searchData => ({
+export const searchJobsStart = (searchData, callback) => ({
   type: JobsActionTypes.SEARCH_JOBS_START,
-  payload: searchData
+  payload: searchData,
+  callback
 });
 
 export const searchJobsSuccess = followingJobs => ({
@@ -112,9 +119,10 @@ export const searchJobsFailure = errorMessage => ({
 });
 
 // PUBLIC GET EMPLOYER JOBS
-export const publicGetEmployerJobsStart = employerId => ({
+export const publicGetEmployerJobsStart = (employerId, callback) => ({
   type: JobsActionTypes.PUBLIC_GET_EMPLOYER_JOBS_START,
-  payload: employerId
+  payload: employerId,
+  callback
 });
 
 export const publicGetEmployerJobsSuccess = employerJobs => ({

@@ -1,5 +1,4 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import Toast from 'react-native-root-toast';
 import axios from 'axios';
 
 import URLS from '../utils/urls';
@@ -14,7 +13,7 @@ import {
   getAllEmployeeFollowsFailure
 } from './follows.actions';
 
-function* followEmployerAsync({ payload }) {
+function* followEmployerAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -23,21 +22,15 @@ function* followEmployerAsync({ payload }) {
       url: `${URLS.FOLLOW_EMPLOYER}/${payload}`
     });
 
+    yield call(callback);
     yield put(followEmployerSuccess(response.data.employeeFollows));
-    Toast.show('Successfully started following this employer', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(followEmployerFailure(err.message));
   }
 }
 
-function* unfollowEmployerAsync({ payload }) {
+function* unfollowEmployerAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -46,21 +39,15 @@ function* unfollowEmployerAsync({ payload }) {
       url: `${URLS.UNFOLLOW_EMPLOYER}/${payload}`
     });
 
+    yield call(callback);
     yield put(unfollowEmployerSuccess(response.data.employeeFollows));
-    Toast.show('Successfully unfllowed this employer', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(unfollowEmployerFailure(err.message));
   }
 }
 
-function* getAllEmployeeFollowsAsync() {
+function* getAllEmployeeFollowsAsync({ callback }) {
   try {
     yield setAuthToken();
 
@@ -69,12 +56,10 @@ function* getAllEmployeeFollowsAsync() {
       url: URLS.GET_ALL_EMPLOYEE_FOLLOWS
     });
 
+    yield call(callback);
     yield put(getAllEmployeeFollowsSuccess(response.data.employeeFollows));
   } catch (err) {
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(getAllEmployeeFollowsFailure(err.message));
   }
 }

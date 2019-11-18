@@ -1,22 +1,23 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import { View, Picker, ScrollView, Alert } from "react-native";
-import { Appbar, Card, Button, FAB, Divider } from "react-native-paper";
-import { Filter, PopupAlert } from "../../../components";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { View, Picker, ScrollView, Alert } from 'react-native';
+import { Appbar, Card, Button, FAB, Divider } from 'react-native-paper';
+import { Filter } from '../../../components';
 
-import { selectCurrentEmployee } from "../../../redux/current-user/current-user.selectors";
+import { selectCurrentEmployee } from '../../../redux/current-user/current-user.selectors';
 import {
   selectLanguages,
   selectLanguageLevels
-} from "../../../redux/constants/constants.selectors";
+} from '../../../redux/constants/constants.selectors';
 
 import {
   addEmployeeLanguageStart,
   deleteEmployeeLanguageStart
-} from "../../../redux/current-user/current-user.actions";
+} from '../../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../../redux/api-utilities/api-utilities.actions';
 
-import Languages from "./languages.component";
+import Languages from './languages.component';
 
 const EmployeeEmployeeLanguages = ({
   navigation,
@@ -24,18 +25,13 @@ const EmployeeEmployeeLanguages = ({
   languagesList,
   levelsList,
   addEmployeeLanguageStart,
-  deleteEmployeeLanguageStart
+  deleteEmployeeLanguageStart,
+  showPopupApi
 }) => {
   const [addLanguage, setAddLanguage] = useState(false);
-  const [languageQ, setLanguageQ] = useState("");
+  const [languageQ, setLanguageQ] = useState('');
   const [level, setLevel] = useState(levelsList[2]);
   const [disabled, setDisabled] = useState(false);
-  const [{ popupShow, popupMsg, popupWidth, popupType }, setPopup] = useState({
-    popupShow: false,
-    popupMsg: "",
-    popupWidth: 150,
-    popupType: "success"
-  });
 
   const _handleSubmit = () => {
     setDisabled(true);
@@ -44,26 +40,22 @@ const EmployeeEmployeeLanguages = ({
       // callback function
       err => {
         if (err) {
-          setPopup({
-            popupType: "danger",
-            popupMsg:
+          showPopupApi({
+            type: 'danger',
+            message:
               err.response && err.response.data && err.response.data.errors
                 ? err.response.data.errors.map(err => err.msg).toString()
-                : "Please check your connection",
-            popupShow: true,
-            popupWidth: 300
+                : 'Please check your connection'
           });
           setDisabled(false);
           return console.log(err);
         }
 
-        setPopup({
-          popupType: "success",
-          popupMsg: "Language added successfully",
-          popupShow: true,
-          popupWidth: 300
+        showPopupApi({
+          message: 'Language added successfully',
+          duration: 600
         });
-        setLanguageQ("");
+        setLanguageQ('');
         setLevel(levelsList[2]);
         setAddLanguage(false);
         setDisabled(false);
@@ -74,23 +66,19 @@ const EmployeeEmployeeLanguages = ({
   const _handleDelete = languageId => {
     deleteEmployeeLanguageStart(languageId, err => {
       if (err) {
-        setPopup({
-          popupType: "danger",
-          popupMsg:
+        showPopupApi({
+          type: 'danger',
+          message:
             err.response && err.response.data && err.response.data.errors
               ? err.response.data.errors.map(err => err.msg).toString()
-              : "Please check your connection",
-          popupShow: true,
-          popupWidth: 300
+              : 'Please check your connection'
         });
         return console.log(err);
       }
 
-      setPopup({
-        popupType: "success",
-        popupMsg: "Language deleted successfully",
-        popupShow: true,
-        popupWidth: 300
+      showPopupApi({
+        message: 'Language deleted successfully',
+        duration: 600
       });
     });
   };
@@ -101,7 +89,7 @@ const EmployeeEmployeeLanguages = ({
         <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title="Your Languages" />
         <Appbar.Action
-          icon={addLanguage ? "close" : "add"}
+          icon={addLanguage ? 'close' : 'add'}
           onPress={() => setAddLanguage(!addLanguage)}
         />
       </Appbar.Header>
@@ -124,11 +112,11 @@ const EmployeeEmployeeLanguages = ({
               <View
                 style={{
                   borderWidth: 1,
-                  borderColor: "grey",
+                  borderColor: 'grey',
                   marginTop: 5,
                   borderRadius: 5,
                   height: 60,
-                  justifyContent: "center"
+                  justifyContent: 'center'
                 }}
               >
                 <Picker
@@ -141,7 +129,7 @@ const EmployeeEmployeeLanguages = ({
                 </Picker>
               </View>
             </Card.Content>
-            <Card.Actions style={{ justifyContent: "center" }}>
+            <Card.Actions style={{ justifyContent: 'center' }}>
               <Button
                 mode="outlined"
                 disabled={disabled}
@@ -161,39 +149,28 @@ const EmployeeEmployeeLanguages = ({
           levelsList={levelsList}
           onLanguageLongPress={languageId =>
             Alert.alert(
-              "Delete Language",
-              "Are you sure you want to delete this language ?",
+              'Delete Language',
+              'Are you sure you want to delete this language ?',
               [
-                { text: "Yes", onPress: _handleDelete.bind(this, languageId) },
-                { text: "Cancel" }
+                { text: 'Yes', onPress: _handleDelete.bind(this, languageId) },
+                { text: 'Cancel' }
               ]
             )
           }
         />
       </ScrollView>
-      {popupShow && (
-        <PopupAlert
-          MESSAGE_TEXT={popupMsg}
-          MESSAGE_WIDTH={popupWidth}
-          MESSAGE_TYPE={popupType}
-          MESSAGE_DURATION={1000}
-          onDisplayComplete={() =>
-            setPopup(prev => ({ ...prev, popupShow: false }))
-          }
-        />
-      )}
 
       <FAB
-        style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
+        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
         icon="list"
-        onPress={() => navigation.navigate("EmployeeProfile")}
+        onPress={() => navigation.navigate('EmployeeProfile')}
       />
     </>
   );
 };
 
 const EmployerEmployeeLanguages = ({ navigation }) => {
-  const employee = navigation.getParam("employee");
+  const employee = navigation.getParam('employee');
 
   return (
     <>
@@ -205,9 +182,9 @@ const EmployerEmployeeLanguages = ({ navigation }) => {
       <Languages languages={employee.languages} levelsList={levelsList} />
 
       <FAB
-        style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
+        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
         icon="list"
-        onPress={() => navigation.navigate("EmployeeProfile")}
+        onPress={() => navigation.navigate('EmployeeProfile')}
       />
     </>
   );
@@ -223,7 +200,8 @@ const mapDispatchToProps = dispatch => ({
   addEmployeeLanguageStart: (languageData, callback) =>
     dispatch(addEmployeeLanguageStart(languageData, callback)),
   deleteEmployeeLanguageStart: (languageId, callback) =>
-    dispatch(deleteEmployeeLanguageStart(languageId, callback))
+    dispatch(deleteEmployeeLanguageStart(languageId, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export const EmployeeEmployeeLanguagesContainer = connect(

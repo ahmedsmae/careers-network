@@ -8,6 +8,7 @@ import applicationsReducer from './applications/applications.reducer';
 import savedReducer from './saved/saved.reducer';
 import followsReducer from './follows/follows.reducer';
 import adminReducer from './admin/admin.reducer';
+import apiUtilitiesReducer from './api-utilities/api-utilities.reducer';
 
 const rootReducer = combineReducers({
   // add all reducers
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   applications: applicationsReducer,
   saved: savedReducer,
   follows: followsReducer,
-  admin: adminReducer
+  admin: adminReducer,
+  apiUtilities: apiUtilitiesReducer
 });
 
 export default rootReducer;

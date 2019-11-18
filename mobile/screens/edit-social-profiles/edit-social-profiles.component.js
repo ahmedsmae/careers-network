@@ -1,58 +1,42 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import {
   View,
   ScrollView,
   KeyboardAvoidingView,
   StyleSheet
-} from "react-native";
-import { Appbar, Paragraph } from "react-native-paper";
-import { OutlinedInput, PopupAlert } from "../../components";
+} from 'react-native';
+import { Appbar, Paragraph } from 'react-native-paper';
+import { OutlinedInput } from '../../components';
 
-import { selectCurrentEmployee } from "../../redux/current-user/current-user.selectors";
+import { selectCurrentEmployee } from '../../redux/current-user/current-user.selectors';
 
-import { editEmployeeSocialProfilesStart } from "../../redux/current-user/current-user.actions";
+import { editEmployeeSocialProfilesStart } from '../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
-import { SOCIAL_MEDIA_BASE_URLS } from "../../redux/utils/urls";
+import { SOCIAL_MEDIA_BASE_URLS } from '../../redux/utils/urls';
 
 const EditSocialProfiles = ({
   navigation,
   currentEmployee: { social_profiles },
-  editEmployeeSocialProfilesStart
+  editEmployeeSocialProfilesStart,
+  showPopupApi
 }) => {
   const [socialProfiles, setSocialProfiles] = useState(
     social_profiles || {
-      website: "",
-      linkedin: "",
-      twitter: "",
-      github: "",
-      stackoverflow: "",
-      facebook: "",
-      instagram: "",
-      youtube: ""
+      website: '',
+      linkedin: '',
+      twitter: '',
+      github: '',
+      stackoverflow: '',
+      facebook: '',
+      instagram: '',
+      youtube: ''
     }
   );
 
   const [disabled, setDisabled] = useState(false);
-  const [
-    {
-      popupShow,
-      popupMsg,
-      popupWidth,
-      popupDuration,
-      popupType,
-      onPopupComplete
-    },
-    setPopup
-  ] = useState({
-    popupShow: false,
-    popupMsg: "",
-    popupWidth: 150,
-    popupDuration: 1000,
-    popupType: "success",
-    onPopupComplete: () => setPopup(prev => ({ ...prev, popupShow: false }))
-  });
 
   const {
     website,
@@ -73,36 +57,24 @@ const EditSocialProfiles = ({
     setDisabled(true);
     editEmployeeSocialProfilesStart(socialProfiles, err => {
       if (err) {
-        setPopup({
-          popupType: "danger",
-          popupMsg:
+        showPopupApi({
+          type: 'danger',
+          message:
             err.response && err.response.data && err.response.data.errors
               ? err.response.data.errors.map(err => err.msg).toString()
-              : "Please check your connection",
-          popupShow: true,
-          popupWidth: 300,
-          popupDuration: 1000,
-          onPopupComplete: () => {
-            setDisabled(false);
-            setPopup(prev => ({ ...prev, popupShow: false }));
-          }
+              : 'Please check your connection'
         });
+
         setDisabled(false);
         return console.log(err);
       }
 
-      setPopup({
-        popupType: "success",
-        popupMsg: "Social profiles edited successfully",
-        popupShow: true,
-        popupWidth: 300,
-        popupDuration: 600,
-        onPopupComplete: () => {
-          navigation.goBack();
-          setDisabled(false);
-          setPopup(prev => ({ ...prev, popupShow: false }));
-        }
+      showPopupApi({
+        message: 'Social profiles edited successfully',
+        duration: 600
       });
+      navigation.goBack();
+      setDisabled(false);
     });
   };
 
@@ -135,7 +107,7 @@ const EditSocialProfiles = ({
           />
 
           <View style={styles.inputContainer}>
-            <Paragraph style={{ color: "grey" }}>
+            <Paragraph style={{ color: 'grey' }}>
               {SOCIAL_MEDIA_BASE_URLS.linkedin}
             </Paragraph>
             <OutlinedInput
@@ -149,7 +121,7 @@ const EditSocialProfiles = ({
           </View>
 
           <View style={styles.inputContainer}>
-            <Paragraph style={{ color: "grey" }}>
+            <Paragraph style={{ color: 'grey' }}>
               {SOCIAL_MEDIA_BASE_URLS.twitter}
             </Paragraph>
             <OutlinedInput
@@ -163,7 +135,7 @@ const EditSocialProfiles = ({
           </View>
 
           <View style={styles.inputContainer}>
-            <Paragraph style={{ color: "grey" }}>
+            <Paragraph style={{ color: 'grey' }}>
               {SOCIAL_MEDIA_BASE_URLS.github}
             </Paragraph>
             <OutlinedInput
@@ -177,7 +149,7 @@ const EditSocialProfiles = ({
           </View>
 
           <View style={styles.inputContainer}>
-            <Paragraph style={{ color: "grey" }}>
+            <Paragraph style={{ color: 'grey' }}>
               {SOCIAL_MEDIA_BASE_URLS.stackoverflow}
             </Paragraph>
             <OutlinedInput
@@ -191,7 +163,7 @@ const EditSocialProfiles = ({
           </View>
 
           <View style={styles.inputContainer}>
-            <Paragraph style={{ color: "grey" }}>
+            <Paragraph style={{ color: 'grey' }}>
               {SOCIAL_MEDIA_BASE_URLS.facebook}
             </Paragraph>
             <OutlinedInput
@@ -205,7 +177,7 @@ const EditSocialProfiles = ({
           </View>
 
           <View style={styles.inputContainer}>
-            <Paragraph style={{ color: "grey" }}>
+            <Paragraph style={{ color: 'grey' }}>
               {SOCIAL_MEDIA_BASE_URLS.instagram}
             </Paragraph>
             <OutlinedInput
@@ -219,7 +191,7 @@ const EditSocialProfiles = ({
           </View>
 
           <View style={styles.inputContainer}>
-            <Paragraph style={{ color: "grey" }}>
+            <Paragraph style={{ color: 'grey' }}>
               {SOCIAL_MEDIA_BASE_URLS.youtube}
             </Paragraph>
             <OutlinedInput
@@ -232,15 +204,6 @@ const EditSocialProfiles = ({
             />
           </View>
         </ScrollView>
-        {popupShow && (
-          <PopupAlert
-            MESSAGE_TEXT={popupMsg}
-            MESSAGE_WIDTH={popupWidth}
-            MESSAGE_TYPE={popupType}
-            MESSAGE_DURATION={popupDuration}
-            onDisplayComplete={onPopupComplete}
-          />
-        )}
       </KeyboardAvoidingView>
     </>
   );
@@ -248,12 +211,12 @@ const EditSocialProfiles = ({
 
 const styles = StyleSheet.create({
   inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     margin: 10,
     height: 60,
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: 'grey',
     borderRadius: 5,
     padding: 10
   }
@@ -265,7 +228,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   editEmployeeSocialProfilesStart: (socialProfilesData, callback) =>
-    dispatch(editEmployeeSocialProfilesStart(socialProfilesData, callback))
+    dispatch(editEmployeeSocialProfilesStart(socialProfilesData, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditSocialProfiles);

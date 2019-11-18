@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { View, ScrollView, Alert, KeyboardAvoidingView } from 'react-native';
+import { ScrollView, Alert, KeyboardAvoidingView } from 'react-native';
 import { Appbar, Text } from 'react-native-paper';
 
 import { selectCurrentEmployee } from '../../redux/current-user/current-user.selectors';
-import {
-  selectLoading,
-  selectErrorMessage
-} from '../../redux/applications/applications.selectors';
 import {
   createNewApplicationStart,
   updateExistingApplicationStart,
   deleteApplicationStart
 } from '../../redux/applications/applications.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
 import QuestionCard from './question-card.component';
 
@@ -24,8 +21,7 @@ const EditApplication = ({
   createNewApplicationStart,
   updateExistingApplicationStart,
   deleteApplicationStart,
-  loading,
-  errorMessage
+  showPopupApi
 }) => {
   const job = navigation.getParam('job');
   const application = navigation.getParam('application');
@@ -50,6 +46,8 @@ const EditApplication = ({
     application ? application.answers : getNewAnswersTemplate()
   );
 
+  const [disabled, setDisabled] = useState(false);
+
   const _handleDelete = () => {
     Alert.alert(
       'Delete Application',
@@ -72,15 +70,51 @@ const EditApplication = ({
     if (application) {
       // edit application
       const newApplication = { ...application, answers };
-      updateExistingApplicationStart(newApplication);
+      updateExistingApplicationStart(newApplication, err => {
+        if (err) {
+          showPopupApi({
+            type: 'danger',
+            message:
+              err.response && err.response.data && err.response.data.errors
+                ? err.response.data.errors.map(err => err.msg).toString()
+                : 'Please check your connection'
+          });
+          setDisabled(false);
+          return console.log(err);
+        }
+
+        showPopupApi({
+          message: 'Application edited successfully',
+          duration: 600
+        });
+        setDisabled(false);
+        setAnswers(application ? application.answers : getNewAnswersTemplate());
+        navigation.goBack();
+      });
     } else {
       // create new application
       const newApplication = { job: job_id, answers };
-      createNewApplicationStart(newApplication);
-    }
-    if (!loading && errorMessage.length === 0) {
-      setAnswers(application ? application.answers : getNewAnswersTemplate());
-      navigation.goBack();
+      createNewApplicationStart(newApplication, err => {
+        if (err) {
+          showPopupApi({
+            type: 'danger',
+            message:
+              err.response && err.response.data && err.response.data.errors
+                ? err.response.data.errors.map(err => err.msg).toString()
+                : 'Please check your connection'
+          });
+          setDisabled(false);
+          return console.log(err);
+        }
+
+        showPopupApi({
+          message: 'Application created successfully',
+          duration: 600
+        });
+        setDisabled(false);
+        setAnswers(application ? application.answers : getNewAnswersTemplate());
+        navigation.goBack();
+      });
     }
   };
 
@@ -89,11 +123,11 @@ const EditApplication = ({
       <>
         <Appbar.Header>
           <Appbar.Action
-            icon='menu'
+            icon="menu"
             onPress={() => navigation.toggleDrawer()}
           />
-          <Appbar.Content title='Edit Application' />
-          <Appbar.Action icon='delete' onPress={_handleDelete} />
+          <Appbar.Content title="Edit Application" />
+          <Appbar.Action icon="delete" onPress={_handleDelete} />
         </Appbar.Header>
         <Text>There is no questions attached to this job</Text>
       </>
@@ -103,15 +137,15 @@ const EditApplication = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Edit Application' />
-        <Appbar.Action icon='delete' onPress={_handleDelete} />
-        <Appbar.Action icon='save' onPress={_handleSave} />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Edit Application" />
+        <Appbar.Action icon="delete" onPress={_handleDelete} />
+        <Appbar.Action icon="save" disabled={disabled} onPress={_handleSave} />
       </Appbar.Header>
 
       <KeyboardAvoidingView
         style={styles.screen}
-        behavior='padding'
+        behavior="padding"
         keyboardVerticalOffset={5}
       >
         <ScrollView style={{ flex: 1 }}>
@@ -135,20 +169,17 @@ const EditApplication = ({
 };
 
 const mapStateToProps = createStructuredSelector({
-  currentEmployee: selectCurrentEmployee,
-  loading: selectLoading,
-  errorMessage: selectErrorMessage
+  currentEmployee: selectCurrentEmployee
 });
 
 const mapDispatchToProps = dispatch => ({
-  createNewApplicationStart: appData =>
-    dispatch(createNewApplicationStart(appData)),
-  updateExistingApplicationStart: appData =>
-    dispatch(updateExistingApplicationStart(appData)),
-  deleteApplicationStart: appId => dispatch(deleteApplicationStart(appId))
+  createNewApplicationStart: (appData, callback) =>
+    dispatch(createNewApplicationStart(appData, callback)),
+  updateExistingApplicationStart: (appData, callback) =>
+    dispatch(updateExistingApplicationStart(appData, callback)),
+  deleteApplicationStart: (appId, callback) =>
+    dispatch(deleteApplicationStart(appId, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditApplication);
+export default connect(mapStateToProps, mapDispatchToProps)(EditApplication);

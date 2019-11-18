@@ -1,6 +1,5 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { AsyncStorage } from 'react-native';
-import Toast from 'react-native-root-toast';
 import axios from 'axios';
 
 import URLS from '../utils/urls';
@@ -26,7 +25,7 @@ import {
   contactUsFailure
 } from './current-user.actions';
 
-function* signUpUserAsync({ payload }) {
+function* signUpUserAsync({ payload, callback }) {
   try {
     const response = yield call(axios, {
       method: 'post',
@@ -36,18 +35,16 @@ function* signUpUserAsync({ payload }) {
 
     yield AsyncStorage.setItem('token', response.data.token);
 
+    yield call(callback);
     yield put(signUpUserSuccess(response.data));
   } catch (err) {
     console.log('signUpUserAsync', err.response);
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(signUpUserFailure(err.message));
   }
 }
 
-function* signInUserAsync({ payload }) {
+function* signInUserAsync({ payload, callback }) {
   try {
     const response = yield call(axios, {
       method: 'post',
@@ -57,18 +54,16 @@ function* signInUserAsync({ payload }) {
 
     yield AsyncStorage.setItem('token', response.data.token);
 
+    yield call(callback);
     yield put(signInUserSuccess(response.data));
   } catch (err) {
+    yield call(callback, err);
     console.log('signInUserAsync', err.response);
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
     yield put(signInUserFailure(err.message));
   }
 }
 
-function* loadingUserAsync() {
+function* loadingUserAsync({ callback }) {
   try {
     yield setAuthToken();
 
@@ -77,14 +72,16 @@ function* loadingUserAsync() {
       url: URLS.AUTH
     });
 
+    yield call(callback);
     yield put(loadingUserSuccess(response.data));
   } catch (err) {
+    yield call(callback, err);
     console.log('loadingUserAsync', err.response);
     yield put(loadingUserFailure(err.message));
   }
 }
 
-function* changePasswordAsync({ payload }) {
+function* changePasswordAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -94,18 +91,16 @@ function* changePasswordAsync({ payload }) {
       data: payload
     });
 
+    yield call(callback);
     yield put(changePasswordSuccess(response.data));
-    Toast.show('Password changed successfully', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
+    yield call(callback, err);
     console.log('changePasswordAsync', err.response);
     yield put(changePasswordFailure(err.message));
   }
 }
 
-function* forgetPasswordAsync({ payload }) {
+function* forgetPasswordAsync({ payload, callback }) {
   try {
     yield call(axios, {
       method: 'post',
@@ -113,18 +108,16 @@ function* forgetPasswordAsync({ payload }) {
       data: { email: payload }
     });
 
+    yield call(callback);
     yield put(forgetPasswordSuccess());
-    Toast.show(`Password sent to ${payload} successfully`, {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
+    yield call(callback, err);
     console.log('forgetPasswordAsync', err.response);
     yield put(forgetPasswordFailure(err.message));
   }
 }
 
-function* contactUsAsync({ payload }) {
+function* contactUsAsync({ payload, callback }) {
   try {
     yield call(axios, {
       method: 'post',
@@ -132,18 +125,16 @@ function* contactUsAsync({ payload }) {
       data: payload
     });
 
+    yield call(callback);
     yield put(contactUsSuccess());
-    Toast.show('Email sent successfully\nThanks', {
-      backgroundColor: 'green',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
+    yield call(callback, err);
     console.log('contactUsAsync', err.response);
     yield put(contactUsFailure(err.message));
   }
 }
 
-function* signOutUserAsync() {
+function* signOutUserAsync({ callback }) {
   try {
     yield setAuthToken();
 
@@ -154,18 +145,16 @@ function* signOutUserAsync() {
 
     yield AsyncStorage.removeItem('token');
 
+    yield call(callback);
     yield put(signoutUserSuccess());
   } catch (err) {
+    yield call(callback, err);
     console.log('signOutUserAsync', err.response);
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
     yield put(signoutUserFailure(err.message));
   }
 }
 
-function* deleteUserAsync({ payload }) {
+function* deleteUserAsync({ payload, callback }) {
   try {
     yield setAuthToken();
 
@@ -177,18 +166,12 @@ function* deleteUserAsync({ payload }) {
 
     yield AsyncStorage.removeItem('token');
 
+    yield call(callback);
     yield put(deleteUserSuccess());
-    Toast.show('User deleted successfully', {
-      backgroundColor: 'red',
-      duration: Toast.durations.SHORT
-    });
   } catch (err) {
-    console.log('deleteUserAsync', err.response);
-    Toast.show(err.message, {
-      backgroundColor: 'red',
-      duration: Toast.durations.LONG
-    });
+    yield call(callback, err);
     yield put(deleteUserFailure(err.message));
+    console.log('deleteUserAsync', err.response);
   }
 }
 

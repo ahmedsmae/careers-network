@@ -1,9 +1,10 @@
 import SavedActionTypes from './saved.types';
 
 // SAVE JOB
-export const saveJobStart = jobId => ({
+export const saveJobStart = (jobId, callback) => ({
   type: SavedActionTypes.SAVE_JOB_START,
-  payload: jobId
+  payload: jobId,
+  callback
 });
 
 export const saveJobSuccess = employeeSavedJobs => ({
@@ -17,9 +18,10 @@ export const saveJobFailure = errorMessage => ({
 });
 
 // UNSAVE JOB
-export const unsaveJobStart = savedId => ({
+export const unsaveJobStart = (savedId, callback) => ({
   type: SavedActionTypes.UNSAVE_JOB_START,
-  payload: savedId
+  payload: savedId,
+  callback
 });
 
 export const unsaveJobSuccess = employeeSavedJobs => ({
@@ -33,8 +35,9 @@ export const unsaveJobFailure = errorMessage => ({
 });
 
 // GET ALL EMPLOYEE SAVED JOBS
-export const getAllEmployeeSavedJobsStart = () => ({
-  type: SavedActionTypes.GET_ALL_EMPLOYEE_SAVED_JOBS_START
+export const getAllEmployeeSavedJobsStart = callback => ({
+  type: SavedActionTypes.GET_ALL_EMPLOYEE_SAVED_JOBS_START,
+  callback
 });
 
 export const getAllEmployeeSavedJobsSuccess = employeeSavedJobs => ({

@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
-import { Animated, StyleSheet } from "react-native";
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { Animated, StyleSheet } from 'react-native';
 
-const PopupAlert = ({
-  MESSAGE_TEXT,
-  MESSAGE_WIDTH,
-  MESSAGE_TYPE,
-  MESSAGE_DURATION,
-  onDisplayComplete
+import { selectPopupApi } from '../../redux/api-utilities/api-utilities.selectors';
+import { hidePopupApi } from '../../redux/api-utilities/api-utilities.actions';
+
+const PopupApi = ({
+  popupApi: { duration, width, message, type },
+  hidePopupApi
 }) => {
   const _position = new Animated.Value(75);
   const _width = new Animated.Value(35);
@@ -23,29 +25,29 @@ const PopupAlert = ({
         friction: 7,
         tension: 80
       }),
-      Animated.spring(_width, { toValue: MESSAGE_WIDTH, duration: 700 }),
-      Animated.delay(MESSAGE_DURATION),
+      Animated.spring(_width, { toValue: width, duration: 700 }),
+      Animated.delay(duration),
       Animated.timing(_position, { toValue: 75, duration: 200 }),
       Animated.timing(_width, { toValue: 35 })
-    ]).start(onDisplayComplete);
+    ]).start(hidePopupApi);
   });
 
   return (
     <Animated.View
       style={[
         styles.message,
-        { backgroundColor: MESSAGE_TYPE === "success" ? "#27d956" : "#ed3e49" },
+        { backgroundColor: type === 'success' ? '#27d956' : '#ed3e49' },
         positionStyles,
         widthStyles
       ]}
     >
-      {MESSAGE_TYPE === "success" ? (
+      {type === 'success' ? (
         <Animated.Text style={[styles.messageText]} numberOfLines={1}>
-          &#10003; {MESSAGE_TEXT}
+          &#10003; {message}
         </Animated.Text>
       ) : (
         <Animated.Text style={[styles.messageText]} numberOfLines={1}>
-          &#10005; {MESSAGE_TEXT}
+          &#10005; {message}
         </Animated.Text>
       )}
     </Animated.View>
@@ -54,26 +56,34 @@ const PopupAlert = ({
 
 const styles = StyleSheet.create({
   message: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 20,
     height: 35,
     borderRadius: 16,
     opacity: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-    overflow: "hidden",
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    overflow: 'hidden',
     elevation: 10,
-    shadowColor: "grey",
+    shadowColor: 'grey',
     shadowOpacity: 0.6,
     shadowRadius: 5,
     zIndex: 100
   },
   messageText: {
     fontSize: 16,
-    color: "white",
+    color: 'white',
     marginHorizontal: 10
   }
 });
 
-export default PopupAlert;
+const mapStateToProps = createStructuredSelector({
+  popupApi: selectPopupApi
+});
+
+const mapDispatchToProps = dispatch => ({
+  hidePopupApi: () => dispatch(hidePopupApi())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PopupApi);

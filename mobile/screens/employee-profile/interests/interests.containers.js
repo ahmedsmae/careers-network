@@ -1,90 +1,74 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import { ScrollView, Alert } from "react-native";
-import { Appbar, Card, Button, FAB, Divider } from "react-native-paper";
-import { OutlinedInput, PopupAlert } from "../../../components";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { ScrollView, Alert } from 'react-native';
+import { Appbar, Card, Button, FAB, Divider } from 'react-native-paper';
+import { OutlinedInput } from '../../../components';
 
-import { selectCurrentEmployee } from "../../../redux/current-user/current-user.selectors";
+import { selectCurrentEmployee } from '../../../redux/current-user/current-user.selectors';
 
 import {
   addEmployeeInterestStart,
   deleteEmployeeInterestStart
-} from "../../../redux/current-user/current-user.actions";
+} from '../../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../../redux/api-utilities/api-utilities.actions';
 
-import Interests from "./interests.component";
+import Interests from './interests.component';
 
 const EmployeeEmployeeInterests = ({
   navigation,
   currentEmployee,
   addEmployeeInterestStart,
-  deleteEmployeeInterestStart
+  deleteEmployeeInterestStart,
+  showPopupApi
 }) => {
   const [addInterest, setAddInterest] = useState(false);
-  const [interest, setInterest] = useState("");
-  const [award, setAward] = useState("");
+  const [interest, setInterest] = useState('');
+  const [award, setAward] = useState('');
   const [disabled, setDisabled] = useState(false);
-  const [{ popupShow, popupMsg, popupWidth, popupType }, setPopup] = useState({
-    popupShow: false,
-    popupMsg: "",
-    popupWidth: 150,
-    popupType: "success"
-  });
 
   const _handleSubmit = () => {
     setDisabled(true);
-    addEmployeeInterestStart(
-      { interest, award },
-      // callback function
-      err => {
-        if (err) {
-          setPopup({
-            popupType: "danger",
-            popupMsg:
-              err.response && err.response.data && err.response.data.errors
-                ? err.response.data.errors.map(err => err.msg).toString()
-                : "Please check your connection",
-            popupShow: true,
-            popupWidth: 300
-          });
-          setDisabled(false);
-          return console.log(err);
-        }
-
-        setPopup({
-          popupType: "success",
-          popupMsg: "Interest added successfully",
-          popupShow: true,
-          popupWidth: 300
+    addEmployeeInterestStart({ interest, award }, err => {
+      if (err) {
+        showPopupApi({
+          type: 'danger',
+          message:
+            err.response && err.response.data && err.response.data.errors
+              ? err.response.data.errors.map(err => err.msg).toString()
+              : 'Please check your connection'
         });
-        setInterest("");
-        setAward("");
-        setAddInterest(false);
         setDisabled(false);
+        return console.log(err);
       }
-    );
+
+      showPopupApi({
+        message: 'Interest added successfully',
+        duration: 600
+      });
+      setInterest('');
+      setAward('');
+      setAddInterest(false);
+      setDisabled(false);
+    });
   };
 
   const _handleDelete = interestId => {
     deleteEmployeeInterestStart(interestId, err => {
       if (err) {
-        setPopup({
-          popupType: "danger",
-          popupMsg:
+        showPopupApi({
+          type: 'danger',
+          message:
             err.response && err.response.data && err.response.data.errors
               ? err.response.data.errors.map(err => err.msg).toString()
-              : "Please check your connection",
-          popupShow: true,
-          popupWidth: 300
+              : 'Please check your connection'
         });
         return console.log(err);
       }
 
-      setPopup({
-        popupType: "success",
-        popupMsg: "Interest deleted successfully",
-        popupShow: true,
-        popupWidth: 300
+      showPopupApi({
+        message: 'Interest deleted successfully',
+        duration: 600
       });
     });
   };
@@ -95,7 +79,7 @@ const EmployeeEmployeeInterests = ({
         <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
         <Appbar.Content title="Your Interests" />
         <Appbar.Action
-          icon={addInterest ? "close" : "add"}
+          icon={addInterest ? 'close' : 'add'}
           onPress={() => setAddInterest(!addInterest)}
         />
       </Appbar.Header>
@@ -125,7 +109,7 @@ const EmployeeEmployeeInterests = ({
                 onChange={({ value }) => setAward(value)}
               />
             </Card.Content>
-            <Card.Actions style={{ justifyContent: "center" }}>
+            <Card.Actions style={{ justifyContent: 'center' }}>
               <Button
                 mode="outlined"
                 disabled={disabled}
@@ -144,39 +128,28 @@ const EmployeeEmployeeInterests = ({
           interests={currentEmployee.interests}
           onInterestLongPress={interestId =>
             Alert.alert(
-              "Delete Interest",
-              "Are you sure you want to delete this interest ?",
+              'Delete Interest',
+              'Are you sure you want to delete this interest ?',
               [
-                { text: "Yes", onPress: _handleDelete.bind(this, interestId) },
-                { text: "Cancel" }
+                { text: 'Yes', onPress: _handleDelete.bind(this, interestId) },
+                { text: 'Cancel' }
               ]
             )
           }
         />
       </ScrollView>
-      {popupShow && (
-        <PopupAlert
-          MESSAGE_TEXT={popupMsg}
-          MESSAGE_WIDTH={popupWidth}
-          MESSAGE_TYPE={popupType}
-          MESSAGE_DURATION={1000}
-          onDisplayComplete={() =>
-            setPopup(prev => ({ ...prev, popupShow: false }))
-          }
-        />
-      )}
 
       <FAB
-        style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
+        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
         icon="list"
-        onPress={() => navigation.navigate("EmployeeProfile")}
+        onPress={() => navigation.navigate('EmployeeProfile')}
       />
     </>
   );
 };
 
 const EmployerEmployeeInterests = ({ navigation }) => {
-  const employee = navigation.getParam("employee");
+  const employee = navigation.getParam('employee');
 
   return (
     <>
@@ -188,9 +161,9 @@ const EmployerEmployeeInterests = ({ navigation }) => {
       <Interests interests={employee.interests} />
 
       <FAB
-        style={{ position: "absolute", margin: 16, right: 0, bottom: 0 }}
+        style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
         icon="list"
-        onPress={() => navigation.navigate("EmployeeProfile")}
+        onPress={() => navigation.navigate('EmployeeProfile')}
       />
     </>
   );
@@ -204,7 +177,8 @@ const mapDispatchToProps = dispatch => ({
   addEmployeeInterestStart: (interestData, callback) =>
     dispatch(addEmployeeInterestStart(interestData, callback)),
   deleteEmployeeInterestStart: (interestId, callback) =>
-    dispatch(deleteEmployeeInterestStart(interestId, callback))
+    dispatch(deleteEmployeeInterestStart(interestId, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 export const EmployeeEmployeeInterestsContainer = connect(
   mapStateToProps,

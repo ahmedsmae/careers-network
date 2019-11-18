@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
 import { Appbar, Portal, Provider, FAB, Text } from 'react-native-paper';
 
 import {
   selectCurrentUser,
-  selectCurrentEmployer,
-  selectLoading
+  selectCurrentEmployer
 } from '../../redux/current-user/current-user.selectors';
 import { selectCityNameById } from '../../redux/constants/constants.selectors';
 import {
@@ -21,6 +19,7 @@ import {
   followEmployerStart,
   unfollowEmployerStart
 } from '../../redux/follows/follows.actions';
+import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
 import CameraOrMemory from '../../components/camera-or-memory/camera-or-memory.component';
 
@@ -35,6 +34,7 @@ const EmployeeEmployerProfile = ({
   unfollowEmployerStart,
   isEmployerFollowed,
   getFollowIdByEmployerId,
+  showPopupApi,
   ...props
 }) => {
   const employer = navigation.getParam('employer');
@@ -42,21 +42,68 @@ const EmployeeEmployerProfile = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Employer Profile' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Employer Profile" />
 
         {isEmployerFollowed(employer._id) ? (
           <Appbar.Action
-            color='yellow'
-            icon='bookmark'
+            color="yellow"
+            icon="bookmark"
             onPress={() =>
-              unfollowEmployerStart(getFollowIdByEmployerId(employer._id))
+              unfollowEmployerStart(
+                getFollowIdByEmployerId(employer._id),
+                err => {
+                  if (err) {
+                    showPopupApi({
+                      type: 'danger',
+                      message:
+                        err.response &&
+                        err.response.data &&
+                        err.response.data.errors
+                          ? err.response.data.errors
+                              .map(err => err.msg)
+                              .toString()
+                          : 'Please check your connection'
+                    });
+                    return console.log(err);
+                  }
+
+                  showPopupApi({
+                    message: 'You are not following this employer anymore',
+                    width: 400,
+                    duration: 600
+                  });
+                }
+              )
             }
           />
         ) : (
           <Appbar.Action
-            icon='bookmark-border'
-            onPress={() => followEmployerStart(employer._id)}
+            icon="bookmark-border"
+            onPress={() =>
+              followEmployerStart(employer._id, err => {
+                if (err) {
+                  showPopupApi({
+                    type: 'danger',
+                    message:
+                      err.response &&
+                      err.response.data &&
+                      err.response.data.errors
+                        ? err.response.data.errors
+                            .map(err => err.msg)
+                            .toString()
+                        : 'Please check your connection'
+                  });
+                  return console.log(err);
+                }
+
+                showPopupApi({
+                  message: 'You are now following this employer',
+                  width: 400,
+                  duration: 600
+                });
+              })
+            }
           />
         )}
 
@@ -82,7 +129,7 @@ const EmployerEmployerProfile = ({
   editEmployerAvatarStart,
   editEmployerCoverStart,
   currentEmployer,
-  loading,
+  showPopupApi,
   ...props
 }) => {
   const [showFabOptions, setShowFabOptions] = useState(false);
@@ -94,8 +141,8 @@ const EmployerEmployerProfile = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Employer Profile' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Employer Profile" />
       </Appbar.Header>
 
       <Provider>
@@ -104,7 +151,25 @@ const EmployerEmployerProfile = ({
           hideDialog={() => setShowAvatarCameraOrMemory(false)}
           onImagePick={image => {
             setShowAvatarCameraOrMemory(false);
-            editEmployerAvatarStart(image);
+            editEmployerAvatarStart(image, err => {
+              if (err) {
+                showPopupApi({
+                  type: 'danger',
+                  message:
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.errors
+                      ? err.response.data.errors.map(err => err.msg).toString()
+                      : 'Please check your connection'
+                });
+                return console.log(err);
+              }
+
+              showPopupApi({
+                message: 'Image uploaded successfully',
+                duration: 600
+              });
+            });
           }}
         />
 
@@ -113,7 +178,25 @@ const EmployerEmployerProfile = ({
           hideDialog={() => setShowCoverCameraOrMemory(false)}
           onImagePick={image => {
             setShowCoverCameraOrMemory(false);
-            editEmployerCoverStart(image);
+            editEmployerCoverStart(image, err => {
+              if (err) {
+                showPopupApi({
+                  type: 'danger',
+                  message:
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.errors
+                      ? err.response.data.errors.map(err => err.msg).toString()
+                      : 'Please check your connection'
+                });
+                return console.log(err);
+              }
+
+              showPopupApi({
+                message: 'Cover uploaded successfully',
+                duration: 600
+              });
+            });
           }}
         />
 
@@ -124,7 +207,7 @@ const EmployerEmployerProfile = ({
             open={showFabOptions}
             icon={'settings'}
             fabStyle={{ backgroundColor: Colors.ACCENT }}
-            color='white'
+            color="white"
             actions={[
               {
                 icon: 'image',
@@ -161,7 +244,7 @@ const NoAuthEmployerProfile = ({ navigation, ...props }) => {
   return (
     <>
       <Appbar.Header>
-        <Appbar.Content title='Employer Profile' />
+        <Appbar.Content title="Employer Profile" />
         <Text
           style={{ fontSize: 18, color: 'white', margin: 10 }}
           onPress={() =>
@@ -183,17 +266,21 @@ const mapStateToProps = state => ({
   currentUser: selectCurrentUser(state),
   currentEmployer: selectCurrentEmployer(state),
   getCityNameById: id => selectCityNameById(id)(state),
-  loading: selectLoading(state),
   isEmployerFollowed: employerId => selectIsEmployerFollowed(employerId)(state),
   getFollowIdByEmployerId: employerId =>
     selectFollowIdByEmployerId(employerId)(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  editEmployerAvatarStart: avatar => dispatch(editEmployerAvatarStart(avatar)),
-  editEmployerCoverStart: cover => dispatch(editEmployerCoverStart(cover)),
-  followEmployerStart: employerId => dispatch(followEmployerStart(employerId)),
-  unfollowEmployerStart: followId => dispatch(unfollowEmployerStart(followId))
+  editEmployerAvatarStart: (avatar, callback) =>
+    dispatch(editEmployerAvatarStart(avatar, callback)),
+  editEmployerCoverStart: (cover, callback) =>
+    dispatch(editEmployerCoverStart(cover, callback)),
+  followEmployerStart: (employerId, callback) =>
+    dispatch(followEmployerStart(employerId, callback)),
+  unfollowEmployerStart: (followId, callback) =>
+    dispatch(unfollowEmployerStart(followId, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export const NoAuthEmployerProfileContainer = connect(

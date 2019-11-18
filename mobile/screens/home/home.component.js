@@ -12,7 +12,7 @@ import JobCard from './job-card.component';
 
 const Home = ({ navigation, homeJobs, getHomeJobsStart }) => {
   useEffect(() => {
-    getHomeJobsStart();
+    getHomeJobsStart(err => {});
   });
 
   return (
@@ -39,7 +39,9 @@ const Home = ({ navigation, homeJobs, getHomeJobsStart }) => {
           renderItem={({ item }) => (
             <JobCard
               job={item}
-              onPress={() => navigation.navigate('EmployeeShowJob', { job })}
+              onPress={() =>
+                navigation.navigate('EmployeeShowJob', { job: item })
+              }
             />
           )}
         />
@@ -53,7 +55,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getHomeJobsStart: () => dispatch(getHomeJobsStart())
+  getHomeJobsStart: callback => dispatch(getHomeJobsStart(callback))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

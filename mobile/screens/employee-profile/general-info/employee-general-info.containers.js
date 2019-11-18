@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Alert } from 'react-native';
 import { Appbar, Portal, Provider, FAB } from 'react-native-paper';
 
 import {
   selectCurrentUser,
-  selectCurrentEmployee,
-  selectLoading
+  selectCurrentEmployee
 } from '../../../redux/current-user/current-user.selectors';
 import { selectCityNameById } from '../../../redux/constants/constants.selectors';
 
-import {
-  editEmployeeAvatarStart,
-  deleteEmployeeEducationStart
-} from '../../../redux/current-user/current-user.actions';
+import { editEmployeeAvatarStart } from '../../../redux/current-user/current-user.actions';
+import { showPopupApi } from '../../../redux/api-utilities/api-utilities.actions';
 
 import CameraOrMemory from '../../../components/camera-or-memory/camera-or-memory.component';
 import EmployeeGeneralInfo from './employee-general-info.component';
@@ -24,7 +20,7 @@ const EmployeeEmployeeGeneralInfo = ({
   currentEmployee,
   editEmployeeAvatarStart,
   navigation,
-  deleteEmployeeEducationStart,
+  showPopupApi,
   ...props
 }) => {
   const [showFabOptions, setShowFabOptions] = useState(false);
@@ -33,8 +29,8 @@ const EmployeeEmployeeGeneralInfo = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Your General Info' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Your General Info" />
       </Appbar.Header>
 
       <CameraOrMemory
@@ -42,7 +38,23 @@ const EmployeeEmployeeGeneralInfo = ({
         hideDialog={() => setShowCameraOrMemory(false)}
         onImagePick={image => {
           setShowCameraOrMemory(false);
-          editEmployeeAvatarStart(image);
+          editEmployeeAvatarStart(image, err => {
+            if (err) {
+              showPopupApi({
+                type: 'danger',
+                message:
+                  err.response && err.response.data && err.response.data.errors
+                    ? err.response.data.errors.map(err => err.msg).toString()
+                    : 'Please check your connection'
+              });
+              return console.log(err);
+            }
+
+            showPopupApi({
+              message: 'Image uploaded successfully',
+              duration: 600
+            });
+          });
         }}
       />
 
@@ -54,7 +66,7 @@ const EmployeeEmployeeGeneralInfo = ({
             open={showFabOptions}
             icon={'settings'}
             fabStyle={{ backgroundColor: Colors.ACCENT }}
-            color='white'
+            color="white"
             actions={[
               {
                 icon: 'image',
@@ -91,8 +103,8 @@ const EmployerEmployeeGeneralInfo = ({ navigation, ...props }) => {
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Employee General Info' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Employee General Info" />
       </Appbar.Header>
 
       {/* to prevent employer user email from display in the employee profile */}
@@ -101,7 +113,7 @@ const EmployerEmployeeGeneralInfo = ({ navigation, ...props }) => {
       <FAB
         style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
         small
-        icon='list'
+        icon="list"
         onPress={() => navigation.navigate('EmployeeProfile')}
       />
     </>
@@ -111,13 +123,13 @@ const EmployerEmployeeGeneralInfo = ({ navigation, ...props }) => {
 const mapStateToProps = state => ({
   currentUser: selectCurrentUser(state),
   currentEmployee: selectCurrentEmployee(state),
-  getCityNameById: id => selectCityNameById(id)(state),
-  loading: selectLoading(state)
+  getCityNameById: id => selectCityNameById(id)(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  editEmployeeAvatarStart: avatar => dispatch(editEmployeeAvatarStart(avatar)),
-  deleteEmployeeEducationStart: id => dispatch(deleteEmployeeEducationStart(id))
+  editEmployeeAvatarStart: (avatar, callback) =>
+    dispatch(editEmployeeAvatarStart(avatar, callback)),
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 
 export const EmployeeEmployeeGeneralInfoContainer = connect(

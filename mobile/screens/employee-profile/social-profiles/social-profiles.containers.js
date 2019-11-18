@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { View, Text } from 'react-native';
 import { Appbar, Provider, Portal, FAB } from 'react-native-paper';
 
 import { selectCurrentEmployee } from '../../../redux/current-user/current-user.selectors';
@@ -16,8 +15,8 @@ const EmployeeEmployeeSocialProfiles = ({ navigation, currentEmployee }) => {
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Your Social Profiles' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Your Social Profiles" />
       </Appbar.Header>
 
       <Provider>
@@ -28,7 +27,7 @@ const EmployeeEmployeeSocialProfiles = ({ navigation, currentEmployee }) => {
             open={showFabOptions}
             icon={'settings'}
             fabStyle={{ backgroundColor: Colors.ACCENT }}
-            color='white'
+            color="white"
             actions={[
               {
                 icon: 'edit',
@@ -60,15 +59,15 @@ const EmployerEmployeeSocialProfiles = ({ navigation }) => {
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='Employee Social Profiles' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="Employee Social Profiles" />
       </Appbar.Header>
 
       <SocialProfiles social_profiles={employee.social_profiles} />
 
       <FAB
         style={{ position: 'absolute', margin: 16, right: 0, bottom: 0 }}
-        icon='list'
+        icon="list"
         onPress={() => navigation.navigate('EmployeeProfile')}
       />
     </>
@@ -79,14 +78,10 @@ const mapStateToProps = createStructuredSelector({
   currentEmployee: selectCurrentEmployee
 });
 
-const mapDispatchToProps = dispatch => ({});
+export const EmployeeEmployeeSocialProfilesContainer = connect(mapStateToProps)(
+  EmployeeEmployeeSocialProfiles
+);
 
-export const EmployeeEmployeeSocialProfilesContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EmployeeEmployeeSocialProfiles);
-
-export const EmployerEmployeeSocialProfilesContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EmployerEmployeeSocialProfiles);
+export const EmployerEmployeeSocialProfilesContainer = connect(mapStateToProps)(
+  EmployerEmployeeSocialProfiles
+);
