@@ -1,4 +1,5 @@
 export * from './custom-heading/custom-heading.rnc';
+export * from './custom-text/custom-text.component';
 export * from './custom-input/custom-input.rnc';
 
 import CustomIcon from './custom-icon/custom-icon.component';

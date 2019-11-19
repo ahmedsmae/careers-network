@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { ScrollView, Alert } from 'react-native';
-import { Appbar, TextInput, Button } from 'react-native-paper';
+import { Appbar, Button } from 'react-native-paper';
+import { OutlinedInput } from '../../components';
 
 import { selectCurrentUser } from '../../redux/current-user/current-user.selectors';
 import { contactUsStart } from '../../redux/current-user/current-user.actions';
@@ -23,7 +24,7 @@ const ContactUs = ({
   const { email, subject, message } = contactData;
   const [disabled, setDisabled] = useState(false);
 
-  const _handleChange = (name, value) => {
+  const _handleChange = ({ name, value }) => {
     setContactData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -75,37 +76,42 @@ const ContactUs = ({
       </Appbar.Header>
 
       <ScrollView>
-        <TextInput
+        <OutlinedInput
           style={{ margin: 10 }}
-          mode="outlined"
           keyboardType="email-address"
           disabled={!!currentUser}
           label="Email"
           value={email}
-          onChangeText={_handleChange.bind(this, 'email')}
+          name="email"
+          onChange={_handleChange}
         />
 
-        <TextInput
+        <OutlinedInput
           style={{ margin: 10 }}
-          mode="outlined"
           autoCapitalize="sentences"
           label="Subject"
           value={subject}
-          onChangeText={_handleChange.bind(this, 'subject')}
+          name="subject"
+          onChange={_handleChange}
         />
 
-        <TextInput
+        <OutlinedInput
           style={{ margin: 10 }}
-          mode="outlined"
           autoCapitalize="sentences"
           multiline
           numberOfLines={3}
           label="Message"
           value={message}
-          onChangeText={_handleChange.bind(this, 'message')}
+          name="message"
+          onChange={_handleChange}
         />
 
-        <Button mode="contained" disabled={disabled} onPress={_handleSubmit}>
+        <Button
+          style={{ marginHorizontal: 20, marginTop: 50 }}
+          mode="contained"
+          disabled={disabled}
+          onPress={_handleSubmit}
+        >
           Send Email
         </Button>
       </ScrollView>

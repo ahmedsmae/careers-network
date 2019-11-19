@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { View, TouchableWithoutFeedback } from 'react-native';
-import {
-  Card,
-  Title,
-  Caption,
-  Paragraph,
-  Portal,
-  Dialog
-} from 'react-native-paper';
+import { View, TouchableOpacity } from 'react-native';
+import { Card, Title, Caption, Paragraph } from 'react-native-paper';
 import { ImagePreview } from '../../../components';
 import moment from 'moment';
 
@@ -26,6 +19,7 @@ const Educations = ({
   randomDate
 }) => {
   const [showImage, setShowImage] = useState(false);
+  const [imageSource, setImageSource] = useState('');
 
   return (
     <>
@@ -54,17 +48,22 @@ const Educations = ({
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {hasCertificate && (
-                  <TouchableWithoutFeedback
-                    onPress={() => setShowImage(true)}
+                  <TouchableOpacity
+                    onPress={() => {
+                      setImageSource(
+                        `${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${edu._id}?t=${randomDate}`
+                      );
+                      setShowImage(true);
+                    }}
                     style={{ flex: 2, margin: 10, marginRight: 0 }}
                   >
                     <Card.Cover
-                      style={{ borderRadius: 5, height: 120 }}
+                      style={{ borderRadius: 5, height: 100 }}
                       source={{
                         uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${edu._id}?t=${randomDate}`
                       }}
                     />
-                  </TouchableWithoutFeedback>
+                  </TouchableOpacity>
                 )}
 
                 <Card.Content style={{ flex: 5 }}>
@@ -85,14 +84,16 @@ const Educations = ({
                   )}
                 </Card.Content>
               </View>
-              <ImagePreview
-                visible={showImage}
-                onDismiss={() => setShowImage(false)}
-                source={`${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${edu._id}?t=${randomDate}`}
-              />
             </Card>
           );
         })}
+
+      {/* keep it outside the education cards */}
+      <ImagePreview
+        visible={showImage}
+        onDismiss={() => setShowImage(false)}
+        source={imageSource}
+      />
     </>
   );
 };

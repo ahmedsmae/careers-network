@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { View, ScrollView, Picker } from 'react-native';
-import {
-  Appbar,
-  Paragraph,
-  TextInput,
-  Button,
-  Divider
-} from 'react-native-paper';
+import { View, ScrollView, Picker, KeyboardAvoidingView } from 'react-native';
+import { Appbar, Button, Divider } from 'react-native-paper';
+import { CB_Title, C_Paragraph, OutlinedInput } from '../../components';
 
 import { selectDeleteUserReasons } from '../../redux/constants/constants.selectors';
 import { deleteUserStart } from '../../redux/current-user/current-user.actions';
@@ -29,7 +24,7 @@ const DeleteUser = ({
   const { reason, details, email, password } = deleteData;
   const [disabled, setDisabled] = useState(false);
 
-  const _handleChange = (name, value) => {
+  const _handleChange = ({ name, value }) => {
     setDeleteData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -66,63 +61,82 @@ const DeleteUser = ({
         <Appbar.Content title="Delete User" />
       </Appbar.Header>
 
-      <ScrollView>
-        <Paragraph>This is unfortunate</Paragraph>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior="padding"
+        keyboardVerticalOffset={5}
+      >
+        <ScrollView>
+          <CB_Title style={{ marginLeft: 10 }}>
+            We are sorry to see you here :(
+          </CB_Title>
+          <C_Paragraph style={{ marginLeft: 10 }}>
+            It will be great if you can tell us why you consider leaving out
+            service
+          </C_Paragraph>
 
-        <View
-          style={{
-            borderWidth: 1,
-            margin: 10,
-            padding: 5,
-            borderRadius: 5,
-            borderColor: 'grey'
-          }}
-        >
-          <Picker
-            selectedValue={reason}
-            onValueChange={_handleChange.bind(this, 'reason')}
+          <View
+            style={{
+              borderWidth: 1,
+              margin: 10,
+              padding: 5,
+              borderRadius: 5,
+              borderColor: 'grey'
+            }}
           >
-            {deleteUserReasons.map((reason, index) => (
-              <Picker.Item key={index} label={reason} value={reason} />
-            ))}
-          </Picker>
-        </View>
+            <Picker
+              selectedValue={reason}
+              onValueChange={_handleChange.bind(this, 'reason')}
+            >
+              {deleteUserReasons.map((reason, index) => (
+                <Picker.Item key={index} label={reason} value={reason} />
+              ))}
+            </Picker>
+          </View>
 
-        <TextInput
-          style={{ margin: 10 }}
-          mode="outlined"
-          multiline
-          numberOfLines={3}
-          label="Details"
-          value={details}
-          onChangeText={_handleChange.bind(this, 'details')}
-        />
+          <OutlinedInput
+            style={{ margin: 10 }}
+            multiline
+            numberOfLines={3}
+            label="Details"
+            value={details}
+            name="details"
+            onChange={_handleChange}
+          />
 
-        <Divider />
-        <Paragraph>Sign In Required</Paragraph>
+          <Divider />
+          <CB_Title style={{ marginLeft: 10 }}>Sign in</CB_Title>
+          <C_Paragraph style={{ marginLeft: 10 }}>
+            Signing in is required to delete user
+          </C_Paragraph>
 
-        <TextInput
-          style={{ margin: 10 }}
-          mode="outlined"
-          label="Email"
-          value={email}
-          onChangeText={_handleChange.bind(this, 'email')}
-        />
+          <OutlinedInput
+            style={{ margin: 10 }}
+            label="Email"
+            value={email}
+            name="email"
+            onChange={_handleChange}
+          />
 
-        <TextInput
-          style={{ margin: 10 }}
-          mode="outlined"
-          label="Password"
-          secureTextEntry
-          value={password}
-          sec
-          onChangeText={_handleChange.bind(this, 'password')}
-        />
+          <OutlinedInput
+            style={{ margin: 10 }}
+            label="Password"
+            secureTextEntry
+            value={password}
+            name="password"
+            onChange={_handleChange}
+          />
 
-        <Button mode="contained" disabled={disabled} onPress={_handleSubmit}>
-          DELETE USER
-        </Button>
-      </ScrollView>
+          <Button
+            style={{ marginHorizontal: 20, marginTop: 50 }}
+            mode="contained"
+            disabled={disabled}
+            onPress={_handleSubmit}
+          >
+            DELETE USER
+          </Button>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 };

@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import { Button } from 'react-native-paper';
-import { H1, OutlinedInput, Filter } from '../../components';
+import { OutlinedInput, Filter, LogoText } from '../../components';
 
 import styles from './search.styles';
 
@@ -52,7 +52,9 @@ const Search = ({ citiesList, onSearch, disabled }) => {
             style={{ width: '100%', height: '100%', opacity: 0.5 }}
           />
 
-          <H1 style={{ bottom: 25, position: 'absolute' }}>Careers Network</H1>
+          <LogoText style={{ bottom: 25, position: 'absolute' }}>
+            Careers Network
+          </LogoText>
         </View>
 
         <OutlinedInput

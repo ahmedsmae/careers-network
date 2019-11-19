@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, Alert } from 'react-native';
-import { Appbar, TextInput, Button } from 'react-native-paper';
+import { Appbar, Button } from 'react-native-paper';
+import { OutlinedInput } from '../../components';
 
 import { changePasswordStart } from '../../redux/current-user/current-user.actions';
 import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
@@ -15,7 +16,7 @@ const ChangePassword = ({ navigation, changePasswordStart, showPopupApi }) => {
   const { oldPassword, newPassword, confirmNewPassword } = passwords;
   const [disabled, setDisabled] = useState(false);
 
-  const _handleChange = (name, value) => {
+  const _handleChange = ({ name, value }) => {
     setPasswords(prev => ({ ...prev, [name]: value }));
   };
 
@@ -58,34 +59,39 @@ const ChangePassword = ({ navigation, changePasswordStart, showPopupApi }) => {
       </Appbar.Header>
 
       <ScrollView>
-        <TextInput
+        <OutlinedInput
           style={{ margin: 10 }}
-          mode="outlined"
           label="Old Password"
           secureTextEntry
           value={oldPassword}
-          onChangeText={_handleChange.bind(this, 'oldPassword')}
+          name="oldPassword"
+          onChange={_handleChange}
         />
 
-        <TextInput
+        <OutlinedInput
           style={{ margin: 10 }}
-          mode="outlined"
           label="New Password"
           secureTextEntry
           value={newPassword}
-          onChangeText={_handleChange.bind(this, 'newPassword')}
+          name="newPassword"
+          onChange={_handleChange}
         />
 
-        <TextInput
+        <OutlinedInput
           style={{ margin: 10 }}
-          mode="outlined"
           label="Confirm New Password"
           secureTextEntry
           value={confirmNewPassword}
-          onChangeText={_handleChange.bind(this, 'confirmNewPassword')}
+          name="confirmNewPassword"
+          onChange={_handleChange}
         />
 
-        <Button mode="contained" disabled={disabled} onPress={_handleSubmit}>
+        <Button
+          style={{ marginHorizontal: 20, marginTop: 50 }}
+          mode="contained"
+          disabled={disabled}
+          onPress={_handleSubmit}
+        >
           Change Password
         </Button>
       </ScrollView>

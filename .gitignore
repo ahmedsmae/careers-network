@@ -10,5 +10,8 @@ mobile/*.orig.*
 mobile/web-build/
 mobile/web-report/
 
+client/node_modules/**/*
+client/build
+
 .env
 node_modules/**/*

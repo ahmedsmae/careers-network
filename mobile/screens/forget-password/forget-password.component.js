@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native';
-import { Appbar, Text, TextInput, Button } from 'react-native-paper';
+import { Appbar, Text, Button } from 'react-native-paper';
+import { OutlinedInput } from '../../components';
 
 import { forgetPasswordStart } from '../../redux/current-user/current-user.actions';
 import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
@@ -41,9 +42,8 @@ const ForgetPassword = ({ navigation, forgetPasswordStart, showPopupApi }) => {
       </Appbar.Header>
 
       <ScrollView>
-        <TextInput
+        <OutlinedInput
           style={{ margin: 10 }}
-          mode="outlined"
           label="Email"
           value={email}
           onChangeText={setEmail}
@@ -53,7 +53,12 @@ const ForgetPassword = ({ navigation, forgetPasswordStart, showPopupApi }) => {
           checking the email existance
         </Text>
 
-        <Button mode="contained" disabled={disabled} onPress={_handleSubmit}>
+        <Button
+          style={{ marginHorizontal: 20, marginTop: 50 }}
+          mode="contained"
+          disabled={disabled}
+          onPress={_handleSubmit}
+        >
           Send new password
         </Button>
       </ScrollView>

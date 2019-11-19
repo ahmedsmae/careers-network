@@ -7,8 +7,8 @@ import {
   Image,
   TouchableWithoutFeedback
 } from 'react-native';
-import { Divider, Headline, Paragraph, Title } from 'react-native-paper';
-import { ImagePreview } from '../../../components';
+import { Divider } from 'react-native-paper';
+import { ImagePreview, C_Paragraph, C_Headline } from '../../../components';
 import moment from 'moment';
 
 import URLS from '../../../redux/utils/urls';
@@ -91,8 +91,8 @@ const EmployeeGeneralInfo = ({
             display: first_name || middle_name || last_name ? 'flex' : 'none'
           }}
         >
-          <Paragraph>Full Name</Paragraph>
-          <Headline>{concatFullName()}</Headline>
+          <C_Paragraph>Full Name</C_Paragraph>
+          <C_Headline>{concatFullName()}</C_Headline>
         </View>
 
         <View
@@ -101,89 +101,89 @@ const EmployeeGeneralInfo = ({
           }}
         >
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Email</Paragraph>
-          <Title>{currentUser && currentUser.email}</Title>
+          <C_Paragraph>Email</C_Paragraph>
+          <C_Headline>{currentUser && currentUser.email}</C_Headline>
         </View>
 
         <View style={{ display: gender ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Gender</Paragraph>
-          <Title>{gender}</Title>
+          <C_Paragraph>Gender</C_Paragraph>
+          <C_Headline>{gender}</C_Headline>
         </View>
 
         <View style={{ display: birth_date ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Age</Paragraph>
-          <Title>
+          <C_Paragraph>Age</C_Paragraph>
+          <C_Headline>
             {moment(birth_date, 'YYYY')
               .add(1, 'year')
               .fromNow()
               .replace('ago', 'old')}
-          </Title>
+          </C_Headline>
         </View>
 
         <View style={{ display: nationality ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Nationality</Paragraph>
-          <Title>{nationality}</Title>
+          <C_Paragraph>Nationality</C_Paragraph>
+          <C_Headline>{nationality}</C_Headline>
         </View>
 
         <View style={{ display: religion ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Religion</Paragraph>
-          <Title>{religion}</Title>
+          <C_Paragraph>Religion</C_Paragraph>
+          <C_Headline>{religion}</C_Headline>
         </View>
 
         <View style={{ display: marital_status ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Marital Status</Paragraph>
-          <Title>{marital_status}</Title>
+          <C_Paragraph>Marital Status</C_Paragraph>
+          <C_Headline>{marital_status}</C_Headline>
         </View>
 
         <View style={{ display: number_of_dependents ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Number of Dependents</Paragraph>
-          <Title>{number_of_dependents}</Title>
+          <C_Paragraph>Number of Dependents</C_Paragraph>
+          <C_Headline>{number_of_dependents}</C_Headline>
         </View>
 
         <View style={{ display: residence_country ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Residence Country</Paragraph>
-          <Title>{residence_country}</Title>
+          <C_Paragraph>Residence Country</C_Paragraph>
+          <C_Headline>{residence_country}</C_Headline>
         </View>
 
         <View style={{ display: visa_type ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Visa Type</Paragraph>
-          <Title>{visa_type}</Title>
+          <C_Paragraph>Visa Type</C_Paragraph>
+          <C_Headline>{visa_type}</C_Headline>
         </View>
 
         <View style={{ display: location_id ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Location</Paragraph>
-          <Title>{getCityNameById(location_id)}</Title>
+          <C_Paragraph>Location</C_Paragraph>
+          <C_Headline>{getCityNameById(location_id)}</C_Headline>
         </View>
 
         <View style={{ display: contact_number ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Contact Number</Paragraph>
-          <Title>{contact_number}</Title>
+          <C_Paragraph>Contact Number</C_Paragraph>
+          <C_Headline>{contact_number}</C_Headline>
         </View>
 
         <View style={{ display: driving_licences ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Driving Licences from</Paragraph>
-          <Title>{driving_licences}</Title>
+          <C_Paragraph>Driving Licences from</C_Paragraph>
+          <C_Headline>{driving_licences}</C_Headline>
         </View>
 
         <View style={{ display: has_a_car ? 'flex' : 'none' }}>
-          <Title>Owns a car</Title>
+          <C_Headline>Owns a car</C_Headline>
         </View>
 
         <View style={{ display: bio ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Bio</Paragraph>
-          <Title>{bio}</Title>
+          <C_Paragraph>Bio</C_Paragraph>
+          <C_Headline>{bio}</C_Headline>
         </View>
       </ScrollView>
     </View>
