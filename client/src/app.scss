@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #333;
+    padding: 0;
+    margin: 0;
+  }
+}
