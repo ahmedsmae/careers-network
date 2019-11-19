@@ -1,10 +1,24 @@
-import React from 'react';
-import { View, ScrollView, Image } from 'react-native';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import {
+  View,
+  ScrollView,
+  Image,
+  TouchableWithoutFeedback
+} from 'react-native';
 import { Divider, Paragraph, Title, Headline } from 'react-native-paper';
+import { ImagePreview } from '../../components';
+import { selectRandomDate } from '../../redux/api-utilities/api-utilities.selectors';
 
 import styles from './employer-profile.styles';
 
-const EmployerProfile = ({ currentUser, employer, getCityNameById }) => {
+const EmployerProfile = ({
+  currentUser,
+  employer,
+  getCityNameById,
+  randomDate
+}) => {
   const _id = employer ? employer._id : null;
   const name = employer ? employer.name : null;
   const kind = employer ? employer.kind : null;
@@ -14,10 +28,12 @@ const EmployerProfile = ({ currentUser, employer, getCityNameById }) => {
   const web_site = employer ? employer.web_site : null;
   const bio = employer ? employer.bio : null;
 
+  const [showImage, setShowImage] = useState(false);
+
   return (
     <ScrollView style={styles.screen}>
       <Image
-        source={{ uri: `${URLS.SERVE_EMPLOYER_COVER}/${_id}` }}
+        source={{ uri: `${URLS.SERVE_EMPLOYER_COVER}/${_id}?r=${randomDate}` }}
         style={{ height: 150, width: '100%' }}
       />
       <View
@@ -36,11 +52,21 @@ const EmployerProfile = ({ currentUser, employer, getCityNameById }) => {
           borderColor: 'white'
         }}
       >
-        <Image
-          style={{ height: '100%', borderRadius: 5, width: '100%' }}
-          source={{ uri: `${URLS.SERVE_EMPLOYER_AVATAR}/${_id}` }}
-        />
+        <TouchableWithoutFeedback onPress={() => setShowImage(true)}>
+          <Image
+            style={{ height: '100%', borderRadius: 5, width: '100%' }}
+            source={{
+              uri: `${URLS.SERVE_EMPLOYER_AVATAR}/${_id}?r=${randomDate}`
+            }}
+          />
+        </TouchableWithoutFeedback>
       </View>
+
+      <ImagePreview
+        visible={showImage}
+        onDismiss={() => setShowImage(false)}
+        source={`${URLS.SERVE_EMPLOYER_AVATAR}/${_id}?r=${randomDate}`}
+      />
 
       <View style={{ marginHorizontal: 10 }}>
         <View style={{ display: name ? 'flex' : 'none' }}>
@@ -104,4 +130,8 @@ const EmployerProfile = ({ currentUser, employer, getCityNameById }) => {
   );
 };
 
-export default EmployerProfile;
+const mapStateToProps = createStructuredSelector({
+  randomDate: selectRandomDate
+});
+
+export default connect(mapStateToProps)(EmployerProfile);

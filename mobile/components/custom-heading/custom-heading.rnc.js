@@ -4,7 +4,7 @@ import { Title, Paragraph } from 'react-native-paper';
 
 export const H1 = ({ style, children, ...props }) => {
   return (
-    <Title style={[styles.h1, style]} {...props}>
+    <Title style={[styles.font, styles.h1, style]} {...props}>
       {children}
     </Title>
   );
@@ -12,7 +12,7 @@ export const H1 = ({ style, children, ...props }) => {
 
 export const H2 = ({ style, children, ...props }) => {
   return (
-    <Title style={[styles.h2, style]} {...props}>
+    <Title style={[styles.font, styles.h2, style]} {...props}>
       {children}
     </Title>
   );
@@ -20,7 +20,7 @@ export const H2 = ({ style, children, ...props }) => {
 
 export const H3 = ({ style, children, ...props }) => {
   return (
-    <Title style={[styles.h3, style]} {...props}>
+    <Title style={[styles.font, styles.h3, style]} {...props}>
       {children}
     </Title>
   );
@@ -28,7 +28,7 @@ export const H3 = ({ style, children, ...props }) => {
 
 export const H4 = ({ style, children, ...props }) => {
   return (
-    <Title style={[styles.h4, style]} {...props}>
+    <Title style={[styles.font, styles.h4, style]} {...props}>
       {children}
     </Title>
   );
@@ -36,7 +36,7 @@ export const H4 = ({ style, children, ...props }) => {
 
 export const H5 = ({ style, children, ...props }) => {
   return (
-    <Title style={[styles.h5, style]} {...props}>
+    <Title style={[styles.font, styles.h5, style]} {...props}>
       {children}
     </Title>
   );
@@ -44,7 +44,7 @@ export const H5 = ({ style, children, ...props }) => {
 
 export const H6 = ({ style, children, ...props }) => {
   return (
-    <Title style={[styles.h6, style]} {...props}>
+    <Title style={[styles.font, styles.h6, style]} {...props}>
       {children}
     </Title>
   );
@@ -52,7 +52,7 @@ export const H6 = ({ style, children, ...props }) => {
 
 export const Body1 = ({ style, children, ...props }) => {
   return (
-    <Paragraph style={[styles.body1, style]} {...props}>
+    <Paragraph style={[styles.font, styles.body1, style]} {...props}>
       {children}
     </Paragraph>
   );
@@ -60,7 +60,7 @@ export const Body1 = ({ style, children, ...props }) => {
 
 export const Body2 = ({ style, children, ...props }) => {
   return (
-    <Paragraph style={[styles.body2, style]} {...props}>
+    <Paragraph style={[styles.font, styles.body2, style]} {...props}>
       {children}
     </Paragraph>
   );
@@ -68,13 +68,16 @@ export const Body2 = ({ style, children, ...props }) => {
 
 export const Link = ({ style, children, ...props }) => {
   return (
-    <Paragraph style={[styles.link, style]} {...props}>
+    <Paragraph style={[styles.font, styles.link, style]} {...props}>
       {children}
     </Paragraph>
   );
 };
 
 const styles = StyleSheet.create({
+  font: {
+    fontFamily: 'roboto-medium'
+  },
   h1: {
     fontSize: 30
   },

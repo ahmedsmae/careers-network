@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { View, Text, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { Appbar, List, Avatar, Divider } from 'react-native-paper';
 
 import { selectAllEmployers } from '../../redux/admin/admin.selectors';
@@ -25,8 +25,8 @@ const AllEmployers = ({
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon='menu' onPress={() => navigation.toggleDrawer()} />
-        <Appbar.Content title='All Employers' />
+        <Appbar.Action icon="menu" onPress={() => navigation.toggleDrawer()} />
+        <Appbar.Content title="All Employers" />
       </Appbar.Header>
 
       <FlatList
@@ -67,7 +67,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(getAllEmployerJobsStart(employerId))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AllEmployers);
+export default connect(mapStateToProps, mapDispatchToProps)(AllEmployers);

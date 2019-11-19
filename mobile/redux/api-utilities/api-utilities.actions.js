@@ -8,3 +8,7 @@ export const showPopupApi = popupDetails => ({
 export const hidePopupApi = () => ({
   type: ApiUtilitiesActionTypes.HIDE_POPUP_API
 });
+
+export const updateRandomDate = () => ({
+  type: ApiUtilitiesActionTypes.UPDATE_RANDOM_DATE
+});

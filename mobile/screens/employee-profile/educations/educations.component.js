@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { View, TouchableWithoutFeedback } from 'react-native';
 import {
   Card,
   Title,
@@ -7,17 +9,21 @@ import {
   Paragraph,
   Portal,
   Dialog
-} from "react-native-paper";
-import moment from "moment";
+} from 'react-native-paper';
+import { ImagePreview } from '../../../components';
+import moment from 'moment';
 
-import URLS from "../../../redux/utils/urls";
+import { selectRandomDate } from '../../../redux/api-utilities/api-utilities.selectors';
+
+import URLS from '../../../redux/utils/urls';
 
 const Educations = ({
   educations,
   employeeId,
   onEducationPress,
   onEducationLongPress,
-  getCityNameById
+  getCityNameById,
+  randomDate
 }) => {
   const [showImage, setShowImage] = useState(false);
 
@@ -46,19 +52,19 @@ const Educations = ({
                 onEducationLongPress && onEducationLongPress.bind(this, edu)
               }
             >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {hasCertificate && (
-                  <TouchableOpacity
+                  <TouchableWithoutFeedback
                     onPress={() => setShowImage(true)}
                     style={{ flex: 2, margin: 10, marginRight: 0 }}
                   >
                     <Card.Cover
                       style={{ borderRadius: 5, height: 120 }}
                       source={{
-                        uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${edu._id}`
+                        uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${edu._id}?t=${randomDate}`
                       }}
                     />
-                  </TouchableOpacity>
+                  </TouchableWithoutFeedback>
                 )}
 
                 <Card.Content style={{ flex: 5 }}>
@@ -73,26 +79,17 @@ const Educations = ({
                     <Caption>{description}</Caption>
                   )}
                   {!!from && (
-                    <Caption>{`from: ${moment(from).format("MMM Do")}  -  to: ${
-                      current ? "current" : `${moment(to).format("MMM Do")}`
+                    <Caption>{`from: ${moment(from).format('MMM Do')}  -  to: ${
+                      current ? 'current' : `${moment(to).format('MMM Do')}`
                     }`}</Caption>
                   )}
                 </Card.Content>
               </View>
-              <Portal>
-                <Dialog
-                  style={{ maxHeight: 400 }}
-                  visible={showImage}
-                  onDismiss={() => setShowImage(false)}
-                >
-                  <Card.Cover
-                    style={{ borderRadius: 5, height: "100%", maxHeight: 400 }}
-                    source={{
-                      uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${_id}/${edu._id}`
-                    }}
-                  />
-                </Dialog>
-              </Portal>
+              <ImagePreview
+                visible={showImage}
+                onDismiss={() => setShowImage(false)}
+                source={`${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${edu._id}?t=${randomDate}`}
+              />
             </Card>
           );
         })}
@@ -100,4 +97,8 @@ const Educations = ({
   );
 };
 
-export default Educations;
+const mapStateToProps = createStructuredSelector({
+  randomDate: selectRandomDate
+});
+
+export default connect(mapStateToProps)(Educations);

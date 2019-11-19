@@ -3,11 +3,9 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { FlatList } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import { SorryParagraph } from '../../components';
+import { SorryParagraph, EmployerCard } from '../../components';
 
 import { selectFollowedEmployers } from '../../redux/follows/follows.selectors';
-
-import EmployerCard from './employer-card.component';
 
 const FollowedEmployers = ({ navigation, followedEmployers }) => {
   return (

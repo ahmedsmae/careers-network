@@ -154,7 +154,7 @@ function* publicGetEmployerJobsAsync({ payload, callback }) {
 
     const response = yield call(axios, {
       method: 'get',
-      url: `${URLS.PUBLIC_GET_ALL_EMPLOYER_JOBS}/${payload}`
+      url: `${URLS.GET_ALL_EMPLOYER_JOBS}/${payload}`
     });
 
     yield call(callback);

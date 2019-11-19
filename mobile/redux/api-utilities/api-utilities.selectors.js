@@ -6,3 +6,8 @@ export const selectPopupApi = createSelector(
   [selectApiUtilities],
   apiUtilities => apiUtilities.popupApi
 );
+
+export const selectRandomDate = createSelector(
+  [selectApiUtilities],
+  apiUtilities => apiUtilities.randomDate
+);

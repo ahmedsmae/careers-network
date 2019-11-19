@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Appbar, Portal, Provider, FAB } from 'react-native-paper';
+import { CameraOrMemory } from '../../../components';
 
 import {
   selectCurrentUser,
@@ -9,9 +10,11 @@ import {
 import { selectCityNameById } from '../../../redux/constants/constants.selectors';
 
 import { editEmployeeAvatarStart } from '../../../redux/current-user/current-user.actions';
-import { showPopupApi } from '../../../redux/api-utilities/api-utilities.actions';
+import {
+  showPopupApi,
+  updateRandomDate
+} from '../../../redux/api-utilities/api-utilities.actions';
 
-import CameraOrMemory from '../../../components/camera-or-memory/camera-or-memory.component';
 import EmployeeGeneralInfo from './employee-general-info.component';
 
 import Colors from '../../../constants/colors';
@@ -21,6 +24,7 @@ const EmployeeEmployeeGeneralInfo = ({
   editEmployeeAvatarStart,
   navigation,
   showPopupApi,
+  updateRandomDate,
   ...props
 }) => {
   const [showFabOptions, setShowFabOptions] = useState(false);
@@ -50,6 +54,7 @@ const EmployeeEmployeeGeneralInfo = ({
               return console.log(err);
             }
 
+            updateRandomDate();
             showPopupApi({
               message: 'Image uploaded successfully',
               duration: 600
@@ -129,7 +134,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   editEmployeeAvatarStart: (avatar, callback) =>
     dispatch(editEmployeeAvatarStart(avatar, callback)),
-  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails)),
+  updateRandomDate: () => dispatch(updateRandomDate())
 });
 
 export const EmployeeEmployeeGeneralInfoContainer = connect(

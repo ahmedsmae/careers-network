@@ -16,33 +16,31 @@ import { createRootNavigator } from './navigation/root-navigator';
 import { selectCurrentUser } from './redux/current-user/current-user.selectors';
 import { loadingUserStart } from './redux/current-user/current-user.actions';
 
+// Optimize memory usage and performance
+// https://reactnavigation.org/docs/en/react-native-screens.html
 useScreens();
 
-const fetchFonts = () => {
-  return Font.loadAsync({
-    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
-  });
-};
-
 const App = ({ loadingUserStart, currentUser }) => {
-  const [fontLoaded, setFontLoaded] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
-    loadingUserStart(err => {});
-  }, [loadingUserStart]);
-
-  if (!fontLoaded) {
-    return (
-      <AppLoading
-        startAsync={fetchFonts}
-        onFinish={() => setFontLoaded(true)}
-      />
-    );
-  }
+    loadingUserStart(err => {
+      if (err) console.log(err);
+      Font.loadAsync({
+        'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
+        'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
+        'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf')
+      })
+        .then(() => setDataLoaded(true))
+        .catch(error => console.log(error));
+    });
+  }, []);
 
   const Layout = createRootNavigator(currentUser);
-  return (
+
+  return !dataLoaded ? (
+    <AppLoading />
+  ) : (
     <>
       <Layout />
       <ApiContainer />

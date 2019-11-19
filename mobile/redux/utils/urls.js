@@ -42,7 +42,7 @@ export default URLS = {
   GET_ALL_EMPLOYER_JOBS: `${BASE_URL}/api/jobs/employerjobs`, // + /:employerid
   SEARCH_JOBS: `${BASE_URL}/api/jobs/search`, // + /:position/:locationid
   GET_EMPLOYEE_HOME_JOBS: `${BASE_URL}/api/jobs/homejobs/`,
-  PUBLIC_GET_ALL_EMPLOYER_JOBS: `${BASE_URL}/api/jobs`, // + /:employeeid
+  // PUBLIC_GET_ALL_EMPLOYER_JOBS: `${BASE_URL}/api/jobs`, // + /:employeeid
 
   CREATE_NEW_APPLICATION: `${BASE_URL}/api/applications/`,
   UPDATE_EXISTING_APPLICATION: `${BASE_URL}/api/applications/`,

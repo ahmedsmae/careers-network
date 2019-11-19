@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { FlatList } from 'react-native';
 import { Appbar, Searchbar, Provider } from 'react-native-paper';
+import { EmployeeJobCard } from '../../components';
 
 import { selectCurrentUser } from '../../redux/current-user/current-user.selectors';
 import { selectSelectedEmployerJobs } from '../../redux/jobs/jobs.selectors';
 import { publicGetEmployerJobsStart } from '../../redux/jobs/jobs.actions';
-
-import JobCard from './job-card.component';
 
 import Colors from '../../constants/colors';
 
@@ -69,7 +68,7 @@ const MyJobs = ({
           keyExtractor={(item, index) => item._id}
           data={displayList}
           renderItem={({ item }) => (
-            <JobCard
+            <EmployeeJobCard
               job={item}
               onPress={() =>
                 currentUser

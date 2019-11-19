@@ -7,7 +7,8 @@ const INITIAL_STATE = {
     type: 'success',
     duration: 1000,
     width: 300
-  }
+  },
+  randomDate: new Date()
 };
 
 const apiUtilitiesReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -32,6 +33,12 @@ const apiUtilitiesReducer = (state = INITIAL_STATE, { type, payload }) => {
           duration: 1000,
           width: 300
         }
+      };
+
+    case ApiUtilitiesActionTypes.UPDATE_RANDOM_DATE:
+      return {
+        ...state,
+        randomDate: new Date()
       };
 
     default:

@@ -33,7 +33,7 @@ const ImgPicker = ({ defaultImage, onImageTaken, style }) => {
       <FAB
         style={styles.fab}
         small
-        icon='create'
+        icon="create"
         onPress={() => setShowCameraOrMemory(true)}
       />
     </View>

@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { View, Alert } from 'react-native';
-import {
-  Appbar,
-  FAB,
-  Provider,
-  Portal,
-  Card,
-  Title,
-  Paragraph
-} from 'react-native-paper';
+import { Alert } from 'react-native';
+import { Appbar, FAB, Provider, Portal } from 'react-native-paper';
+import { EmployerCard } from '../../components';
 
 import { selectApplicationByJobId } from '../../redux/applications/applications.selectors';
 import {
@@ -25,10 +18,8 @@ import { deleteJobStart } from '../../redux/jobs/jobs.actions';
 import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
 
 import ShowJob from './show-job.component';
-import UserImage from '../../components/user-image/user-image.component';
 
 import Colors from '../../constants/colors';
-import URLS from '../../redux/utils/urls';
 
 import styles from './show-job.styles';
 
@@ -129,27 +120,12 @@ const EmployeeShowJob = ({
       </Appbar.Header>
 
       {job.owner._id && (
-        <Card
-          style={{ margin: 10 }}
+        <EmployerCard
+          employer={job.owner}
           onPress={() =>
             navigation.navigate('EmployerProfile', { employer: job.owner })
           }
-        >
-          <View
-            style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}
-          >
-            <UserImage
-              small
-              style={{ marginRight: 10 }}
-              source={`${URLS.SERVE_EMPLOYER_AVATAR}/${job.owner._id}`}
-            />
-
-            <View>
-              <Title>{job.owner.name}</Title>
-              <Paragraph>{job.owner.speciality}</Paragraph>
-            </View>
-          </View>
-        </Card>
+        />
       )}
 
       <ShowJob job={job} />
@@ -278,27 +254,12 @@ const NoAuthShowJob = ({ navigation }) => {
       </Appbar.Header>
 
       {job.owner._id && (
-        <Card
-          style={{ margin: 10 }}
+        <EmployerCard
+          employer={job.owner}
           onPress={() =>
             navigation.navigate('NoAuthEmployer', { employer: job.owner })
           }
-        >
-          <View
-            style={{ flexDirection: 'row', alignItems: 'center', padding: 10 }}
-          >
-            <UserImage
-              small
-              style={{ marginRight: 10 }}
-              source={`${URLS.SERVE_EMPLOYER_AVATAR}/${job.owner._id}`}
-            />
-
-            <View>
-              <Title>{job.owner.name}</Title>
-              <Paragraph>{job.owner.speciality}</Paragraph>
-            </View>
-          </View>
-        </Card>
+        />
       )}
 
       <ShowJob job={job} />

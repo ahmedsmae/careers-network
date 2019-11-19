@@ -21,8 +21,7 @@ import {
   selectCurrentEmployer,
   selectCurrentAdmin
 } from '../../redux/current-user/current-user.selectors';
-
-import UserImage from '../user-image/user-image.component';
+import { selectRandomDate } from '../../redux/api-utilities/api-utilities.selectors';
 
 import styles from './custom-drawer.styles';
 
@@ -31,9 +30,10 @@ const CustomDrawer = ({
   currentEmployee,
   currentEmployer,
   currentAdmin,
+  randomDate,
   ...props
 }) => {
-  const { navigate, toggleDrawer } = props.navigation;
+  const { navigate } = props.navigation;
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -48,21 +48,33 @@ const CustomDrawer = ({
           }
         }}
       >
-        <View style={styles.header}>
-          <UserImage
-            medium
-            style={styles.image}
-            source={
-              !!currentEmployee
-                ? `${URLS.SERVE_EMPLOYEE_AVATAR}/${currentEmployee._id}`
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            margin: 20
+          }}
+        >
+          <Image
+            style={{
+              width: 60,
+              height: 60,
+              borderWidth: 1,
+              borderColor: 'grey',
+              borderRadius: 10
+            }}
+            // to refresh the image everytime
+            source={{
+              uri: !!currentEmployee
+                ? `${URLS.SERVE_EMPLOYEE_AVATAR}/${currentEmployee._id}?r=${randomDate}`
                 : !!currentEmployer
-                ? `${URLS.SERVE_EMPLOYER_AVATAR}/${currentEmployer._id}`
+                ? `${URLS.SERVE_EMPLOYER_AVATAR}/${currentEmployer._id}?r=${randomDate}`
                 : !!currentAdmin
-                ? `${URLS.SERVE_EMPLOYER_AVATAR}/${currentAdmin._id}` //! serve admin avatar
+                ? `${URLS.SERVE_EMPLOYER_AVATAR}/${currentAdmin._id}?r=${randomDate}` // ! serve admin avatar
                 : null
-            }
+            }}
           />
-
           <Text>{currentUser && currentUser.email}</Text>
         </View>
       </TouchableWithoutFeedback>
@@ -90,7 +102,7 @@ const CustomDrawer = ({
                     Platform.OS === 'android' ? 'md-settings' : 'ios-settings'
                   }
                   size={23}
-                  color='grey'
+                  color="grey"
                 />
               </View>
               <Text style={styles.label}>Settings</Text>
@@ -104,7 +116,7 @@ const CustomDrawer = ({
                   style={styles.icon}
                   name={Platform.OS === 'android' ? 'md-send' : 'ios-send'}
                   size={23}
-                  color='grey'
+                  color="grey"
                 />
               </View>
               <Text style={styles.label}>Contact Us</Text>
@@ -122,7 +134,7 @@ const CustomDrawer = ({
                       : 'ios-information-circle-outline'
                   }
                   size={23}
-                  color='grey'
+                  color="grey"
                 />
               </View>
               <Text style={styles.label}>About</Text>
@@ -151,7 +163,8 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   currentEmployee: selectCurrentEmployee,
   currentEmployer: selectCurrentEmployer,
-  currentAdmin: selectCurrentAdmin
+  currentAdmin: selectCurrentAdmin,
+  randomDate: selectRandomDate
 });
 
 export default connect(mapStateToProps)(CustomDrawer);

@@ -3,8 +3,9 @@ const employer = {
   owner: '',
   name: '',
   kind: '',
+  size: '',
   speciality: '',
-  location_id: '', // or location > depends on the list of locations
+  location_id: '',
   contact_numbers: [
     {
       _id: '',
@@ -12,8 +13,17 @@ const employer = {
       contact_number: ''
     }
   ],
-  website: '',
   avatar: 'BINARY BUFFER',
   cover: 'BINARY BUFFER',
-  bio: ''
+  bio: '',
+  social_profiles: {
+    website: '',
+    linkedin: 'URL',
+    twitter: 'URL',
+    github: 'URL',
+    stackoverflow: 'URL',
+    facebook: 'URL',
+    instagram: 'URL',
+    youtube: 'URL'
+  }
 };

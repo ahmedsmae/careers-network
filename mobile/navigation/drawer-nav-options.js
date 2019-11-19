@@ -1,7 +1,6 @@
 import { Dimensions } from 'react-native';
 import Colors from '../constants/colors';
-
-import CustomDrawer from '../components/custom-drawer/custom-drawer.component';
+import { CustomDrawer } from '../components';
 
 export default drawerNavOptions = {
   contentComponent: CustomDrawer,
@@ -10,7 +9,7 @@ export default drawerNavOptions = {
   contentOptions: {
     activeTintColor: Colors.ACCENT,
     labelStyle: {
-      fontFamily: 'open-sans-bold'
+      fontFamily: 'roboto-bold'
     }
   }
 };

@@ -34,7 +34,7 @@ router.get('/', auth, async (req, res) => {
       const employer = await Employer.findById(sav.job.owner);
       finalSaved.push({
         ...sav,
-        job: { ...sav.job, employerName: employer.name }
+        job: { ...sav.job, owner: employer }
       });
     }
 

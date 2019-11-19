@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Platform } from "react-native";
-import { TextInput, Caption } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { TextInput, Caption, IconButton } from 'react-native-paper';
 
 export const OutlinedInput = ({
   name,
@@ -18,34 +17,31 @@ export const OutlinedInput = ({
       <View style={styles.container}>
         <TextInput
           mode="outlined"
-          style={{ width: "100%", backgroundColor: "white", paddingRight: 20 }}
+          style={styles.input}
           {...props}
           value={value}
           onChangeText={value => {
-            value.toString().trim() !== "" && setError(false);
+            value.toString().trim() !== '' && setError(false);
             onChange({ name, value });
           }}
           onBlur={() =>
-            required && value.toString().trim() === ""
+            required && value.toString().trim() === ''
               ? setError(true)
               : setError(false)
           }
         />
         {!!value && !!value.length && (
-          <TouchableOpacity
-            onPress={() => onChange({ name, value: "" })}
-            style={{ position: "absolute", right: 0, padding: 10, zIndex: 100 }}
-          >
-            <Ionicons
-              name={Platform.OS === "android" ? "md-close" : "ios-close"}
-              color="lightgrey"
-              size={24}
-            />
-          </TouchableOpacity>
+          <IconButton
+            icon="close"
+            size={30}
+            color="lightgrey"
+            style={styles.close}
+            onPress={() => onChange({ name, value: '' })}
+          />
         )}
       </View>
       {error && (
-        <Caption style={{ color: "red", marginLeft: 5 }}>{required}</Caption>
+        <Caption style={{ color: 'red', marginLeft: 5 }}>{required}</Caption>
       )}
     </View>
   );
@@ -53,7 +49,18 @@ export const OutlinedInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center"
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  input: {
+    width: '100%',
+    backgroundColor: 'white',
+    paddingRight: 20
+  },
+  close: {
+    position: 'absolute',
+    right: 0,
+    height: 40,
+    width: 40
   }
 });

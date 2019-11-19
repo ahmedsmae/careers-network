@@ -3,12 +3,10 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { FlatList } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import { SorryParagraph } from '../../components';
+import { SorryParagraph, EmployeeJobCard } from '../../components';
 
 import { selectHomeJobs } from '../../redux/jobs/jobs.selectors';
 import { getHomeJobsStart } from '../../redux/jobs/jobs.actions';
-
-import JobCard from './job-card.component';
 
 const Home = ({ navigation, homeJobs, getHomeJobsStart }) => {
   useEffect(() => {
@@ -37,7 +35,7 @@ const Home = ({ navigation, homeJobs, getHomeJobsStart }) => {
           data={homeJobs}
           keyExtractor={(item, _) => item._id}
           renderItem={({ item }) => (
-            <JobCard
+            <EmployeeJobCard
               job={item}
               onPress={() =>
                 navigation.navigate('EmployeeShowJob', { job: item })

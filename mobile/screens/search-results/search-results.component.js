@@ -1,9 +1,6 @@
 import React from 'react';
-import { FlatList, View } from 'react-native';
-import { Paragraph, Title } from 'react-native-paper';
-import { SorryParagraph } from '../../components';
-
-import JobCard from './job-card.component';
+import { FlatList } from 'react-native';
+import { SorryParagraph, EmployeeJobCard } from '../../components';
 
 import styles from './search-results.styles';
 
@@ -24,7 +21,7 @@ const SearchResults = ({ searchJobs, onJobSelect }) => {
       keyExtractor={(item, index) => item._id}
       data={searchJobs}
       renderItem={({ item }) => (
-        <JobCard job={item} onPress={onJobSelect.bind(this, item)} />
+        <EmployeeJobCard job={item} onPress={onJobSelect.bind(this, item)} />
       )}
     />
   );

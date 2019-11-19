@@ -1,14 +1,19 @@
-import React from "react";
-import { Card, Title, Caption, Paragraph } from "react-native-paper";
+import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { Card, Title, Caption, Paragraph } from 'react-native-paper';
 
-import URLS from "../../../redux/utils/urls";
+import { selectRandomDate } from '../../../redux/api-utilities/api-utilities.selectors';
+
+import URLS from '../../../redux/utils/urls';
 
 const Experiences = ({
   experiences,
   employeeId,
   onExperiencePress,
   onExperienceLongPress,
-  getCityNameById
+  getCityNameById,
+  randomDate
 }) => {
   return (
     <>
@@ -38,7 +43,8 @@ const Experiences = ({
               {hasCertificate && (
                 <Card.Cover
                   source={{
-                    uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${exp._id}` //! change to serve experience image
+                    //! change to serve experience image
+                    uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${exp._id}?t=${randomDate}`
                   }}
                 />
               )}
@@ -62,4 +68,6 @@ const Experiences = ({
   );
 };
 
-export default Experiences;
+export default connect(
+  createStructuredSelector({ randomDate: selectRandomDate })
+)(Experiences);

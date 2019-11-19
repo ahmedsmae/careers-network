@@ -21,7 +21,10 @@ import {
   selectCitiesList
 } from '../../redux/constants/constants.selectors';
 import { editEmployeeEducationStart } from '../../redux/current-user/current-user.actions';
-import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
+import {
+  showPopupApi,
+  updateRandomDate
+} from '../../redux/api-utilities/api-utilities.actions';
 
 import styles from './edit-education.styles';
 
@@ -31,7 +34,8 @@ const EditEducation = ({
   editEmployeeEducationStart,
   getCityNameById,
   citiesList,
-  showPopupApi
+  showPopupApi,
+  updateRandomDate
 }) => {
   const edu = navigation.getParam('education');
 
@@ -91,6 +95,7 @@ const EditEducation = ({
           return console.log(err);
         }
 
+        updateRandomDate();
         showPopupApi({
           message: 'Education edited successfully',
           duration: 600
@@ -214,7 +219,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   editEmployeeEducationStart: (info, callback) =>
     dispatch(editEmployeeEducationStart(info, callback)),
-  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails)),
+  updateRandomDate: () => dispatch(updateRandomDate())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditEducation);

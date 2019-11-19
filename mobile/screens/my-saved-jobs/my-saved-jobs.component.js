@@ -3,11 +3,9 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { FlatList } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import { SorryParagraph } from '../../components';
+import { SorryParagraph, EmployeeJobCard } from '../../components';
 
 import { selectSavedJobs } from '../../redux/saved/saved.selectors';
-
-import JobCard from './job-card.component';
 
 const MySavedJobs = ({ navigation, savedJobs }) => {
   return (
@@ -23,7 +21,7 @@ const MySavedJobs = ({ navigation, savedJobs }) => {
           data={savedJobs}
           keyExtractor={item => item._id}
           renderItem={({ item: { job } }) => (
-            <JobCard
+            <EmployeeJobCard
               job={job}
               onPress={() => navigation.navigate('EmployeeShowJob', { job })}
             />

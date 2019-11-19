@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Appbar, Portal, Provider, FAB, Text } from 'react-native-paper';
+import { CameraOrMemory } from '../../components';
 
 import {
   selectCurrentUser,
@@ -19,9 +20,10 @@ import {
   followEmployerStart,
   unfollowEmployerStart
 } from '../../redux/follows/follows.actions';
-import { showPopupApi } from '../../redux/api-utilities/api-utilities.actions';
-
-import CameraOrMemory from '../../components/camera-or-memory/camera-or-memory.component';
+import {
+  showPopupApi,
+  updateRandomDate
+} from '../../redux/api-utilities/api-utilities.actions';
 
 import EmployerProfile from './employer-profile.component';
 
@@ -130,6 +132,7 @@ const EmployerEmployerProfile = ({
   editEmployerCoverStart,
   currentEmployer,
   showPopupApi,
+  updateRandomDate,
   ...props
 }) => {
   const [showFabOptions, setShowFabOptions] = useState(false);
@@ -165,6 +168,7 @@ const EmployerEmployerProfile = ({
                 return console.log(err);
               }
 
+              updateRandomDate();
               showPopupApi({
                 message: 'Image uploaded successfully',
                 duration: 600
@@ -192,6 +196,7 @@ const EmployerEmployerProfile = ({
                 return console.log(err);
               }
 
+              updateRandomDate();
               showPopupApi({
                 message: 'Cover uploaded successfully',
                 duration: 600
@@ -280,7 +285,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(followEmployerStart(employerId, callback)),
   unfollowEmployerStart: (followId, callback) =>
     dispatch(unfollowEmployerStart(followId, callback)),
-  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
+  showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails)),
+  updateRandomDate: () => dispatch(updateRandomDate())
 });
 
 export const NoAuthEmployerProfileContainer = connect(
