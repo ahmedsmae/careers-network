@@ -31,7 +31,8 @@ const Settings = ({ navigation, signoutUserStart, showPopupApi }) => {
           title="Signout"
           description="Exit session"
           left={props => <List.Icon {...props} icon="exit-to-app" />}
-          onPress={() =>
+          onPress={() => {
+            setDisabled(true);
             signoutUserStart(err => {
               if (err) {
                 showPopupApi({
@@ -48,8 +49,8 @@ const Settings = ({ navigation, signoutUserStart, showPopupApi }) => {
               }
 
               setDisabled(false);
-            })
-          }
+            });
+          }}
         />
 
         <Divider />

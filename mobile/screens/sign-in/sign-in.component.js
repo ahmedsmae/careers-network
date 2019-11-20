@@ -21,6 +21,7 @@ const SignIn = ({ currentUser, navigation, signInUserStart, showPopupApi }) => {
   const [disabled, setDisabled] = useState(false);
 
   const handleSignIn = () => {
+    setDisabled(true);
     signInUserStart(email.trim(), password, err => {
       if (err) {
         showPopupApi({

@@ -29,6 +29,7 @@ const DeleteUser = ({
   };
 
   const _handleSubmit = () => {
+    setDisabled(true);
     deleteUserStart(
       { ...deleteData, email: email.toLowerCase().trim() },
       err => {

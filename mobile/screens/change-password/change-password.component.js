@@ -29,6 +29,7 @@ const ChangePassword = ({ navigation, changePasswordStart, showPopupApi }) => {
       );
     }
 
+    setDisabled(true);
     changePasswordStart(oldPassword, newPassword, err => {
       if (err) {
         showPopupApi({

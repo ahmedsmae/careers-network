@@ -37,6 +37,8 @@ const ContactUs = ({
         [{ text: 'OK' }]
       );
     }
+
+    setDisabled(true);
     contactUsStart(
       { ...contactData, email: email.toLowerCase().trim() },
       err => {

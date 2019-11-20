@@ -79,6 +79,7 @@ const EditEmployerInfo = ({
 
   const _handleSave = () => {
     const { location, filtering, ...rest } = employer;
+    setDisabled(true);
     editEmployerInfoStart(rest, err => {
       if (err) {
         showPopupApi({

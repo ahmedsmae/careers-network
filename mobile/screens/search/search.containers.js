@@ -31,6 +31,7 @@ const NoAuthSearch = ({
       <View style={{ marginTop: 30 }} />
       <Search
         onSearch={searchData => {
+          setDisabled(true);
           searchJobsStart(searchData, err => {
             if (err) {
               showPopupApi({
@@ -107,6 +108,7 @@ const AuthSearch = ({
 
       <Search
         onSearch={searchData => {
+          setDisabled(true);
           searchJobsStart(searchData, err => {
             if (err) {
               showPopupApi({

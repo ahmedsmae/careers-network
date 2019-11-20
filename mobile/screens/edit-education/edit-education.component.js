@@ -80,6 +80,7 @@ const EditEducation = ({
     const { location, filtering, from, to, ...rest } = education;
     const formatedFrom = from ? new Date(from).toString() : null;
     const formatedTo = to ? new Date(to).toString() : null;
+    setDisabled(true);
     editEmployeeEducationStart(
       { ...rest, from: formatedFrom, to: formatedTo },
       err => {

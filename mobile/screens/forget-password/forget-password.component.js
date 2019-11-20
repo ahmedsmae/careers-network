@@ -12,6 +12,7 @@ const ForgetPassword = ({ navigation, forgetPasswordStart, showPopupApi }) => {
   const [disabled, setDisabled] = useState(false);
 
   const _handleSubmit = () => {
+    setDisabled(true);
     forgetPasswordStart(email.toLowerCase().trim(), err => {
       if (err) {
         showPopupApi({

@@ -60,7 +60,8 @@ const EmployeeShowJob = ({
             disabled={disabled}
             icon="star"
             color="yellow"
-            onPress={() =>
+            onPress={() => {
+              setDisabled(true);
               unsaveJobStart(getSavedIdByJobId(job._id), err => {
                 if (err) {
                   showPopupApi({
@@ -83,8 +84,8 @@ const EmployeeShowJob = ({
                   duration: 600
                 });
                 setDisabled(false);
-              })
-            }
+              });
+            }}
           />
         ) : (
           <Appbar.Action
@@ -174,7 +175,8 @@ const EmployerShowJob = ({
               [
                 {
                   text: 'DELETE',
-                  onPress: () =>
+                  onPress: () => {
+                    setDisabled(true);
                     deleteJobStart(job._id, err => {
                       if (err) {
                         showPopupApi({
@@ -198,7 +200,8 @@ const EmployerShowJob = ({
                       });
                       setDisabled(false);
                       navigation.goBack();
-                    })
+                    });
+                  }
                 },
                 { text: 'CANCEL' }
               ]

@@ -108,6 +108,8 @@ const EditJob = ({
 
     const { expiry, ...rest } = currentJob;
     const formatedExpiry = expiry ? new Date(expiry).toString() : null;
+
+    setDisabled(true);
     job
       ? updateExistingJobStart(
           { ...currentJob, expiry: formatedExpiry },

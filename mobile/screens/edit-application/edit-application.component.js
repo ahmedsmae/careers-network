@@ -49,24 +49,47 @@ const EditApplication = ({
   const [disabled, setDisabled] = useState(false);
 
   const _handleDelete = () => {
+    setDisabled(true);
     Alert.alert(
       'Delete Application',
       'Are you sure you want to delete this application ?',
       [
         {
           text: 'DELETE',
-          onPress: () => deleteApplicationStart(application._id)
+          onPress: () =>
+            deleteApplicationStart(application._id, err => {
+              if (err) {
+                showPopupApi({
+                  type: 'danger',
+                  message:
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.errors
+                      ? err.response.data.errors.map(err => err.msg).toString()
+                      : 'Please check your connection'
+                });
+                setDisabled(false);
+                return console.log(err);
+              }
+
+              showPopupApi({
+                message: 'Application deleted successfully',
+                duration: 600
+              });
+              setDisabled(false);
+              setAnswers(
+                application ? application.answers : getNewAnswersTemplate()
+              );
+              navigation.goBack();
+            })
         },
         { text: 'CANCEL' }
       ]
     );
-
-    if (!loading && errorMessage.length === 0) {
-      navigation.goBack();
-    }
   };
 
   const _handleSave = () => {
+    setDisabled(true);
     if (application) {
       // edit application
       const newApplication = { ...application, answers };

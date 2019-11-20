@@ -88,6 +88,7 @@ const EditEmployeeEnfo = ({
     const formatedBirthDate = birth_date
       ? new Date(birth_date).toString()
       : null;
+    setDisabled(true);
     editEmployeeInfoStart({ ...rest, birth_date: formatedBirthDate }, err => {
       if (err) {
         showPopupApi({

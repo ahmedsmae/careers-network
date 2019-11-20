@@ -33,6 +33,7 @@ const SignUp = ({ currentUser, navigation, signUpUserStart, showPopupApi }) => {
       );
     }
 
+    setDisabled(true);
     signUpUserStart(email.trim(), password, err => {
       if (err) {
         showPopupApi({
