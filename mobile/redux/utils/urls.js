@@ -1,5 +1,5 @@
 // const BASE_URL = 'http://192.168.1.100:5000';
-const BASE_URL = 'https://afifi-careers-network.herokuapp.com/';
+const BASE_URL = 'https://afifi-careers-network.herokuapp.com';
 
 export default URLS = {
   SIGNUP: `${BASE_URL}/api/users/signup`,
