@@ -8,6 +8,7 @@ import SKILL_LEVELS_LIST from './skill-levels.data';
 import MARITAL_STATUSES_LIST from './marital-statuses.data';
 import RELIGIONS_LIST from './religions.data';
 import VISA_TYPES_LIST from './visa-types.data';
+import COMPANY_SIZES from './company-sizes.data';
 
 const INITIAL_STATE = {
   cities: CITIES_LIST,
@@ -19,7 +20,8 @@ const INITIAL_STATE = {
   skillLevels: SKILL_LEVELS_LIST,
   maritalStatuses: MARITAL_STATUSES_LIST,
   religions: RELIGIONS_LIST,
-  visaTypes: VISA_TYPES_LIST
+  visaTypes: VISA_TYPES_LIST,
+  companySizes: COMPANY_SIZES
 };
 
 const constantsReducer = (state = INITIAL_STATE, { type, payload }) => {

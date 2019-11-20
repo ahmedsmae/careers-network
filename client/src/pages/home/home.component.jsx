@@ -44,7 +44,7 @@ const Home = () => {
             rel="noopener noreferrer"
           >
             <img
-              style={{ width: 250, height: 73 }}
+              style={{ width: 200, height: 60 }}
               src={GoogleStoreImage}
               alt="Get it on Google Play Store"
             />
@@ -55,7 +55,7 @@ const Home = () => {
             rel="noopener noreferrer"
           >
             <img
-              style={{ width: 250, height: 73 }}
+              style={{ width: 200, height: 60 }}
               src={AppleStoreImage}
               alt="Get it on App Store"
             />

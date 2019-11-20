@@ -13,13 +13,10 @@ export const selectDeleteUserReasons = createSelector(
 );
 
 export const selectCityNameById = id =>
-  createSelector(
-    [selectCitiesList],
-    cities => {
-      const city = cities.find(c => c.id === id);
-      return city ? `${city.city} - ${city.country}` : null;
-    }
-  );
+  createSelector([selectCitiesList], cities => {
+    const city = cities.find(c => c.id === id);
+    return city ? `${city.city} - ${city.country}` : null;
+  });
 
 export const selectCountries = createSelector(
   [selectConstants],
@@ -59,4 +56,9 @@ export const selectReligions = createSelector(
 export const selectVisaTypes = createSelector(
   [selectConstants],
   constants => constants.visaTypes
+);
+
+export const selectCompanySizes = createSelector(
+  [selectConstants],
+  constants => constants.companySizes
 );

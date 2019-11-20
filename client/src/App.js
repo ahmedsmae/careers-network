@@ -17,9 +17,12 @@ function App() {
     <BrowserRouter>
       <MuiThemeProvider theme={appTheme}>
         <div className="wrapper">
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-          </Switch>
+          <div className="overlay" />
+          <div className="container">
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+            </Switch>
+          </div>
         </div>
       </MuiThemeProvider>
     </BrowserRouter>

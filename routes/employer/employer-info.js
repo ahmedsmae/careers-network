@@ -85,7 +85,7 @@ router.post(
 /**
  * @method - POST
  * @url - '/api/employers/info'
- * @data - { name, speciality, kind, contact_numbers, location_id, web_site, bio }
+ * @data - { name, speciality, kind, soze, contact_numbers, location_id, bio, social_profiles }
  * @action - add/edit employee data
  * @access - private
  */
@@ -115,10 +115,11 @@ router.post(
       name,
       speciality,
       kind,
+      size,
       contact_numbers,
       location_id,
-      web_site,
-      bio
+      bio,
+      social_profiles
     } = req.body;
 
     try {
@@ -133,10 +134,11 @@ router.post(
       if (name) employer.name = name;
       if (speciality) employer.speciality = speciality;
       if (kind) employer.kind = kind;
+      if (size) employer.size = size;
       if (contact_numbers) employer.contact_numbers = contact_numbers;
       if (location_id) employer.location_id = location_id;
-      if (web_site) employer.web_site = web_site;
       if (bio) employer.bio = bio;
+      if (social_profiles) employer.social_profiles = social_profiles;
 
       await employer.save();
 

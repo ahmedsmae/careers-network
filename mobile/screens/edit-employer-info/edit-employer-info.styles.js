@@ -13,5 +13,15 @@ export default StyleSheet.create({
   locationListItem: {
     padding: 10,
     margin: 5
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 10,
+    height: 60,
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 5,
+    padding: 10
   }
 });

@@ -35,11 +35,12 @@ const employerSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
+    size: {
+      type: String,
+      trim: true
+    },
     contact_numbers: [contactNumberSchema],
     location_id: {
-      type: String
-    },
-    web_site: {
       type: String
     },
     bio: {
@@ -51,6 +52,48 @@ const employerSchema = new mongoose.Schema(
     },
     cover: {
       type: Buffer
+    },
+    social_profiles: {
+      website: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      linkedin: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      twitter: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      github: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      stackoverflow: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      facebook: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      instagram: {
+        type: String,
+        lowercase: true,
+        trim: true
+      },
+      youtube: {
+        type: String,
+        lowercase: true,
+        trim: true
+      }
     }
   },
   { timestamps: true }

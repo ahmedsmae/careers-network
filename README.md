@@ -10,13 +10,21 @@ In the project directory, you can run:
 
 Launches the mobile side only
 
+### `npm run client`
+
+Launches the web side only
+
 ### `npm run server`
 
 Launches the server side only
 
 ### `npm run dev`
 
-Launches both mobile and server sides at the same time
+Launches web, mobile and server sides all at the same time
+
+### `npm run heroku-postbuild`
+
+For building up the client side before deployment to heroku
 
 #### `_templates` directory
 

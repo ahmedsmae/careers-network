@@ -8,26 +8,30 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 import { Divider, Paragraph, Title, Headline } from 'react-native-paper';
+
 import { ImagePreview } from '../../components';
 import { selectRandomDate } from '../../redux/api-utilities/api-utilities.selectors';
+
+import SocialProfiles from './social-profiles.component';
 
 import styles from './employer-profile.styles';
 
 const EmployerProfile = ({
   currentUser,
-  employer,
+  employer: {
+    _id,
+    name,
+    kind,
+    size,
+    speciality,
+    location_id,
+    contact_numbers,
+    bio,
+    social_profiles
+  },
   getCityNameById,
   randomDate
 }) => {
-  const _id = employer ? employer._id : null;
-  const name = employer ? employer.name : null;
-  const kind = employer ? employer.kind : null;
-  const speciality = employer ? employer.speciality : null;
-  const location_id = employer ? employer.location_id : null;
-  const contact_numbers = employer ? employer.contact_numbers : null;
-  const web_site = employer ? employer.web_site : null;
-  const bio = employer ? employer.bio : null;
-
   const [showImage, setShowImage] = useState(false);
 
   return (
@@ -80,6 +84,12 @@ const EmployerProfile = ({
           <Title>{kind}</Title>
         </View>
 
+        <View style={{ display: size ? 'flex' : 'none' }}>
+          <Divider style={{ marginTop: 10 }} />
+          <Paragraph>Size</Paragraph>
+          <Title>{size}</Title>
+        </View>
+
         <View style={{ display: speciality ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
           <Paragraph>Speciality</Paragraph>
@@ -114,17 +124,15 @@ const EmployerProfile = ({
           <Title>{getCityNameById(location_id)}</Title>
         </View>
 
-        <View style={{ display: web_site ? 'flex' : 'none' }}>
-          <Divider style={{ marginTop: 10 }} />
-          <Paragraph>Website</Paragraph>
-          <Title>{web_site}</Title>
-        </View>
-
         <View style={{ display: bio ? 'flex' : 'none' }}>
           <Divider style={{ marginTop: 10 }} />
           <Paragraph>Bio</Paragraph>
           <Title>{bio}</Title>
         </View>
+
+        {!!social_profiles && (
+          <SocialProfiles socialProfiles={social_profiles} />
+        )}
       </View>
     </ScrollView>
   );

@@ -23,18 +23,16 @@ const EditSocialProfiles = ({
   editEmployeeSocialProfilesStart,
   showPopupApi
 }) => {
-  const [socialProfiles, setSocialProfiles] = useState(
-    social_profiles || {
-      website: '',
-      linkedin: '',
-      twitter: '',
-      github: '',
-      stackoverflow: '',
-      facebook: '',
-      instagram: '',
-      youtube: ''
-    }
-  );
+  const [socialProfiles, setSocialProfiles] = useState({
+    website: social_profiles.website || '',
+    linkedin: social_profiles.linkedin || '',
+    twitter: social_profiles.twitter || '',
+    github: social_profiles.github || '',
+    stackoverflow: social_profiles.stackoverflow || '',
+    facebook: social_profiles.facebook || '',
+    instagram: social_profiles.instagram || '',
+    youtube: social_profiles.youtube || ''
+  });
 
   const [disabled, setDisabled] = useState(false);
 

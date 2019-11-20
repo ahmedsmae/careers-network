@@ -33,34 +33,29 @@ const EditEmployeeEnfo = ({
   maritalStatusesList,
   showPopupApi
 }) => {
-  const [employee, setEmployee] = useState(
-    currentEmployee
-      ? {
-          ...currentEmployee,
-          location: getCityName(currentEmployee.location_id),
-          filtering: false
-        }
-      : {
-          first_name: '',
-          middle_name: '',
-          last_name: '',
-          gender: '',
-          birth_date: null,
-          nationality: '',
-          religion: '',
-          marital_status: '',
-          number_of_dependents: '',
-          residence_country: '',
-          visa_type: '',
-          contact_number: '',
-          driving_licenses: ['Egypt', 'UAE', 'USA'],
-          has_a_car: false,
-          location: '',
-          location_id: '',
-          bio,
-          filtering: false
-        }
-  );
+  const [employee, setEmployee] = useState({
+    first_name: currentEmployee.first_name || '',
+    middle_name: currentEmployee.middle_name || '',
+    last_name: currentEmployee.last_name || '',
+    gender: currentEmployee.gender || '',
+    birth_date: currentEmployee.birth_date || null,
+    nationality: currentEmployee.nationality || '',
+    religion: currentEmployee.religion || '',
+    marital_status: currentEmployee.marital_status || '',
+    number_of_dependents: currentEmployee.number_of_dependents || '',
+    residence_country: currentEmployee.residence_country || '',
+    visa_type: currentEmployee.visa_type || '',
+    contact_number: currentEmployee.contact_number || '',
+    driving_licenses: currentEmployee.driving_licenses || [],
+    has_a_car: currentEmployee.has_a_car || false,
+    location_id: currentEmployee.location_id || '',
+    location: currentEmployee.location_id
+      ? getCityName(currentEmployee.location_id)
+      : '',
+    bio: currentEmployee.bio || ''
+  });
+
+  const [disabled, setDisabled] = useState(false);
 
   const {
     first_name,
@@ -80,7 +75,6 @@ const EditEmployeeEnfo = ({
     location_id,
     bio
   } = employee;
-  const [disabled, setDisabled] = useState(false);
 
   const _handleChange = ({ name, value }) => {
     setEmployee(prev => ({ ...prev, [name]: value }));
