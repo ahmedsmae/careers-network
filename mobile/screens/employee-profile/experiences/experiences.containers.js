@@ -9,7 +9,7 @@ import {
 } from '../../../redux/current-user/current-user.selectors';
 import { selectCityNameById } from '../../../redux/constants/constants.selectors';
 
-// import { deleteEmployeeEducationStart } from '../../../redux/current-user/current-user.actions';
+import { deleteEmployeeExperienceStart } from '../../../redux/current-user/current-user.actions';
 import { showPopupApi } from '../../../redux/api-utilities/api-utilities.actions';
 
 import Experiences from './experiences.component';
@@ -19,30 +19,30 @@ import Colors from '../../../constants/colors';
 const EmployeeEmployeeExperiences = ({
   currentEmployee,
   navigation,
-  // deleteEmployeeEducationStart,
+  deleteEmployeeExperienceStart,
   showPopupApi,
   ...props
 }) => {
   const [showFabOptions, setShowFabOptions] = useState(false);
 
-  // const _handleDelete = experienceId =>
-  // deleteEmployeeEducationStart(experienceId, err => {
-  //   if (err) {
-  //     showPopupApi({
-  //       type: 'danger',
-  //       message:
-  //         err.response && err.response.data && err.response.data.errors
-  //           ? err.response.data.errors.map(err => err.msg).toString()
-  //           : 'Please check your connection'
-  //     });
-  //     return console.log(err);
-  //   }
+  const _handleDelete = experienceId =>
+    deleteEmployeeExperienceStart(experienceId, err => {
+      if (err) {
+        showPopupApi({
+          type: 'danger',
+          message:
+            err.response && err.response.data && err.response.data.errors
+              ? err.response.data.errors.map(err => err.msg).toString()
+              : 'Please check your connection'
+        });
+        return console.log(err);
+      }
 
-  //   showPopupApi({
-  //     message: 'Experience deleted successfully',
-  //     duration: 600
-  //   });
-  // });
+      showPopupApi({
+        message: 'Experience deleted successfully',
+        duration: 600
+      });
+    });
 
   return (
     <>
@@ -64,8 +64,8 @@ const EmployeeEmployeeExperiences = ({
               'Are you sure you want to delete this experience ?',
               [
                 {
-                  text: 'Yes'
-                  // onPress: _handleDelete.bind(this, exp._id)
+                  text: 'Yes',
+                  onPress: _handleDelete.bind(this, exp._id)
                 },
                 { text: 'Cancel' }
               ]
@@ -139,7 +139,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // deleteEmployeeEducationStart: id => dispatch(deleteEmployeeEducationStart(id)),
+  deleteEmployeeExperienceStart: (id, callback) =>
+    dispatch(deleteEmployeeExperienceStart(id, callback)),
   showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 

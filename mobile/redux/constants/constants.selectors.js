@@ -62,3 +62,8 @@ export const selectCompanySizes = createSelector(
   [selectConstants],
   constants => constants.companySizes
 );
+
+export const selectCurrencies = createSelector(
+  [selectConstants],
+  constants => constants.currencies
+);

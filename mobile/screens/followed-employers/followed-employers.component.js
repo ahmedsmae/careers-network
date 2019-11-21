@@ -16,7 +16,7 @@ const FollowedEmployers = ({ navigation, followedEmployers }) => {
       </Appbar.Header>
 
       {followedEmployers.length === 0 ? (
-        <SorryParagraph subtitle="You are not following any employers yet" />
+        <SorryParagraph title="You are not following any employers yet" />
       ) : (
         <FlatList
           data={followedEmployers}

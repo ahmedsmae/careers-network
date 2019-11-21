@@ -23,6 +23,10 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_START:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_START:
     case CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_START:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_EXPERIENCE_START:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_EXPERIENCE_START:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_TRAINING_START:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_TRAINING_START:
     case CurrentUserActionTypes.EDIT_EMPLOYER_INFO_START:
     case CurrentUserActionTypes.EDIT_EMPLOYER_AVATAR_START:
     case CurrentUserActionTypes.EDIT_EMPLOYER_COVER_START:
@@ -73,6 +77,10 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_SUCCESS:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_SUCCESS:
     case CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_SUCCESS:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_EXPERIENCE_SUCCESS:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_EXPERIENCE_SUCCESS:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_TRAINING_SUCCESS:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_TRAINING_SUCCESS:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_PREFERED_JOBS_SETTINGS_SUCCESS:
       return {
         ...state,
@@ -120,6 +128,10 @@ const currentUserReducer = (state = INITIAL_STATE, { type, payload }) => {
     case CurrentUserActionTypes.EDIT_EMPLOYEE_AVATAR_FAILURE:
     case CurrentUserActionTypes.EDIT_EMPLOYEE_EDUCATION_FAILURE:
     case CurrentUserActionTypes.DELETE_EMPLOYEE_EDUCATION_FAILURE:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_EXPERIENCE_FAILURE:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_EXPERIENCE_FAILURE:
+    case CurrentUserActionTypes.EDIT_EMPLOYEE_TRAINING_FAILURE:
+    case CurrentUserActionTypes.DELETE_EMPLOYEE_TRAINING_FAILURE:
     case CurrentUserActionTypes.EDIT_EMPLOYER_INFO_FAILURE:
     case CurrentUserActionTypes.EDIT_EMPLOYER_AVATAR_FAILURE:
     case CurrentUserActionTypes.EDIT_EMPLOYER_COVER_FAILURE:

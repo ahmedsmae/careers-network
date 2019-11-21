@@ -9,7 +9,7 @@ import {
 } from '../../../redux/current-user/current-user.selectors';
 import { selectCityNameById } from '../../../redux/constants/constants.selectors';
 
-// import { deleteEmployeeEducationStart } from '../../../redux/current-user/current-user.actions';
+import { deleteEmployeeTrainingStart } from '../../../redux/current-user/current-user.actions';
 import { showPopupApi } from '../../../redux/api-utilities/api-utilities.actions';
 
 import Trainings from './trainings.component';
@@ -19,30 +19,30 @@ import Colors from '../../../constants/colors';
 const EmployeeEmployeeTrainings = ({
   currentEmployee,
   navigation,
-  // deleteEmployeeEducationStart,
+  deleteEmployeeTrainingStart,
   showPopupApi,
   ...props
 }) => {
   const [showFabOptions, setShowFabOptions] = useState(false);
 
-  // const _handleDelete = trainingId =>
-  //   deleteEmployeeEducationStart(trainingId, err => {
-  //     if (err) {
-  //       showPopupApi({
-  //         type: 'danger',
-  //         message:
-  //           err.response && err.response.data && err.response.data.errors
-  //             ? err.response.data.errors.map(err => err.msg).toString()
-  //             : 'Please check your connection'
-  //       });
-  //       return console.log(err);
-  //     }
+  const _handleDelete = trainingId =>
+    deleteEmployeeTrainingStart(trainingId, err => {
+      if (err) {
+        showPopupApi({
+          type: 'danger',
+          message:
+            err.response && err.response.data && err.response.data.errors
+              ? err.response.data.errors.map(err => err.msg).toString()
+              : 'Please check your connection'
+        });
+        return console.log(err);
+      }
 
-  //     showPopupApi({
-  //       message: 'Training deleted successfully',
-  //       duration: 600
-  //     });
-  //   });
+      showPopupApi({
+        message: 'Training deleted successfully',
+        duration: 600
+      });
+    });
 
   return (
     <>
@@ -64,8 +64,8 @@ const EmployeeEmployeeTrainings = ({
               'Are you sure you want to delete this training ?',
               [
                 {
-                  text: 'Yes'
-                  // onPress: _handleDelete.bind(this, train._id)
+                  text: 'Yes',
+                  onPress: _handleDelete.bind(this, train._id)
                 },
                 { text: 'Cancel' }
               ]
@@ -139,7 +139,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // deleteEmployeeEducationStart: id => dispatch(deleteEmployeeEducationStart(id)),
+  deleteEmployeeTrainingStart: (id, callback) =>
+    dispatch(deleteEmployeeTrainingStart(id, callback)),
   showPopupApi: popupDetails => dispatch(showPopupApi(popupDetails))
 });
 

@@ -371,6 +371,74 @@ export const deleteEmployeeEducationFailure = errorMessage => ({
   payload: errorMessage
 });
 
+// EDIT EMPLOYEE EXPERIENCE
+export const editEmployeeExperienceStart = (experience, callback) => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_EXPERIENCE_START,
+  payload: experience,
+  callback
+});
+
+export const editEmployeeExperienceSuccess = employee => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_EXPERIENCE_SUCCESS,
+  payload: employee
+});
+
+export const editEmployeeExperienceFailure = errorMessage => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_EXPERIENCE_FAILURE,
+  payload: errorMessage
+});
+
+// DELETE EMPLOYEE EXPERIENCE
+export const deleteEmployeeExperienceStart = (experienceId, callback) => ({
+  type: CurrentUserActionTypes.DELETE_EMPLOYEE_EXPERIENCE_START,
+  payload: experienceId,
+  callback
+});
+
+export const deleteEmployeeExperienceSuccess = employee => ({
+  type: CurrentUserActionTypes.DELETE_EMPLOYEE_EXPERIENCE_SUCCESS,
+  payload: employee
+});
+
+export const deleteEmployeeExperienceFailure = errorMessage => ({
+  type: CurrentUserActionTypes.DELETE_EMPLOYEE_EXPERIENCE_FAILURE,
+  payload: errorMessage
+});
+
+// EDIT EMPLOYEE TRAINING
+export const editEmployeeTrainingStart = (training, callback) => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_TRAINING_START,
+  payload: training,
+  callback
+});
+
+export const editEmployeeTrainingSuccess = employee => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_TRAINING_SUCCESS,
+  payload: employee
+});
+
+export const editEmployeeTrainingFailure = errorMessage => ({
+  type: CurrentUserActionTypes.EDIT_EMPLOYEE_TRAINING_FAILURE,
+  payload: errorMessage
+});
+
+// DELETE EMPLOYEE TRAINING
+export const deleteEmployeeTrainingStart = (trainingId, callback) => ({
+  type: CurrentUserActionTypes.DELETE_EMPLOYEE_TRAINING_START,
+  payload: trainingId,
+  callback
+});
+
+export const deleteEmployeeTrainingSuccess = employee => ({
+  type: CurrentUserActionTypes.DELETE_EMPLOYEE_TRAINING_SUCCESS,
+  payload: employee
+});
+
+export const deleteEmployeeTrainingFailure = errorMessage => ({
+  type: CurrentUserActionTypes.DELETE_EMPLOYEE_TRAINING_FAILURE,
+  payload: errorMessage
+});
+
 // EDIT EMPLOYER INFO
 export const editEmployerInfoStart = (info, callback) => ({
   type: CurrentUserActionTypes.EDIT_EMPLOYER_INFO_START,

@@ -23,14 +23,17 @@ app.use('/api/users', require('./routes/user/delete'));
 app.use('/api/users', require('./routes/user/contact-us'));
 
 app.use('/api/employees', require('./routes/employee/employee-info'));
-app.use('/api/employees', require('./routes/employee/education'));
 app.use('/api/employees', require('./routes/employee/languages'));
 app.use('/api/employees', require('./routes/employee/skills'));
 app.use('/api/employees', require('./routes/employee/interests'));
 app.use('/api/employees', require('./routes/employee/references'));
 app.use('/api/employees', require('./routes/employee/social-profiles'));
 app.use('/api/employees', require('./routes/employee/prefered-jobs-settings'));
+app.use('/api/employees', require('./routes/employee/education'));
+app.use('/api/employees', require('./routes/employee/experience'));
+app.use('/api/employees', require('./routes/employee/training'));
 app.use('/api/employees', require('./routes/employee/serve-images'));
+
 app.use('/api/employers', require('./routes/employer/employer-info'));
 app.use('/api/employers', require('./routes/employer/serve-images'));
 

@@ -33,6 +33,14 @@ import {
   editEmployeeEducationFailure,
   deleteEmployeeEducationSuccess,
   deleteEmployeeEducationFailure,
+  editEmployeeExperienceSuccess,
+  editEmployeeExperienceFailure,
+  deleteEmployeeExperienceSuccess,
+  deleteEmployeeExperienceFailure,
+  editEmployeeTrainingSuccess,
+  editEmployeeTrainingFailure,
+  deleteEmployeeTrainingSuccess,
+  deleteEmployeeTrainingFailure,
   editEmployeePreferedJobsSettingsSuccess,
   editEmployeePreferedJobsSettingsFailure
 } from './current-user.actions';
@@ -295,6 +303,100 @@ function* deleteEmployeeEducationAsync({ payload, callback }) {
   }
 }
 
+function* editEmployeeExperienceAsync({ payload, callback }) {
+  const { certificate_image, ...otherProps } = payload;
+  try {
+    yield setAuthToken();
+
+    let response;
+    response = yield call(axios, {
+      method: 'post',
+      url: URLS.EDIT_EXPERIENCE_INFO,
+      data: otherProps
+    });
+
+    if (!!certificate_image) {
+      const fd = yield createImageFormData('certificate', certificate_image);
+
+      response = yield call(
+        axios.post,
+        `${URLS.EDIT_EXPERIENCE_IMAGE}/${response.data.experienceId}`,
+        fd
+      );
+    }
+
+    yield call(callback);
+    yield put(editEmployeeExperienceSuccess(response.data.employee));
+  } catch (err) {
+    yield call(callback, err);
+    yield put(editEmployeeExperienceFailure(err.message));
+  }
+}
+
+function* deleteEmployeeExperienceAsync({ payload, callback }) {
+  try {
+    yield setAuthToken();
+
+    const response = yield call(axios, {
+      method: 'delete',
+      url: `${URLS.DELETE_EMPLOYEE_EXPERIENCE}/${payload}`
+    });
+
+    yield call(callback);
+    yield put(deleteEmployeeExperienceSuccess(response.data.employee));
+  } catch (err) {
+    yield call(callback, err);
+    yield put(deleteEmployeeExperienceFailure(err.message));
+  }
+}
+
+function* editEmployeeTrainingAsync({ payload, callback }) {
+  const { certificate_image, ...otherProps } = payload;
+  try {
+    yield setAuthToken();
+
+    let response;
+    response = yield call(axios, {
+      method: 'post',
+      url: URLS.EDIT_TRAINING_INFO,
+      data: otherProps
+    });
+
+    if (!!certificate_image) {
+      const fd = yield createImageFormData('certificate', certificate_image);
+
+      response = yield call(
+        axios.post,
+        `${URLS.EDIT_TRAINING_IMAGE}/${response.data.trainingId}`,
+        fd
+      );
+    }
+
+    yield call(callback);
+    yield put(editEmployeeTrainingSuccess(response.data.employee));
+  } catch (err) {
+    yield call(callback, err);
+    yield put(editEmployeeTrainingFailure(err.message));
+  }
+}
+
+function* deleteEmployeeTrainingAsync({ payload, callback }) {
+  try {
+    yield setAuthToken();
+
+    const response = yield call(axios, {
+      method: 'delete',
+      url: `${URLS.DELETE_EMPLOYEE_TRAINING}/${payload}`
+    });
+
+    yield call(callback);
+    yield put(deleteEmployeeTrainingSuccess(response.data.employee));
+  } catch (err) {
+    yield call(callback, err);
+    yield put(deleteEmployeeTrainingFailure(err.message));
+  }
+}
+
 function* editEmployeeInfoStart() {
   yield takeLatest(
     CurrentUserActionTypes.EDIT_EMPLOYEE_INFO_START,
@@ -393,12 +495,44 @@ function* deleteEmployeeEducationStart() {
   );
 }
 
+function* editEmployeeExperienceStart() {
+  yield takeLatest(
+    CurrentUserActionTypes.EDIT_EMPLOYEE_EXPERIENCE_START,
+    editEmployeeExperienceAsync
+  );
+}
+
+function* deleteEmployeeExperienceStart() {
+  yield takeLatest(
+    CurrentUserActionTypes.DELETE_EMPLOYEE_EXPERIENCE_START,
+    deleteEmployeeExperienceAsync
+  );
+}
+
+function* editEmployeeTrainingStart() {
+  yield takeLatest(
+    CurrentUserActionTypes.EDIT_EMPLOYEE_TRAINING_START,
+    editEmployeeTrainingAsync
+  );
+}
+
+function* deleteEmployeeTrainingStart() {
+  yield takeLatest(
+    CurrentUserActionTypes.DELETE_EMPLOYEE_TRAINING_START,
+    deleteEmployeeTrainingAsync
+  );
+}
+
 export default function* editEmployeeSagas() {
   yield all([
     call(editEmployeeInfoStart),
     call(editEmployeeAvatarStart),
     call(editEmployeeEducationStart),
     call(deleteEmployeeEducationStart),
+    call(editEmployeeExperienceStart),
+    call(deleteEmployeeExperienceStart),
+    call(editEmployeeTrainingStart),
+    call(deleteEmployeeTrainingStart),
     call(addEmployeeLanguageStart),
     call(deleteEmployeeLanguageStart),
     call(addEmployeeSkillStart),

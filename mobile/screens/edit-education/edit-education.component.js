@@ -41,7 +41,7 @@ const EditEducation = ({
 
   const [education, setEducation] = useState(
     !!edu
-      ? { ...edu, location: getCityNameById(edu.location_id), filtering: false }
+      ? { ...edu, location: getCityNameById(edu.location_id) }
       : {
           subject: '',
           institute: '',
@@ -52,8 +52,7 @@ const EditEducation = ({
           to: null,
           certificate_image: null,
           location: '',
-          hasCertificate: false,
-          filtering: false
+          hasCertificate: false
         }
   );
 
@@ -61,6 +60,7 @@ const EditEducation = ({
     _id,
     subject,
     institute,
+    location,
     description,
     hasCertificate,
     from,
@@ -69,15 +69,14 @@ const EditEducation = ({
   } = education;
   const [disabled, setDisabled] = useState(false);
 
-  const _handleChange = ({ name, value }) => {
+  const _handleChange = ({ name, value }) =>
     setEducation(prevEdu => ({ ...prevEdu, [name]: value }));
-  };
 
   const _handleLocationSelect = ({ id }) =>
     setEducation(prev => ({ ...prev, location_id: id }));
 
   const _handleSubmit = () => {
-    const { location, filtering, from, to, ...rest } = education;
+    const { location, from, to, ...rest } = education;
     const formatedFrom = from ? new Date(from).toString() : null;
     const formatedTo = to ? new Date(to).toString() : null;
     setDisabled(true);
@@ -132,8 +131,8 @@ const EditEducation = ({
                 : null
             }
             onImageTaken={image =>
-              setEducation(prevEdu => ({
-                ...prevEdu,
+              setEducation(prev => ({
+                ...prev,
                 certificate_image: image
               }))
             }
@@ -147,6 +146,7 @@ const EditEducation = ({
             name="subject"
             onChange={_handleChange}
           />
+
           <OutlinedInput
             style={{ margin: 10 }}
             autoCapitalize="words"
@@ -159,6 +159,7 @@ const EditEducation = ({
           <Filter
             style={{ width: '95%', marginHorizontal: 10 }}
             list={citiesList}
+            value={location}
             label="Location"
             onSelect={_handleLocationSelect}
             filterItem="city"
@@ -169,7 +170,7 @@ const EditEducation = ({
             placeholder="From Date"
             date={from}
             onDateChange={date =>
-              setEducation(prevEdu => ({ ...prevEdu, from: date }))
+              setEducation(prev => ({ ...prev, from: date }))
             }
           />
 
@@ -190,7 +191,7 @@ const EditEducation = ({
               placeholder="To Date"
               date={to}
               onDateChange={date =>
-                setEducation(prevEdu => ({ ...prevEdu, to: date }))
+                setEducation(prev => ({ ...prev, to: date }))
               }
             />
           )}

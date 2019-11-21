@@ -52,8 +52,8 @@ const CustomDrawer = ({
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'space-between',
-            margin: 20
+            justifyContent: 'space-around',
+            marginVertical: 20
           }}
         >
           <Image

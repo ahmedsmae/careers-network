@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { View, TouchableOpacity } from 'react-native';
 import { Card, Title, Caption, Paragraph } from 'react-native-paper';
+import { ImagePreview } from '../../../components';
+import moment from 'moment';
 
 import { selectRandomDate } from '../../../redux/api-utilities/api-utilities.selectors';
 
@@ -15,6 +18,9 @@ const Experiences = ({
   getCityNameById,
   randomDate
 }) => {
+  const [showImage, setShowImage] = useState(false);
+  const [imageSource, setImageSource] = useState('');
+
   return (
     <>
       {!!experiences &&
@@ -25,10 +31,11 @@ const Experiences = ({
             organization,
             location_id,
             description,
-            hasCertificate,
+            salary,
             from,
             current,
-            to
+            to,
+            hasCertificate
           } = exp;
 
           return (
@@ -40,34 +47,60 @@ const Experiences = ({
                 onExperienceLongPress && onExperienceLongPress.bind(this, exp)
               }
             >
-              {hasCertificate && (
-                <Card.Cover
-                  source={{
-                    //! change to serve experience image
-                    uri: `${URLS.SERVE_EDUCATION_CERTIFICATE}/${employeeId}/${exp._id}?t=${randomDate}`
-                  }}
-                />
-              )}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {hasCertificate && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setImageSource(
+                        `${URLS.SERVE_EXPERIENCE_CERTIFICATE}/${employeeId}/${exp._id}?t=${randomDate}`
+                      );
+                      setShowImage(true);
+                    }}
+                    style={{ flex: 2, margin: 10, marginRight: 0 }}
+                  >
+                    <Card.Cover
+                      style={{ borderRadius: 5, height: 100 }}
+                      source={{
+                        uri: `${URLS.SERVE_EXPERIENCE_CERTIFICATE}/${employeeId}/${exp._id}?t=${randomDate}`
+                      }}
+                    />
+                  </TouchableOpacity>
+                )}
 
-              <Card.Content>
-                {!!position && !!position.length && <Title>{position}</Title>}
-                {!!organization && !!organization.length && (
-                  <Paragraph>{organization}</Paragraph>
-                )}
-                {!!location_id && (
-                  <Caption>{getCityNameById(location_id)}</Caption>
-                )}
-                {!!description && !!description.length && (
-                  <Paragraph>{description}</Paragraph>
-                )}
-              </Card.Content>
+                <Card.Content style={{ flex: 5 }}>
+                  {!!position && !!position.length && <Title>{position}</Title>}
+                  {!!organization && !!organization.length && (
+                    <Paragraph>{organization}</Paragraph>
+                  )}
+                  {!!location_id && (
+                    <Caption>{getCityNameById(location_id)}</Caption>
+                  )}
+                  {!!description && !!description.length && (
+                    <Caption>{description}</Caption>
+                  )}
+                  {!!from && (
+                    <Caption>{`from: ${moment(from).format('MMM Do')}  -  to: ${
+                      current ? 'current' : `${moment(to).format('MMM Do')}`
+                    }`}</Caption>
+                  )}
+                </Card.Content>
+              </View>
             </Card>
           );
         })}
+
+      {/* keep it outside the experience cards */}
+      <ImagePreview
+        visible={showImage}
+        onDismiss={() => setShowImage(false)}
+        source={imageSource}
+      />
     </>
   );
 };
 
-export default connect(
-  createStructuredSelector({ randomDate: selectRandomDate })
-)(Experiences);
+const mapStateToProps = createStructuredSelector({
+  randomDate: selectRandomDate
+});
+
+export default connect(mapStateToProps)(Experiences);

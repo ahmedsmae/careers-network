@@ -15,7 +15,7 @@ const MySavedJobs = ({ navigation, savedJobs }) => {
         <Appbar.Content title="My Saved Jobs" />
       </Appbar.Header>
       {savedJobs.length === 0 ? (
-        <SorryParagraph subtitle="You don't have any saved jobs yet" />
+        <SorryParagraph title="You don't have any saved jobs yet" />
       ) : (
         <FlatList
           data={savedJobs}

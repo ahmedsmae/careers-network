@@ -11,20 +11,20 @@ const Employee = require('../../database/models/employee');
 
 /**
  * @method - POST
- * @url - '/api/employees/educations'
- * @data - { _id, subject, institute, location_id, description, from, current, to }
- * @action - add/edit education to employee
+ * @url - '/api/employees/experiences'
+ * @data - { _id, position, organization, location_id, description, salary, currency, from, current, to }
+ * @action - add/edit experience to employee
  * @access - private
  */
 router.post(
-  '/educations',
+  '/experiences',
   [
     auth,
     [
-      check('subject', 'Subject is required')
+      check('position', 'Position is required')
         .not()
         .isEmpty(),
-      check('institute', 'Institute is required')
+      check('organization', 'Organization is required')
         .not()
         .isEmpty()
     ]
@@ -46,28 +46,28 @@ router.post(
           .json({ errors: [{ msg: 'Employee does not exists' }] });
       }
 
-      let educationId;
-      let employeeEducations = employee.toObject().educations;
+      let experienceId;
+      let employeeExperiences = employee.toObject().experiences;
 
       if (_id) {
-        // edit education
-        educationId = _id;
-        employeeEducations = employeeEducations.map(edu =>
-          edu._id == _id ? { ...edu, ...req.body } : edu
+        // edit experience
+        experienceId = _id;
+        employeeExperiences = employeeExperiences.map(exp =>
+          exp._id == _id ? { ...exp, ...req.body } : exp
         );
       } else {
-        // add education
-        educationId = new ObjectID();
-        employeeEducations = employeeEducations.concat({
+        // add experience
+        experienceId = new ObjectID();
+        employeeExperiences = employeeExperiences.concat({
           ...req.body,
-          _id: educationId
+          _id: experienceId
         });
       }
 
-      employee.educations = employeeEducations;
+      employee.experiences = employeeExperiences;
       await employee.save();
 
-      res.json({ employee, educationId });
+      res.json({ employee, experienceId });
     } catch (err) {
       console.error(err.message);
       res.status(400).json({ errors: [{ msg: err.message }] });
@@ -77,13 +77,13 @@ router.post(
 
 /**
  * @method - POST
- * @url - '/api/employees/educations/setimage/:educationid'
+ * @url - '/api/employees/experiences/setimage/:experienceid'
  * @data - {file}
- * @action - change education certificate image
+ * @action - change experience certificate inage
  * @access - private
  */
 router.post(
-  '/educations/setimage/:educationid',
+  '/experiences/setimage/:experienceid',
   auth,
   upload.single('certificate'),
   async (req, res) => {
@@ -101,31 +101,31 @@ router.post(
         .png()
         .toBuffer();
 
-      let educationId;
-      let employeeEducations = employee.toObject().educations;
+      let experienceId;
+      let employeeExperiences = employee.toObject().experiences;
 
-      if (req.params.educationid) {
-        // edit education certificate image
-        educationId = req.params.educationid;
-        employeeEducations = employeeEducations.map(edu =>
-          edu._id == req.params.educationid
-            ? { ...edu, certificate_image: buffer }
-            : edu
+      if (req.params.experienceid) {
+        // edit experience certificate image
+        experienceId = req.params.experienceid;
+        employeeExperiences = employeeExperiences.map(exp =>
+          exp._id == req.params.experienceid
+            ? { ...exp, certificate_image: buffer }
+            : exp
         );
       } else {
-        // add education
-        educationId = new ObjectID();
-        employeeEducations = employeeEducations.concat({
+        // add experience
+        experienceId = new ObjectID();
+        employeeExperiences = employeeExperiences.concat({
           certificate_image: buffer,
-          _id: educationId
+          _id: experienceId
         });
       }
 
-      employee.educations = employeeEducations;
+      employee.experiences = employeeExperiences;
 
       await employee.save();
 
-      res.json({ employee, educationId });
+      res.json({ employee, experienceId });
     } catch (err) {
       console.error(err.message);
       res.status(400).json({ errors: [{ msg: err.message }] });
@@ -135,12 +135,12 @@ router.post(
 
 /**
  * @method - DELETE
- * @url - '/api/employees/educations/:educationid'
+ * @url - '/api/employees/experiences/:experienceid'
  * @data - no data
- * @action - delete education from employee
+ * @action - delete experience from employee
  * @access - private
  */
-router.delete('/educations/:educationid', auth, async (req, res) => {
+router.delete('/experiences/:experienceid', auth, async (req, res) => {
   try {
     const employee = await Employee.findOne({ owner: req.user._id });
 
@@ -150,10 +150,10 @@ router.delete('/educations/:educationid', auth, async (req, res) => {
         .json({ errors: [{ msg: 'Employee does not exists' }] });
     }
 
-    let educations = employee.toObject().educations;
-    educations = educations.filter(edu => edu._id != req.params.educationid);
+    let experiences = employee.toObject().experiences;
+    experiences = experiences.filter(exp => exp._id != req.params.experienceid);
 
-    employee.educations = educations;
+    employee.experiences = experiences;
 
     await employee.save();
 

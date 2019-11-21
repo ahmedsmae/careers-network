@@ -11,13 +11,13 @@ const Employee = require('../../database/models/employee');
 
 /**
  * @method - POST
- * @url - '/api/employees/educations'
- * @data - { _id, subject, institute, location_id, description, from, current, to }
- * @action - add/edit education to employee
+ * @url - '/api/employees/trainings'
+ * @data - { _id, kind, subject, institute, location_id, description, from, current, to }
+ * @action - add/edit training to employee
  * @access - private
  */
 router.post(
-  '/educations',
+  '/trainings',
   [
     auth,
     [
@@ -46,28 +46,28 @@ router.post(
           .json({ errors: [{ msg: 'Employee does not exists' }] });
       }
 
-      let educationId;
-      let employeeEducations = employee.toObject().educations;
+      let trainingId;
+      let employeeTrainings = employee.toObject().trainings_certifications;
 
       if (_id) {
-        // edit education
-        educationId = _id;
-        employeeEducations = employeeEducations.map(edu =>
-          edu._id == _id ? { ...edu, ...req.body } : edu
+        // edit training
+        trainingId = _id;
+        employeeTrainings = employeeTrainings.map(train =>
+          train._id == _id ? { ...train, ...req.body } : train
         );
       } else {
-        // add education
-        educationId = new ObjectID();
-        employeeEducations = employeeEducations.concat({
+        // add training
+        trainingId = new ObjectID();
+        employeeTrainings = employeeTrainings.concat({
           ...req.body,
-          _id: educationId
+          _id: trainingId
         });
       }
 
-      employee.educations = employeeEducations;
+      employee.trainings_certifications = employeeTrainings;
       await employee.save();
 
-      res.json({ employee, educationId });
+      res.json({ employee, trainingId });
     } catch (err) {
       console.error(err.message);
       res.status(400).json({ errors: [{ msg: err.message }] });
@@ -77,13 +77,13 @@ router.post(
 
 /**
  * @method - POST
- * @url - '/api/employees/educations/setimage/:educationid'
+ * @url - '/api/employees/trainings/setimage/:trainingid'
  * @data - {file}
- * @action - change education certificate image
+ * @action - change training certificate image
  * @access - private
  */
 router.post(
-  '/educations/setimage/:educationid',
+  '/trainings/setimage/:trainingid',
   auth,
   upload.single('certificate'),
   async (req, res) => {
@@ -101,31 +101,31 @@ router.post(
         .png()
         .toBuffer();
 
-      let educationId;
-      let employeeEducations = employee.toObject().educations;
+      let trainingId;
+      let employeeTrainings = employee.toObject().trainings_certifications;
 
-      if (req.params.educationid) {
-        // edit education certificate image
-        educationId = req.params.educationid;
-        employeeEducations = employeeEducations.map(edu =>
-          edu._id == req.params.educationid
-            ? { ...edu, certificate_image: buffer }
-            : edu
+      if (req.params.trainingid) {
+        // edit training certificate image
+        trainingId = req.params.trainingid;
+        employeeTrainings = employeeTrainings.map(train =>
+          train._id == req.params.trainingid
+            ? { ...train, certificate_image: buffer }
+            : train
         );
       } else {
-        // add education
-        educationId = new ObjectID();
-        employeeEducations = employeeEducations.concat({
+        // add training
+        trainingId = new ObjectID();
+        employeeTrainings = employeeTrainings.concat({
           certificate_image: buffer,
-          _id: educationId
+          _id: trainingId
         });
       }
 
-      employee.educations = employeeEducations;
+      employee.trainings_certifications = employeeTrainings;
 
       await employee.save();
 
-      res.json({ employee, educationId });
+      res.json({ employee, trainingId });
     } catch (err) {
       console.error(err.message);
       res.status(400).json({ errors: [{ msg: err.message }] });
@@ -135,12 +135,12 @@ router.post(
 
 /**
  * @method - DELETE
- * @url - '/api/employees/educations/:educationid'
+ * @url - '/api/employees/trainings/:trainingid'
  * @data - no data
- * @action - delete education from employee
+ * @action - delete training from employee
  * @access - private
  */
-router.delete('/educations/:educationid', auth, async (req, res) => {
+router.delete('/trainings/:trainingid', auth, async (req, res) => {
   try {
     const employee = await Employee.findOne({ owner: req.user._id });
 
@@ -150,10 +150,10 @@ router.delete('/educations/:educationid', auth, async (req, res) => {
         .json({ errors: [{ msg: 'Employee does not exists' }] });
     }
 
-    let educations = employee.toObject().educations;
-    educations = educations.filter(edu => edu._id != req.params.educationid);
+    let trainings = employee.toObject().trainings_certifications;
+    trainings = trainings.filter(train => train._id != req.params.trainingid);
 
-    employee.educations = educations;
+    employee.trainings_certifications = trainings;
 
     await employee.save();
 

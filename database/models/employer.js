@@ -2,19 +2,7 @@ const mongoose = require('mongoose');
 
 const Job = require('./job');
 const Follow = require('./follow');
-
-const contactNumberSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  contact_number: {
-    type: String,
-    required: true,
-    trim: true
-  }
-});
+const { contactNumberSchema } = require('./asset-schemas');
 
 const employerSchema = new mongoose.Schema(
   {

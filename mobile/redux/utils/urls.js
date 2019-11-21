@@ -31,6 +31,16 @@ export default URLS = {
   SERVE_EDUCATION_CERTIFICATE: `${BASE_URL}/api/employees/educations`, // + /:employeeid/:educationid
   DELETE_EMPLOYEE_EDUCATION: `${BASE_URL}/api/employees/educations`, // + /:educationid
 
+  EDIT_EXPERIENCE_INFO: `${BASE_URL}/api/employees/experiences`,
+  EDIT_EXPERIENCE_IMAGE: `${BASE_URL}/api/employees/experiences/setimage`, // + /:experienceid
+  SERVE_EXPERIENCE_CERTIFICATE: `${BASE_URL}/api/employees/experiences`, // + /:employeeid/:experienceid
+  DELETE_EMPLOYEE_EXPERIENCE: `${BASE_URL}/api/employees/experiences`, // + /:experienceid
+
+  EDIT_TRAINING_INFO: `${BASE_URL}/api/employees/trainings`,
+  EDIT_TRAINING_IMAGE: `${BASE_URL}/api/employees/trainings/setimage`, // + /:trainingid
+  SERVE_TRAINING_CERTIFICATE: `${BASE_URL}/api/employees/trainings`, // + /:employeeid/:trainingid
+  DELETE_EMPLOYEE_TRAINING: `${BASE_URL}/api/employees/trainings`, // + /:trainingid
+
   EDIT_EMPLOYER_AVATAR: `${BASE_URL}/api/employers/avatars`,
   EDIT_EMPLOYER_COVER: `${BASE_URL}/api/employers/covers`,
   EDIT_EMPLOYER_INFO: `${BASE_URL}/api/employers/info`,

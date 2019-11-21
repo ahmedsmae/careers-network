@@ -9,6 +9,7 @@ import MARITAL_STATUSES_LIST from './marital-statuses.data';
 import RELIGIONS_LIST from './religions.data';
 import VISA_TYPES_LIST from './visa-types.data';
 import COMPANY_SIZES from './company-sizes.data';
+import CURRENCIES_LIST from './currencies.data';
 
 const INITIAL_STATE = {
   cities: CITIES_LIST,
@@ -21,7 +22,8 @@ const INITIAL_STATE = {
   maritalStatuses: MARITAL_STATUSES_LIST,
   religions: RELIGIONS_LIST,
   visaTypes: VISA_TYPES_LIST,
-  companySizes: COMPANY_SIZES
+  companySizes: COMPANY_SIZES,
+  currencies: CURRENCIES_LIST
 };
 
 const constantsReducer = (state = INITIAL_STATE, { type, payload }) => {
